@@ -11,4 +11,4 @@ Private Github Repo for the Source Code and File(s) for CS546-A Semester Project
   <li>Stephen Pachucki</li>
 </ul>
 <hr>
-## [Project Proposal](https://docs.google.com/document/d/1HDqA_3iJwkbXRNdzlV79PGtjue-KHMKJK6f2wBXk1tM/edit)
+<h2><a href="https://docs.google.com/document/d/1HDqA_3iJwkbXRNdzlV79PGtjue-KHMKJK6f2wBXk1tM/edit?usp=sharing">Project Proposal</a></h2>
