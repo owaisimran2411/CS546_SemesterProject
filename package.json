@@ -1,0 +1,13 @@
+{
+  "name": "cs-546-semester-project",
+  "version": "1.0.0",
+  "description": "cs 546 semester project module",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "seed" : "node seed.js"
+  },
+  "author": "Jasmine Cairns (CWID: 10458274), Muhammad Owais Imran (CWID: 20025554), Jonathan Memoli (CWID: 20006357), Stephen Pachucki (CWID: 10468128), Mohit Singh (CWID: 20027852)",
+  "license": "ISC"
+}
