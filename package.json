@@ -6,8 +6,18 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "seed" : "node seed.js"
+    "seed": "node seed.js"
   },
-  "author": "Jasmine Cairns (CWID: 10458274), Muhammad Owais Imran (CWID: 20025554), Jonathan Memoli (CWID: 20006357), Stephen Pachucki (CWID: 10468128), Mohit Singh (CWID: 20027852)",
-  "license": "ISC"
+  "author": "Jasmine Cairns (CWID: 10458274)\nMuhammad Owais Imran (CWID: 20025554)",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.18.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.1"
+  }
 }

@@ -1,9 +1,9 @@
 import express from 'express';
-const app = express();
 import configRoutes from './routes/index.js';
-
 import exphbs from 'express-handlebars';
 
+
+const app = express();
 const staticDir = express.static('public');
 
 const handlebarsInstance = exphbs.create({

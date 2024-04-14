@@ -1,3 +1,9 @@
-import {Router} from 'express';
-const router = Router();
-import product from '../data/product.js';
+import {
+    Router
+} from 'express'
+import * as helperMethods from './../helper.js'
+
+
+const router = Router()
+
+export default router;
