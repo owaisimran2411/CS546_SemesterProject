@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import * as helperMethods from './../helper.js'
-import {users} from './../configuration/mongoCollections.js'
-=======
->>>>>>> master
 
 import * as helperMethods from "./../helper.js";
 import {ObjectId} from 'mongodb';
