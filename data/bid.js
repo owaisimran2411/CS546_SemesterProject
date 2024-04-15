@@ -6,8 +6,8 @@ import * as helperMethods from './../helper.js'
 const dataFunction1 = (args) => {
 
 }
-
-export default methods = {
+const methods = {
     dataFunction1,
     // append all other functions implemented to export them as default
 }
+export default methods

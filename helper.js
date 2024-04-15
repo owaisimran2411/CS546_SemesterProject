@@ -1,8 +1,11 @@
-const helperMethod1 = (args) => {
+import dotenv from 'dotenv'
+
+const configureDotEnv = () => {
     // function definition goes here
+    dotenv.config()
 }
 
 export {
-    helperMethod1
+    configureDotEnv
     // method names go here
 }

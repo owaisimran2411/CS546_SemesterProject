@@ -2,6 +2,12 @@ import express from 'express';
 import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
 
+import {
+  configureDotEnv
+} from './helper.js'
+
+
+configureDotEnv()
 
 const app = express();
 const staticDir = express.static('public');
@@ -30,7 +36,9 @@ app.set('view engine', 'handlebars');
 
 configRoutes(app);
 
-app.listen(3000, () => {
+const { PORT_NUMBER } = process.env
+
+app.listen(PORT_NUMBER, () => {
   console.log("We've now got a server!");
-  console.log('Your routes will be running on http://localhost:3000');
+  console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
 });
