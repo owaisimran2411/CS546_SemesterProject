@@ -1,24 +1,24 @@
-import * as helperMethods from './../helper.js'
+import * as helperMethods from "./../helper.js";
 import { ObjectId } from "mongodb";
 // Data function goes here
 
 // below function is a template function, rename it!
 const createProduct = (
-    productName,
+  productName,
   productDescription,
-  modelNumber,
+  productCondition,
+  productSerialNumber,
   price,
-  manufacturer,
-  manufacturerWebsite,
-  keywords,
-  categories,
-  dateReleased,
-  discontinued
+  supportedConsoles,
+  productThumbnail,
+  productOtherImages,
+  productListingStatus,
+  ownerId,
 ) => {
-
-}
+    
+};
 
 export default methods = {
-    createProduct,
-    // append all other functions implemented to export them as default
-}
+  createProduct,
+  // append all other functions implemented to export them as default
+};
