@@ -36,6 +36,10 @@ const userSignUp = async (
     helperMethods.checkString(i.value, i.name);
   }
 
+  // helperMethods.argumentProvidedValidation()
+  // username = helperMethods.primitiveTypeValidation()
+  
+
   const newUser = {
     userName: userName,
     password: password,

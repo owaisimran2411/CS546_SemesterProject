@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import {ObjectId} from 'mongodb';
+import xss from 'xss';
 
 const configureDotEnv = () => {
     // function definition goes here
@@ -7,16 +8,40 @@ const configureDotEnv = () => {
 }
 
 
-const checkString = (strVal, varName) => {
-  if (!strVal) throw `Error: You must supply a ${varName}!`;
-  if (typeof strVal !== "string") throw `Error: ${varName} must be a string!`;
-  strVal = strVal.trim();
-  if (strVal.length === 0)
-    throw `Error: ${varName} cannot be an empty string or string with just spaces`;
-  if (!isNaN(strVal))
-    throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
-  return strVal;
-};
+const argumentProvidedValidation = (arg, argName) => {
+  // console.log(`Arg: ${argName}, Value: ${arg}`)
+  if(!arg) {
+      throw `${argName || "Argument"} not provided`
+  }
+}
+const primitiveTypeValidation = (arg, argName, primitiveType) => {
+  switch(primitiveType) {
+      case "String":
+          if (typeof arg !== "string" || arg.trim().length === 0) {
+              throw `${argName || "Argument"} is not a String or an empty string`
+          }
+          arg = arg.trim()
+          break
+      case "Number":
+          if (typeof arg !== "number" || isNaN(arg)) {
+              throw `${argName || "Argument"} is not a Number`
+          }
+          break
+      case "Boolean":
+          if (typeof arg !== "boolean") {
+              throw `${argName || "Argument"} is not a Boolean`
+          }
+          break
+      case "Array":
+          if (!Array.isArray(arg) || arg.length === 0) {
+              throw `${argName || "Argument"} is not an Array or is an empty array`
+          }
+          break
+  }
+  arg = xss(arg)
+  return arg
+}
+
 
 const checkId = (id) => {
   if (!id) throw "Error: You must provide an id to search for";
@@ -31,6 +56,8 @@ const checkId = (id) => {
 export {
   checkString,
   checkId,
-  configureDotEnv
+  configureDotEnv,
+  primitiveTypeValidation,
+  argumentProvidedValidation
   // method names go here
 };
