@@ -54,7 +54,6 @@ const checkId = (id) => {
 };
 
 export {
-  checkString,
   checkId,
   configureDotEnv,
   primitiveTypeValidation,

@@ -5,12 +5,12 @@ import { ObjectId } from "mongodb";
 
 // below function is a template function, rename it!
 const userSignUp = async (
-  userName,
+  username,
   password,
-  securityQuestion1,
-  securityAnswer1,
-  securityQuestion2,
-  securityAnswer2,
+  securityQuestionOne,
+  securityAnswerOne,
+  securityQuestionTwo,
+  securityAnswerTwo,
   emailAddress,
   phoneNumber,
   gender,
@@ -19,38 +19,38 @@ const userSignUp = async (
 ) => {
   const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
   // validating all the arguments
-  argumentProvidedValidation(userName, "Username");
+  argumentProvidedValidation(username, "Username");
   argumentProvidedValidation(password, "Password");
-  argumentProvidedValidation(securityQuestion1, "Security Question 1");
-  argumentProvidedValidation(securityAnswer1, "Security Answer 1");
-  argumentProvidedValidation(securityQuestion2, "Security Question 2");
-  argumentProvidedValidation(securityAnswer2, "Security Answer 2");
+  argumentProvidedValidation(securityQuestionOne, "Security Question 1");
+  argumentProvidedValidation(securityAnswerOne, "Security Answer 1");
+  argumentProvidedValidation(securityQuestionTwo, "Security Question 2");
+  argumentProvidedValidation(securityAnswerTwo, "Security Answer 2");
   argumentProvidedValidation(emailAddress, "Email Address");
   argumentProvidedValidation(phoneNumber, "Phone Number");
   argumentProvidedValidation(gender, "Gender");
   argumentProvidedValidation(bio, "Bio");
   argumentProvidedValidation(profilePicture, "Profile Picture");
 
-  //validating data types and overriding the
-  userName = primitiveTypeValidation(userName, "Username", "String");
+  //validating data types and overriding them after removing spaces
+  username = primitiveTypeValidation(username, "Username", "String");
   password = primitiveTypeValidation(password, "Password", "String");
-  securityQuestion1 = primitiveTypeValidation(
-    securityQuestion1,
+  securityQuestionOne = primitiveTypeValidation(
+    securityQuestionOne,
     "Security Question 1",
     "String"
   );
-  securityAnswer1 = primitiveTypeValidation(
-    securityAnswer1,
+  securityAnswerOne = primitiveTypeValidation(
+    securityAnswerOne,
     "Security Answer 1",
     "String"
   );
-  securityQuestion2 = primitiveTypeValidation(
-    securityQuestion2,
+  securityQuestionTwo = primitiveTypeValidation(
+    securityQuestionTwo,
     "Security Question 2",
     "String"
   );
-  securityAnswer2 = primitiveTypeValidation(
-    securityAnswer2,
+  securityAnswerTwo = primitiveTypeValidation(
+    securityAnswerTwo,
     "Security Answer 2",
     "string"
   );
@@ -69,12 +69,12 @@ const userSignUp = async (
   );
 
   const newUser = {
-    userName: userName,
+    username: username,
     password: password,
-    securityQuestion1: securityQuestion1,
-    securityAnswer1: securityAnswer1,
-    securityQuestion2: securityQuestion2,
-    securityAnswer2: securityAnswer2,
+    securityQuestionOne: securityQuestionOne,
+    securityAnswerOne: securityAnswerOne,
+    securityQuestionTwo: securityQuestionTwo,
+    securityAnswerTwo: securityAnswerTwo,
     emailAddress: emailAddress,
     phoneNumber: phoneNumber,
     gender: gender,
@@ -85,11 +85,11 @@ const userSignUp = async (
   const userCollection = await users();
   const newInsertInformation = await userCollection.insertOne(newUser);
   if (!newInsertInformation.insertedId) throw "Insert failed!";
-  return await this.getUserById(newInsertInformation.insertedId.toString());
+  return await getUserById(newInsertInformation.insertedId.toString());
 };
 
 const getUserById = async (id) => {
-  id = validation.checkId(id);
+  id = helperMethods.checkId(id)
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: new ObjectId(id) });
   if (!user) throw "Error: User not found";
