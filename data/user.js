@@ -95,6 +95,21 @@ const getUserById = async (id) => {
   if (!user) throw "Error: User not found";
   return user;
 };
+
+const getUserByEmail = async (email) => {
+  const userCollection = await users();
+  const user = await userCollection.findOne({ emailAddress: email });
+  if (!user) throw "Error: User not found";
+  return user;
+}
+
+const getUserByUsername = async (username) => {
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (!user) throw "Error: User not found";
+  return user;
+}
+
 const methods = {
   userSignUp,
   getUserById,
