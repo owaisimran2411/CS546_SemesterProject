@@ -217,6 +217,16 @@ const updateBio = async (id, bio) => {
 	if (!updatedUser) throw 'Failed to update bio';
 	return updatedUser;
 }
+const deleteUser = async (id) => {
+	id = helperMethods.checkId(id);
+
+	const userCollection = await users();
+	const deletedUser = await userCollection.findOneAndDelete(
+		{ _id: new ObjectId(id) }
+	);
+	if (!deletedUser) throw 'Failed to delete user';
+	return deletedUser
+}
 const methods = {
 	userSignUp,
 	getUserById,
@@ -227,6 +237,7 @@ const methods = {
 	updateUsername,
 	updatePhoneNumber,
 	updateGender,
-	updateBio
+	updateBio,
+	deleteUser
 };
 export default methods;
