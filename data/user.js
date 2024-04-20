@@ -90,15 +90,14 @@ const userSignUp = async (
 	}
 
 	// check if password already exists 
-	const existingPassword = await userCollection.findOne({ password: password });
-	if (existingPassword) {
-		throw "Password already exists";
+	const existingEmail = await userCollection.findOne({ emailAddress: emailAddress });
+	if (existingEmail) {
+		throw "Email already exists";
 	}
 	const newInsertInformation = await userCollection.insertOne(newUser);
 	if (!newInsertInformation.insertedId) throw "Insert failed!";
 	return await getUserById(newInsertInformation.insertedId.toString());
 };
-
 const getUserById = async (id) => {
 	id = helperMethods.checkId(id)
 	const userCollection = await users();
@@ -130,93 +129,6 @@ const getUserByUsername = async (username) => {
 	if (!user) throw "Error: User not found";
 	return user;
 }
-const updateUsername = async (id, username) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(username, "Username");
-	username = primitiveTypeValidation(username, "Username", "String");
-
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { username: username } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update username';
-	return updatedUser;
-}
-const updatePassword = async (id, password) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(password, "Password");
-	password = primitiveTypeValidation(password, "Password", "String");
-
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { password: password } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update password';
-	return updatedUser;
-}
-const updateEmailAddress = async (id, emailAddress) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(emailAddress, "Email Address");
-	emailAddress = primitiveTypeValidation(
-		emailAddress,
-		"Email Address",
-		"String"
-	);
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { emailAddress: emailAddress } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update email';
-	return updatedUser;
-}
-const updatePhoneNumber = async (id, phoneNumber) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(phoneNumber, "Phone Number");
-	phoneNumber = primitiveTypeValidation(phoneNumber, "Phone Number", "Number");
-
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { phoneNumber: phoneNumber } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update phone number';
-	return updatedUser;
-}
-const updateGender = async (id, gender) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(gender, "Gender");
-	gender = primitiveTypeValidation(gender, "Gender", "String");
-
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { gender: gender } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update gender';
-	return updatedUser;
-}
-const updateBio = async (id, bio) => {
-	id = helperMethods.checkId(id);
-	argumentProvidedValidation(bio, "Bio");
-	bio = primitiveTypeValidation(bio, "Bio", "String");
-
-	const userCollection = await users();
-	const updatedUser = await userCollection.findOneAndUpdate(
-		{ _id: new ObjectId(id) },
-		{ $set: { bio: bio } },
-		{ returnDocument: 'after' }
-	);
-	if (!updatedUser) throw 'Failed to update bio';
-	return updatedUser;
-}
 const deleteUser = async (id) => {
 	id = helperMethods.checkId(id);
 
@@ -227,17 +139,49 @@ const deleteUser = async (id) => {
 	if (!deletedUser) throw 'Failed to delete user';
 	return deletedUser
 }
+const updateUser = async (id, updateInfo) => {
+	id = helperMethods.checkId(id);
+	argumentProvidedValidation(updateInfo, 'UpdateInfo');
+	updateInfo = primitiveTypeValidation(updateInfo, 'UpdateInfo', 'Object');
+
+	// build the query depending on which values are supplied 
+	if (updateInfo.password) {
+		updateInfo.password = primitiveTypeValidation(updateInfo.password, "Password", "String");
+	}
+	if (updateInfo.phoneNumber) {
+		updateInfo.phoneNumber = primitiveTypeValidation(updateInfo.phoneNumber, "Phone Number", "Number");
+	}
+	if (updateInfo.gender) {
+		updateInfo.gender = primitiveTypeValidation(updateInfo.gender, "Gender", "String");
+	}
+	if (updateInfo.bio) {
+		updateInfo.bio = primitiveTypeValidation(updateInfo.bio, "Bio", "String");
+	}
+	const allowedKeys = ['password', 'phoneNumber', 'gender', 'bio'];
+	const invalidKeys = Object.keys(updateInfo).filter(key => !allowedKeys.includes(key));
+	if (invalidKeys.length > 0) {
+		throw 'Invalid Update Keys';
+	}
+	let query = {};
+	for (const key in updateInfo) {
+		query[key] = updateInfo[key];
+	}
+	const userCollection = await users();
+	const updatedUser = await userCollection.findOneAndUpdate(
+		{ _id: new ObjectId(id) },
+		{ $set: query },
+		{ returnDocument: 'after' }
+	);
+	if (!updatedUser) throw 'Failed to update user';
+	return updatedUser;
+
+}
 const methods = {
 	userSignUp,
 	getUserById,
 	getUserByEmail,
 	getUserByUsername,
-	updateEmailAddress,
-	updatePassword,
-	updateUsername,
-	updatePhoneNumber,
-	updateGender,
-	updateBio,
+	updateUser,
 	deleteUser
 };
 export default methods;

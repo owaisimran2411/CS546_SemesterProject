@@ -50,16 +50,16 @@ async function mainR() {
   try {
     const renamedIPhonePro = await methods.userSignUp(
 
-      "username2",
-      "password2",
+      "username",
+      "password",
       "security ques 3",
       "security ans 3",
       "security question 4",
       "security answer 4",
-      "email2",
+      "email",
       2334132132,
       "male",
-      "My bio 2",
+      "My bio",
       "profile pic"
     );
     console.log(renamedIPhonePro);
@@ -67,7 +67,7 @@ async function mainR() {
     console.error("Error adding user:", error); // Log the error message
   }
 }
-mainR();
+// mainR();
 
 async function mainP() {
   try {
@@ -92,49 +92,18 @@ async function mainP() {
 // mainP();
 async function testUpdate() {
   try {
-    const updatedUser = await methods.updateUsername("6620241c33657dc262689cba", 'newUsername');
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const updatedUser = await methods.updatePassword("6620241c33657dc262689cba", 'newPassword');
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const updatedUser = await methods.updateEmailAddress("6620241c33657dc262689cba", 'newEmail');
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const updatedUser = await methods.updatePhoneNumber("6620241c33657dc262689cba", '9082111234');
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const updatedUser = await methods.updateGender("6620241c33657dc262689cba", 'female');
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const updatedUser = await methods.updateBio("6620241c33657dc262689cba", 'newBio');
+    const updatedUser = await methods.updateUser("6622bcf97925edab254e523f",
+      {
+        password: 'updatedPassword',
+        bio: 'updatedBio'
+      });
     console.log(updatedUser);
   }
   catch (e) {
     console.log(e);
   }
 }
-// testUpdate();
+testUpdate();
 async function testFind() {
   try {
     console.log('Find with username:');
