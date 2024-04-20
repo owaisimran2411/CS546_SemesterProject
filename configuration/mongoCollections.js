@@ -18,3 +18,6 @@ const getCollectionFn = (collection) => {
 /* Now, you can list your collections here: */
 export const users = getCollectionFn('users');
 export const products = getCollectionFn('products');
+export const bids = getCollectionFn('bids');
+export const complaints = getCollectionFn('complaints');
+export const metrics = getCollectionFn('metrics');
