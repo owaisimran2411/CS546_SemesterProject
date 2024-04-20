@@ -30,7 +30,7 @@ const handlebarsInstance = exphbs.create({
 
 app.use('/public', staticDir);
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
@@ -49,47 +49,80 @@ const { PORT_NUMBER } = process.env
 async function mainR() {
   try {
     const renamedIPhonePro = await methods.userSignUp(
-      
-        "username1",
-        "password",
-        "security ques 1",
-        "security ans 1",
-        "security question 2",
-        "security answer2",
-        "email",
-        2334132132,
-        "male",
-        "My bio",
-        "profile pic"
+
+      "username",
+      "password",
+      "security ques 3",
+      "security ans 3",
+      "security question 4",
+      "security answer 4",
+      "email",
+      2334132132,
+      "male",
+      "My bio",
+      "profile pic"
     );
     console.log(renamedIPhonePro);
   } catch (error) {
-    console.error("Error adding user:", error.message); // Log the error message
+    console.error("Error adding user:", error); // Log the error message
   }
 }
-mainR();
+// mainR();
 
 async function mainP() {
   try {
     const renamedIPhonePro = await prodMethod.default.createProduct(
-      
-        "prod_name1",
-        "description",
-        "condition",
-        "serial no.",
-        33,
-        [ "Nintendo Wii" ],
-        "thumbnail",
-       [ "otherImg"],
-        true,
-        "660a1f58411aa9ec268e4412",
+
+      "prod_name1",
+      "description",
+      "condition",
+      "serial no.",
+      33,
+      ["Nintendo Wii"],
+      "thumbnail",
+      ["otherImg"],
+      true,
+      "660a1f58411aa9ec268e4412",
     );
     console.log(renamedIPhonePro);
   } catch (error) {
     console.error("Error adding product:", error); // Log the error message
   }
 }
-//mainP();
+// mainP();
+async function testUpdate() {
+  try {
+    const updatedUser = await methods.updateUser("6622bcf97925edab254e523f",
+      {
+        password: 'updatedPassword',
+        bio: 'updatedBio'
+      });
+    console.log(updatedUser);
+  }
+  catch (e) {
+    console.log(e);
+  }
+}
+testUpdate();
+async function testFind() {
+  try {
+    console.log('Find with username:');
+    const user = await methods.getUserByUsername('username2');
+    console.log(user);
+  }
+  catch (e) {
+    console.log(e);
+  }
+  try {
+    console.log('Find with email:');
+    const user = await methods.getUserByEmail('email2');
+    console.log(user);
+  }
+  catch (e) {
+    console.log(e);
+  }
+}
+// testFind();
 
 
 
