@@ -89,6 +89,9 @@ const createProduct = async (
 };
 
 const getProductById = async (id) => {
+  helperMethods.argumentProvidedValidation(id, 'productID')
+
+  id = helperMethods.primitiveTypeValidation(id, 'productID', 'String')
   id = helperMethods.checkId(id)
   const productCollection = await products();
   const product = await productCollection.findOne({ _id: new ObjectId(id) });
@@ -157,10 +160,29 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters) =>
   return product
 }
 
+const deleteProduct = async (productID) => {
+  helperMethods.argumentProvidedValidation(productID, 'productID')
+  productID = helperMethods.primitiveTypeValidation(productID, 'productID', 'String')
+  productID = helperMethods.checkId(productID)
+
+  const productCollection = await products()
+  const productDelete = await productCollection.findOneAndDelete({
+    _id: new ObjectId(productID)
+  })
+
+  if(!productDelete) throw `Unable to Delete Product with Product ID: ${productID}`
+  return {
+    productID: productID,
+    status: 'success',
+    message: 'Product Deletion Successful'
+  }
+}
+
 const methods = {
   createProduct,
   getProductById,
-  getProducts
+  getProducts,
+  deleteProduct
   // append all other functions implemented to export them as default
 };
 export default methods;
