@@ -100,7 +100,7 @@ const getProductById = async (id) => {
 };
 
 
-const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters) => {
+const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, searchFilters) => {
   // getAllFlag is used if all products needs to be fetched
   // countPerPull is used if all products does not need to be fetched
   // pageNumber is used if all products are not fetched and to skip some products
@@ -111,6 +111,7 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters) =>
   
   let product = undefined
   let sortingFilters = undefined
+  let searchFilters = undefined
   
   const productCollection = await products()
 
@@ -119,6 +120,13 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters) =>
     sortingFilters = helperMethods.primitiveTypeValidation(sortFilters, 'sortFilters', 'Object')
   } catch (e) {
     sortingFilters = {}
+  }
+
+  try {
+    helperMethods.argumentProvidedValidation(searchFilters, 'searchFilters')
+    searchFilters = helperMethods.primitiveTypeValidation(searchFilters, 'searchFilters', 'Object')
+  } catch (e) {
+    searchFilters = {}
   }
   
   // console.log(countPerPull, '=counterPerPull')
@@ -137,20 +145,20 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters) =>
     if(pageNumber <= 0) {
       pageNumber=1
       product = await productCollection
-                        .find({})
+                        .find(searchFilters)
                         .limit(countPerPull)
                         .sort(sortFilters)
                         .toArray()
     } else {
       product = await productCollection
-                        .find({})
+                        .find(searchFilters)
                         .skip(pageNumber*countPerPull)
                         .limit(countPerPull)
                         .toArray()
     }
   } else {
     product = await productCollection
-                    .find({})
+                    .find(searchFilters)
                     .sort(sortingFilters)
                     .toArray()
   }

@@ -127,7 +127,7 @@ async function testFind() {
 async function getAllProductsTest() {
   try {
     console.log('Get All Products');
-    const products = await methods.deleteProduct('6626ebbced158bd24206087d')
+    const products = await methods.getAllProductsTest(true)
     console.log(products);
   }
   catch (e) {
