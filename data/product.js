@@ -100,7 +100,7 @@ const getProductById = async (id) => {
 };
 
 
-const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, searchFilters) => {
+const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fieldFilters) => {
   // getAllFlag is used if all products needs to be fetched
   // countPerPull is used if all products does not need to be fetched
   // pageNumber is used if all products are not fetched and to skip some products
@@ -111,7 +111,7 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, se
   
   let product = undefined
   let sortingFilters = undefined
-  let searchFilters = undefined
+  let fieldFilter = undefined
   
   const productCollection = await products()
 
@@ -123,10 +123,15 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, se
   }
 
   try {
-    helperMethods.argumentProvidedValidation(searchFilters, 'searchFilters')
-    searchFilters = helperMethods.primitiveTypeValidation(searchFilters, 'searchFilters', 'Object')
+    helperMethods.argumentProvidedValidation(fieldFilters, 'fieldFilters')
+    console.log(fieldFilters)
+    if (typeof fieldFilters == 'object') {
+      fieldFilter = fieldFilters
+    } else {
+      fieldFilter = {}
+    }
   } catch (e) {
-    searchFilters = {}
+    fieldFilter = {}
   }
   
   // console.log(countPerPull, '=counterPerPull')
@@ -145,21 +150,24 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, se
     if(pageNumber <= 0) {
       pageNumber=1
       product = await productCollection
-                        .find(searchFilters)
+                        .find({})
                         .limit(countPerPull)
                         .sort(sortFilters)
+                        .project(fieldFilter)
                         .toArray()
     } else {
       product = await productCollection
-                        .find(searchFilters)
+                        .find({})
                         .skip(pageNumber*countPerPull)
                         .limit(countPerPull)
+                        .project(fieldFilter)
                         .toArray()
     }
   } else {
     product = await productCollection
-                    .find(searchFilters)
+                    .find({})
                     .sort(sortingFilters)
+                    .project(fieldFilter)
                     .toArray()
   }
 

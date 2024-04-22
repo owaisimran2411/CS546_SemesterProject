@@ -127,7 +127,7 @@ async function testFind() {
 async function getAllProductsTest() {
   try {
     console.log('Get All Products');
-    const products = await methods.getAllProductsTest(true)
+    const products = await methods.getProducts(true, 0, 0, {}, {productName: 1})
     console.log(products);
   }
   catch (e) {
