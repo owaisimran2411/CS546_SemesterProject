@@ -1,8 +1,8 @@
 import express from 'express';
 import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
-import methods from './data/user.js';
-import * as prodMethod from './data/product.js';
+// import methods from './data/user.js';
+import methods from './data/product.js';
 import {
   configureDotEnv
 } from './helper.js'
@@ -103,7 +103,7 @@ async function testUpdate() {
     console.log(e);
   }
 }
-testUpdate();
+// testUpdate();
 async function testFind() {
   try {
     console.log('Find with username:');
@@ -123,6 +123,19 @@ async function testFind() {
   }
 }
 // testFind();
+
+async function getAllProductsTest() {
+  try {
+    console.log('Get All Products');
+    const products = await methods.getProducts(false, 3, 1, {})
+    console.log(products);
+  }
+  catch (e) {
+    console.log(e);
+  }
+  
+}
+getAllProductsTest()
 
 
 

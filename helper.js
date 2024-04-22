@@ -21,6 +21,7 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
         throw `${argName || "Argument"} is not a String or an empty string`
       }
       arg = arg.trim()
+      arg = xss(arg)
       break
     case "Number":
       if (typeof arg !== "number" || isNaN(arg)) {
@@ -49,7 +50,7 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
       }
       return sanitizedObj;
   }
-  arg = xss(arg)
+  
   return arg
 }
 
