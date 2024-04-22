@@ -6,6 +6,7 @@ import methods from './data/product.js';
 import {
   configureDotEnv
 } from './helper.js'
+import { ObjectId } from 'mongodb';
 
 
 configureDotEnv()
@@ -127,7 +128,7 @@ async function testFind() {
 async function getAllProductsTest() {
   try {
     console.log('Get All Products');
-    const products = await methods.getProducts(true, 0, 0, {}, {productName: 1})
+    const products = await methods.deleteProductWithSpecificOwnerID('660a1f58411aa9ec268e4412')
     console.log(products);
   }
   catch (e) {

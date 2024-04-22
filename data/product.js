@@ -100,7 +100,7 @@ const getProductById = async (id) => {
 };
 
 
-const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fieldFilters) => {
+const getProducts = async (getAllFlag, countPerPull, pageNumber, searchFilters, sortFilters, fieldFilters) => {
   // getAllFlag is used if all products needs to be fetched
   // countPerPull is used if all products does not need to be fetched
   // pageNumber is used if all products are not fetched and to skip some products
@@ -112,6 +112,7 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fi
   let product = undefined
   let sortingFilters = undefined
   let fieldFilter = undefined
+  let searchFilter = undefined
   
   const productCollection = await products()
 
@@ -124,7 +125,7 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fi
 
   try {
     helperMethods.argumentProvidedValidation(fieldFilters, 'fieldFilters')
-    console.log(fieldFilters)
+    // console.log(fieldFilters)
     if (typeof fieldFilters == 'object') {
       fieldFilter = fieldFilters
     } else {
@@ -132,6 +133,18 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fi
     }
   } catch (e) {
     fieldFilter = {}
+  }
+
+  try {
+    helperMethods.argumentProvidedValidation(searchFilters, 'searchFilters')
+    // console.log(searchFilters)
+    if (typeof searchFilters == 'object') {
+      searchFilter = searchFilters
+    } else {
+      searchFilter = {}
+    }
+  } catch (e) {
+    searchFilter = {}
   }
   
   // console.log(countPerPull, '=counterPerPull')
@@ -150,14 +163,14 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fi
     if(pageNumber <= 0) {
       pageNumber=1
       product = await productCollection
-                        .find({})
+                        .find(searchFilter)
                         .limit(countPerPull)
                         .sort(sortFilters)
                         .project(fieldFilter)
                         .toArray()
     } else {
       product = await productCollection
-                        .find({})
+                        .find(searchFilter)
                         .skip(pageNumber*countPerPull)
                         .limit(countPerPull)
                         .project(fieldFilter)
@@ -165,7 +178,7 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, sortFilters, fi
     }
   } else {
     product = await productCollection
-                    .find({})
+                    .find(searchFilter)
                     .sort(sortingFilters)
                     .project(fieldFilter)
                     .toArray()
@@ -194,11 +207,30 @@ const deleteProduct = async (productID) => {
   }
 }
 
+const deleteProductWithSpecificOwnerID = async (ownerID) => {
+  helperMethods.argumentProvidedValidation(ownerID, 'ownerID')
+  ownerID = helperMethods.primitiveTypeValidation(ownerID, 'ownerID', 'String')
+  ownerID = helperMethods.checkId(ownerID)
+
+  const productCollection = await products()
+  const productDelete = await productCollection.deleteMany({
+    productOwnerId: ownerID
+  })
+  // console.log(productDelete)
+  if(productDelete.deletedCount<=0) throw `Unable to Delete Products with Owner ID: ${ownerID}`
+  return {
+    ownerID: ownerID,
+    status: 'success',
+    message: 'Product Deletion Successful'
+  }
+}
+
 const methods = {
   createProduct,
   getProductById,
   getProducts,
-  deleteProduct
+  deleteProduct,
+  deleteProductWithSpecificOwnerID
   // append all other functions implemented to export them as default
 };
 export default methods;
