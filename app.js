@@ -2,6 +2,7 @@ import express from 'express';
 import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
 // import methods from './data/user.js';
+import session from 'express-session';
 import methods from './data/product.js';
 import {
   configureDotEnv
@@ -29,6 +30,16 @@ const handlebarsInstance = exphbs.create({
   }
 });
 
+app.use(
+  session({
+    name: 'AuthenticationState',
+    secret: "This is a secret.. shhh don't tell anyone",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {maxAge: 60000}
+  })
+);
+
 app.use('/public', staticDir);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,10 +51,10 @@ configRoutes(app);
 
 const { PORT_NUMBER } = process.env
 
-// app.listen(PORT_NUMBER, () => {
-//   console.log("We've now got a server!");
-//   console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
-// });
+app.listen(PORT_NUMBER, () => {
+  console.log("We've now got a server!");
+  console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
+});
 
 
 // database function check
@@ -136,7 +147,7 @@ async function getAllProductsTest() {
   }
   
 }
-getAllProductsTest()
+//getAllProductsTest()
 
 
 

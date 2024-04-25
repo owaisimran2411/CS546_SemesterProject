@@ -9,12 +9,18 @@ import {userData} from './../data/index.js';
 const constructorMethod = (app) => {
   // app.use('/product', calculatorRoutes);
 
-  app.use('*', async (req, res) => {
-    const data = await userData.dataFunction1()
-    console.log(data)
-    res.json({
-      success: "server config done"
-    })
+  // app.use('*', async (req, res) => {
+  //   const data = await userData.dataFunction1()
+  //   console.log(data)
+  //   res.json({
+  //     success: "server config done"
+  //   })
+    
+  // });
+  app.use('/', userRoutes);
+
+  app.use('*', (req, res) => {
+    res.sendStatus(404);
   });
 };
 

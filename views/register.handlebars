@@ -1,0 +1,51 @@
+<body>
+  <h1>Join now</h1>
+  <form action="/register" method="post">
+    <div>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" />
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" />
+    </div>
+    <div>
+      <label for="securityQuestionOne">Security question one</label>
+      <input type="text" name="securityQuestionOne" id="securityQuestionOne" />
+    </div>
+    <div>
+      <label for="securityAnswerOne">Security Answer one</label>
+      <input type="text" name="securityAnswerOne" id="securityAnswerOne" />
+    </div>
+    <div>
+      <label for="securityQuestionTwo">Security question two</label>
+      <input type="text" name="securityQuestionTwo" id="securityQuestionTwo" />
+    </div>
+    <div>
+      <label for="securityAnswerTwo">Security answer two</label>
+      <input type="text" name="securityAnswerTwo" id="securityAnswerTwo" />
+    </div>
+    <div>
+      <label for="emailAddress">Email address</label>
+      <input type="text" name="emailAddress" id="emailAddress" />
+    </div>
+    <div>
+      <label for="phoneNumber">Phone number</label>
+      <input type="number" name="phoneNumber" id="phoneNumber" />
+    </div>
+    <div>
+      <label for="gender">Gender</label>
+      <input type="text" name="gender" id="gender" />
+    </div>
+    <div>
+      <label for="bio">Bio</label>
+      <input type="text" name="bio" id="bio" />
+    </div>
+    {{! change profile picture to image input }}
+    <div>
+      <label for="profilePicture">Profile picture</label>
+      <input type="text" name="profilePicture" id="profilePicture" />
+    </div>
+    <button type="submit" name="submitButton" id="submitButton">Submit</button>
+  </form>
+</body>
