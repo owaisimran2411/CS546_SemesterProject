@@ -40,10 +40,10 @@ configRoutes(app);
 
 const { PORT_NUMBER } = process.env
 
-// app.listen(PORT_NUMBER, () => {
-//   console.log("We've now got a server!");
-//   console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
-// });
+app.listen(PORT_NUMBER, () => {
+  console.log("We've now got a server!");
+  console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
+});
 
 
 // database function check
@@ -136,7 +136,7 @@ async function getAllProductsTest() {
   }
   
 }
-getAllProductsTest()
+// getAllProductsTest()
 
 
 
