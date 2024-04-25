@@ -28,8 +28,9 @@ router
         req.body.bio,
         req.body.profilePicture
       );
+      res.redirect('/user/login')
       //req.session.username = req.body.username;
-      return res.json(postResult);
+      //return res.json(postResult);
     } catch (error) {
       return res.status(400).json({ error: error });
     }

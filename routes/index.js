@@ -6,22 +6,27 @@ import userRoutes from './user.js'
 
 import {userData} from './../data/index.js';
 
+import * as helperMethods from './../helper.js'
+
 const constructorMethod = (app) => {
-  // app.use('/product', calculatorRoutes);
+  app.use('/product', productRoutes);
+  app.use('/user', userRoutes)
 
-  // app.use('*', async (req, res) => {
-  //   const data = await userData.dataFunction1()
-  //   console.log(data)
-  //   res.json({
-  //     success: "server config done"
-  //   })
-    
-  // });
-  app.use('/', userRoutes);
-
-  app.use('*', (req, res) => {
+  app.use('*', async (req, res) => {
+    // res.send(
+    //   `
+    //   <h2>File Upload With <code>"Node.js"</code></h2>
+    //   <form action="/product" enctype="multipart/form-data" method="post">
+    //     <div>Select a file: 
+    //       <input name="file" type="file" multiple />
+    //     </div>
+    //     <input type="submit" value="Upload" />
+    //   </form>
+    //   `
+    // )
     res.sendStatus(404);
   });
+
 };
 
 export default constructorMethod;

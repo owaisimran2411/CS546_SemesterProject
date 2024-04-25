@@ -2,6 +2,16 @@ import dotenv from 'dotenv'
 import { ObjectId } from 'mongodb';
 import xss from 'xss';
 
+import multer from 'multer';
+import multerS3 from 'multer-s3'
+import {
+  S3Client, PutObjectCommand,
+} from '@aws-sdk/client-s3'
+
+
+
+
+
 const configureDotEnv = () => {
   // function definition goes here
   dotenv.config()
@@ -65,10 +75,38 @@ const checkId = (id) => {
   return id;
 };
 
+const createS3Client = (accessKey, secretKey, region) => {
+  return new S3Client({
+    region: region,
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
+    }
+
+  })
+}
+
+const createMulterObject = (s3Client, bucketName, fileType) => {
+  return multer({
+    storage: multerS3({
+      s3: s3Client,
+      bucket: bucketName,
+      acl: 'public-read',
+      key: (req, file, cb) => {
+        cb(null, `${file.originalname}-${fileType}`)
+      }
+  })
+  })
+}
+
+
+
 export {
   checkId,
   configureDotEnv,
   primitiveTypeValidation,
-  argumentProvidedValidation
+  argumentProvidedValidation,
+  createS3Client,
+  createMulterObject
   // method names go here
 };
