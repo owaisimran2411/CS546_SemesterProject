@@ -93,12 +93,15 @@ const createMulterObject = (s3Client, bucketName, fileType) => {
       bucket: bucketName,
       acl: 'public-read',
       key: (req, file, cb) => {
-        cb(null, `${file.originalname}-${fileType}`)
+        cb(null, `${generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
       }
   })
   })
 }
 
+const generateObjectID = () => {
+  return new ObjectId()
+}
 
 
 export {
@@ -107,6 +110,7 @@ export {
   primitiveTypeValidation,
   argumentProvidedValidation,
   createS3Client,
-  createMulterObject
+  createMulterObject,
+  generateObjectID
   // method names go here
 };

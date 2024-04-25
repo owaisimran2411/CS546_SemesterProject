@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 // below function is a template function, rename it!
 const userSignUp = async (
+  id,
   username,
   password,
   securityQuestionOne,
@@ -73,6 +74,7 @@ const userSignUp = async (
   password = await bcrypt.hash(password, 16); 
 
   const newUser = {
+    _id: id,
     username: username,
     password: password,
     securityQuestionOne: securityQuestionOne,
@@ -107,7 +109,7 @@ const userSignUp = async (
 const getUserById = async (id) => {
   id = helperMethods.checkId(id);
   const userCollection = await users();
-  const user = await userCollection.findOne({ _id: new ObjectId(id) });
+  const user = await userCollection.findOne({ _id: id });
   if (!user) throw "Error: User not found";
   return user;
 };
@@ -140,7 +142,7 @@ const deleteUser = async (id) => {
 
   const userCollection = await users();
   const deletedUser = await userCollection.findOneAndDelete({
-    _id: new ObjectId(id),
+    _id: id
   });
   if (!deletedUser) throw "Failed to delete user";
   return deletedUser;
@@ -188,7 +190,7 @@ const updateUser = async (id, updateInfo) => {
   }
   const userCollection = await users();
   const updatedUser = await userCollection.findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: id },
     { $set: query },
     { returnDocument: "after" }
   );

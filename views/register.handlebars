@@ -1,6 +1,6 @@
 <body>
   <h1>Join now</h1>
-  <form action="/user/register" method="post">
+  <form action="/register" method="post" enctype="multipart/form-data">
     <div>
       <label for="username">Username</label>
       <input type="text" id="username" name="username" />
@@ -31,7 +31,7 @@
     </div>
     <div>
       <label for="phoneNumber">Phone number</label>
-      <input type="number" name="phoneNumber" id="phoneNumber" />
+      <input type="text" name="phoneNumber" id="phoneNumber" />
     </div>
     <div>
       <label for="gender">Gender</label>
@@ -44,7 +44,7 @@
     {{! change profile picture to image input }}
     <div>
       <label for="profilePicture">Profile picture</label>
-      <input type="text" name="profilePicture" id="profilePicture" />
+      <input name="profilePicture" id="profilePicture" type="file"/>
     </div>
     <button type="submit" name="submitButton" id="submitButton">Submit</button>
   </form>
