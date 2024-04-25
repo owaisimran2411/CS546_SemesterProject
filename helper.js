@@ -86,14 +86,14 @@ const createS3Client = (accessKey, secretKey, region) => {
   })
 }
 
-const createMulterObject = (s3Client, bucketName, fileType) => {
+const createMulterObject = (s3Client, bucketName, fileType, id) => {
   return multer({
     storage: multerS3({
       s3: s3Client,
       bucket: bucketName,
       acl: 'public-read',
       key: (req, file, cb) => {
-        cb(null, `${generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
+        cb(null, `${id || generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
       }
   })
   })
