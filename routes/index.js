@@ -17,7 +17,7 @@ const constructorMethod = (app) => {
       <h2>File Upload With <code>"Node.js"</code></h2>
       <form action="/product" enctype="multipart/form-data" method="post">
         <div>Select a file: 
-          <input name="file" type="file" />
+          <input name="file" type="file" multiple />
         </div>
         <input type="submit" value="Upload" />
       </form>

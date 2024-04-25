@@ -32,7 +32,7 @@ const upload = multer({
 
 const router = Router()
 
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.array('file', 5), (req, res) => {
 
 })
 // router.route('/')
