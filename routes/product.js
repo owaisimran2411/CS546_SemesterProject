@@ -3,37 +3,28 @@ import {
 } from 'express'
 import * as helperMethods from './../helper.js'
 
-import multer from 'multer';
-import multerS3 from 'multer-s3'
-import {
-  S3Client, PutObjectCommand,
-} from '@aws-sdk/client-s3'
 
 
 helperMethods.configureDotEnv();
-const s3Client = new S3Client({
-    region: process.env.S3_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
-})
-const upload = multer({
-    storage: multerS3({
-        s3: s3Client,
-        bucket: process.env.S3_BUCKET,
-        acl: 'public-read',
-        key: (req, file, cb) => {
-        cb(null, `${Date.now().toString()}-${file.originalname}`)
-        }
-    })
-})
+// const s3Client = 
+// const productCoverImageClient = helperMethods.createMulterObject(s3Client, process.env.S3_BUCKET, 'coverImage')
 
 
 const router = Router()
 
-router.post('/', upload.array('file', 5), (req, res) => {
+// router.post('/', , (req, res) => {
 
+// })
+
+router.route('/')
+.post(helperMethods.createMulterObject(helperMethods.createS3Client(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY, process.env.S3_REGION), process.env.S3_BUCKET, 'coverImage').array('file', 5), async (req, res) => {
+    console.log(req.files, typeof req.files)
+    req.files.forEach((item) => {
+        console.log(item.location)
+    })
+    return res.json({
+        message: 'Upload Successful'
+    })
 })
 // router.route('/')
 // .post(async(req, res) => {
