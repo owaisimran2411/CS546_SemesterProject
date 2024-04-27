@@ -60,7 +60,7 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
       }
       return sanitizedObj;
   }
-  
+
   return arg
 }
 
@@ -79,8 +79,8 @@ const createS3Client = (accessKey, secretKey, region) => {
   return new S3Client({
     region: region,
     credentials: {
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey
     }
 
   })
@@ -95,14 +95,21 @@ const createMulterObject = (s3Client, bucketName, fileType, parameterID) => {
       key: (req, file, cb) => {
         cb(null, `${req.params[parameterID] || generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
       }
-  })
+    })
   })
 }
 
 const generateObjectID = () => {
   return new ObjectId()
 }
+const checkBidAmmount = (bid) => {
+  if (bid < 0 || bid >= 999.99) {
+    throw new 'Bid amount must be between 0 and 999.99';
+  }
 
+  const formattedBid = parseFloat(bid).toFixed(2);
+  return formattedBid;
+}
 
 export {
   checkId,
