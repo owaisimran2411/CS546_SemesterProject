@@ -64,6 +64,62 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
   return arg
 }
 
+const checkIsValidPassword = (password) => {
+  if (/\s/.test(password)) {
+    throw("Error : Password should not contain spaces");
+  }
+  const specialCharacters = "!@#$%^&*()-_+=<>?/\\";
+  if (password.length < 8) {
+    throw ("Error : Password should be at least 8 characters long.");
+  }
+
+  let isUppercase = false;
+  let isLowercase = false;
+  let isNumber = false;
+  let isSpecialCharacter = false;
+
+  for (let char of password) {
+    if (char >= "A" && char <= "Z") {
+      isUppercase = true;
+    }
+    if (char >= "a" && char <= "z") {
+      isLowercase = true;
+    }
+    if (!isNaN(char)) {
+      isNumber = true;
+    }
+    if (specialCharacters.includes(char)) {
+      isSpecialCharacter = true;
+    }
+  }
+
+  if (!isUppercase) {
+    throw (
+      "Error : Password should contain at least one uppercase character."
+    );
+  }
+
+  if (!isUppercase) {
+    throw (
+      "Error : Password should contain at least one uppercase character."
+    );
+  }
+
+  if (!isLowercase) {
+    throw (
+      "Error : Password should contain at least one lowercase character."
+    );
+  }
+
+  if (!isNumber) {
+    throw ("Error : Password should contain at least one number.");
+  }
+
+  if (!isSpecialCharacter) {
+    throw ("Error : Password should contain at least one special character.");
+  }
+};
+
 
 const checkId = (id) => {
   if (!id) throw "Error: You must provide an id to search for";
@@ -106,6 +162,7 @@ const generateObjectID = () => {
 
 export {
   checkId,
+  checkIsValidPassword,
   configureDotEnv,
   primitiveTypeValidation,
   argumentProvidedValidation,
