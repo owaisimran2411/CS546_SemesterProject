@@ -3,12 +3,12 @@ import configRoutes from './routes/index.js';
 import exphbs from 'express-handlebars';
 // import methods from './data/user.js';
 import session from 'express-session';
-import methods from './data/product.js';
+// import methods from './data/product.js';
 import {
   configureDotEnv
 } from './helper.js'
 import { ObjectId } from 'mongodb';
-
+import { bidData } from './data/index.js';
 
 configureDotEnv()
 
@@ -36,7 +36,7 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
-    cookie: {maxAge: 60000}
+    cookie: { maxAge: 60000 }
   })
 );
 
@@ -145,10 +145,6 @@ async function getAllProductsTest() {
   catch (e) {
     console.log(e);
   }
-  
+
 }
 // getAllProductsTest()
-
-
-
-

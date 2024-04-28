@@ -102,13 +102,12 @@ const createMulterObject = (s3Client, bucketName, fileType, parameterID) => {
 const generateObjectID = () => {
   return new ObjectId()
 }
-const checkBidAmmount = (bid) => {
+const checkBidAmount = (bid) => {
   if (bid < 0 || bid >= 999.99) {
     throw new 'Bid amount must be between 0 and 999.99';
   }
 
-  const formattedBid = parseFloat(bid).toFixed(2);
-  return formattedBid;
+  return Math.round(parseFloat(bid) * 100) / 100;// round to 2 decimal places
 }
 
 export {
@@ -118,6 +117,7 @@ export {
   argumentProvidedValidation,
   createS3Client,
   createMulterObject,
-  generateObjectID
+  generateObjectID,
+  checkBidAmount
   // method names go here
 };
