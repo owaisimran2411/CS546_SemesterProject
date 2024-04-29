@@ -2,7 +2,6 @@ import * as helperMethods from './../helper.js';
 import { bids } from '../configuration/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import { productData } from './index.js';
-import { HeadObjectOutputFilterSensitiveLog } from '@aws-sdk/client-s3';
 
 const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 // below function is a template function, rename it!
@@ -19,7 +18,7 @@ const createBid = async (productId, userId, bidAmount) => {
     }
     const bidToAdd = {
         userID: new ObjectId(userId),
-        bidAmmount: bidAmount
+        bidAmount: bidAmount
     }
     let addedBid;
     const bidCollection = await bids();
@@ -78,6 +77,70 @@ const getBidByProductId = async (productId) => {
         throw 'Could not find bids';
     }
     return bid;
+}
+const getUserBidForProduct = async (productId, userId) => {
+    productId = helperMethods.checkId(productId);
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    const userBid = await bidCollection.findOne(
+        { "productID": new ObjectId(productId) },
+        { projection: { _id: 0, Bids: 1 } }
+    );
+    if (!userBid) {
+        throw 'Failed to fetch bid for user';
+    }
+    let specificBid = userBid.Bids.find((bid) => bid.userID.toString() === userId.toString());
+    if (!specificBid) {
+        throw 'Bid not found for user';
+    }
+
+    return specificBid;
+}
+/* const getUserBids = async (userId) => {
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    const userBids = await bidCollection.find(
+        { "Bids.userID": new ObjectId(userId) },
+        { projection: { _id: 0, productID: 1, Bids: { $elemMatch: { userID: new ObjectId(userId) } } } }
+    ).toArray();
+
+    return userBids.map(bid => ({
+        productID: bid.productID,
+        bidAmount: bid.Bids[0].bidAmount
+    }));
+} */
+const getUserBids = async (userId, getAllFlag, counter) => {
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    let query = { "Bids.userID": new ObjectId(userId) };
+
+    if (!getAllFlag && typeof counter === 'number') {
+        query = { "Bids.userID": new ObjectId(userId) };
+    }
+
+    const projection = {
+        _id: 0,
+        productID: 1,
+        Bids: {
+            $elemMatch: { userID: new ObjectId(userId) }
+        }
+    };
+
+    let userBids;
+
+    if (getAllFlag) {
+        userBids = await bidCollection.find(query, { projection }).toArray();
+    } else {
+        userBids = await bidCollection.find(query, { projection }).limit(counter).toArray();
+    }
+
+    return userBids.map(bid => ({
+        productID: bid.productID,
+        bidAmount: bid.Bids[0].bidAmount
+    }));
 }
 const updateBidAmmount = async (productId, userId, bidAmount) => {
     productId = helperMethods.checkId(productId);
@@ -142,6 +205,8 @@ const methods = {
     getBidByProductId,
     updateBidAmmount,
     deleteBidDocumentById,
-    deleteUserBid
+    deleteUserBid,
+    getUserBidForProduct,
+    getUserBids
 }
 export default methods

@@ -9,6 +9,7 @@ import {
 } from './helper.js'
 import { ObjectId } from 'mongodb';
 import { bidData } from './data/index.js';
+import { productData } from './data/index.js';
 
 configureDotEnv()
 
@@ -83,18 +84,18 @@ async function mainR() {
 
 async function mainP() {
   try {
-    const renamedIPhonePro = await prodMethod.default.createProduct(
+    const renamedIPhonePro = await productData.createProduct(
 
-      "prod_name1",
-      "description",
-      "condition",
-      "serial no.",
+      "prod_name3",
+      "description3",
+      "condition3",
+      "serial no.3",
       33,
       ["Nintendo Wii"],
       "thumbnail",
       ["otherImg"],
       true,
-      "660a1f58411aa9ec268e4412",
+      "662bfe6fac8facf5b4496d06",
     );
     console.log(renamedIPhonePro);
   } catch (error) {
@@ -148,3 +149,20 @@ async function getAllProductsTest() {
 
 }
 // getAllProductsTest()
+async function testBid() {
+  try {
+    const userBid = await bidData.getUserBidForProduct("662ee02d80acaba6440e97a2", "662bfe6fac8facf5b4496d06");
+    console.log('User bid', userBid)
+  }
+  catch (e) {
+    console.log(e);
+  }
+  try {
+    const userBids = await bidData.getUserBids("662bfe6fac8facf5b4496d06", false, 1);
+    console.log('All user bids', userBids);
+  }
+  catch (e) {
+    console.log(e);
+  }
+}
+testBid();
