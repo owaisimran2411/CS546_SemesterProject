@@ -2,7 +2,7 @@ import {
     Router
 } from 'express'
 import * as helperMethods from './../helper.js'
-import {productData, userData} from '../data/index.js';
+import {productData, userData, bidData} from '../data/index.js';
 
 
 
@@ -40,7 +40,9 @@ router
     // }
     try {
       const product = await productData.getProductById(req.params.id);
-      return res.render('product/single', {product: product});
+      const prodId = product._id.toString();
+      const bids = await bidData.getBidByProductId(prodId);
+      return res.render('product/single', {product: product, bids: bids});
       console.log("text");
     } catch (e) {
       res.status(404).json({error: e});

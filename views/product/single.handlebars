@@ -1,6 +1,11 @@
 <article class="product">
   <h1>{{ product.productName }}</h1>
   {{!-- <address>Posted by {{product.poster.name}}</address> --}}
+  <h2>Current price: {{ product.price }}</h2>
+  <h2>Current bids: </h2>
+    {{#each bids.Bids}}
+    <p href="/bid/"> {{bidAmount}} </p>
+    {{/each}}
   <p>{{ product.productDescription }}</p>
 
 

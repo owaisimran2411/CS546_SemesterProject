@@ -74,11 +74,12 @@ const createProduct = async (
     productDescription: productDescription,
     productCondition: productCondition,
     serialNumber: serialNumber,
+    price: price,
     supportedConsoles: supportedConsoles,
     productThumbnail: productThumbnail,
     otherImages: otherImages,
     listingActive: listingActive,
-    productOwnerId: productOwnerId,
+    productOwnerId: productOwnerId
   }
 
   const productCollection = await products();
