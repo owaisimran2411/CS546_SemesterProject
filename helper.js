@@ -60,9 +60,65 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
       }
       return sanitizedObj;
   }
-  
+
   return arg
 }
+
+const checkIsValidPassword = (password) => {
+  if (/\s/.test(password)) {
+    throw("Error : Password should not contain spaces");
+  }
+  const specialCharacters = "!@#$%^&*()-_+=<>?/\\";
+  if (password.length < 8) {
+    throw ("Error : Password should be at least 8 characters long.");
+  }
+
+  let isUppercase = false;
+  let isLowercase = false;
+  let isNumber = false;
+  let isSpecialCharacter = false;
+
+  for (let char of password) {
+    if (char >= "A" && char <= "Z") {
+      isUppercase = true;
+    }
+    if (char >= "a" && char <= "z") {
+      isLowercase = true;
+    }
+    if (!isNaN(char)) {
+      isNumber = true;
+    }
+    if (specialCharacters.includes(char)) {
+      isSpecialCharacter = true;
+    }
+  }
+
+  if (!isUppercase) {
+    throw (
+      "Error : Password should contain at least one uppercase character."
+    );
+  }
+
+  if (!isUppercase) {
+    throw (
+      "Error : Password should contain at least one uppercase character."
+    );
+  }
+
+  if (!isLowercase) {
+    throw (
+      "Error : Password should contain at least one lowercase character."
+    );
+  }
+
+  if (!isNumber) {
+    throw ("Error : Password should contain at least one number.");
+  }
+
+  if (!isSpecialCharacter) {
+    throw ("Error : Password should contain at least one special character.");
+  }
+};
 
 
 const checkId = (id) => {
@@ -79,8 +135,8 @@ const createS3Client = (accessKey, secretKey, region) => {
   return new S3Client({
     region: region,
     credentials: {
-        accessKeyId: accessKey,
-        secretAccessKey: secretKey
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey
     }
 
   })
@@ -95,22 +151,30 @@ const createMulterObject = (s3Client, bucketName, fileType, parameterID) => {
       key: (req, file, cb) => {
         cb(null, `${req.params[parameterID] || generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
       }
-  })
+    })
   })
 }
 
 const generateObjectID = () => {
   return new ObjectId()
 }
+const checkBidAmount = (bid) => {
+  if (bid < 0 || bid >= 999.99) {
+    throw new 'Bid amount must be between 0 and 999.99';
+  }
 
+  return Math.round(parseFloat(bid) * 100) / 100;// round to 2 decimal places
+}
 
 export {
   checkId,
+  checkIsValidPassword,
   configureDotEnv,
   primitiveTypeValidation,
   argumentProvidedValidation,
   createS3Client,
   createMulterObject,
-  generateObjectID
+  generateObjectID,
+  checkBidAmount
   // method names go here
 };

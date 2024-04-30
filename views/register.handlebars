@@ -11,7 +11,17 @@
     </div>
     <div>
       <label for="securityQuestionOne">Security question one</label>
-      <input type="text" name="securityQuestionOne" id="securityQuestionOne" />
+      <select
+        name="securityQuestionOne"
+        id="securityQuestionOne"
+      >
+        <option value="What city were you born in?">What city were you born in?</option>
+        <option value="What is the name of your first pet?">What is the name of
+          your first pet?</option>
+        <option value="What's your favorite food?">What's your favorite food?</option>
+        <option value="What's your favorite dessert?">What's your favorite
+          dessert?</option>
+      </select>
     </div>
     <div>
       <label for="securityAnswerOne">Security Answer one</label>
@@ -19,7 +29,15 @@
     </div>
     <div>
       <label for="securityQuestionTwo">Security question two</label>
-      <input type="text" name="securityQuestionTwo" id="securityQuestionTwo" />
+      <select
+        name="securityQuestionTwo"
+        id="securityQuestionTwo"
+      >
+        <option value="What was the name of your first stuffed animal?">What was the name of your first stuffed animal?</option>
+        <option value="What is the name of a college you applied to but didn't attend?">What is the name of a college you applied to but didn't attend?</option>
+        <option value="What was the make and model of your first car?">What was the make and model of your first car?</option>
+        <option value="What is your favorite movie?">What is your favorite movie?</option>
+      </select>
     </div>
     <div>
       <label for="securityAnswerTwo">Security answer two</label>
@@ -35,7 +53,10 @@
     </div>
     <div>
       <label for="gender">Gender</label>
-      <input type="text" name="gender" id="gender" />
+      <select name="gender" id="gender">
+        <option value="male">male</option>
+        <option value="female">female</option>
+      </select>
     </div>
     <div>
       <label for="bio">Bio</label>
@@ -44,7 +65,7 @@
     {{! change profile picture to image input }}
     <div>
       <label for="profilePicture">Profile picture</label>
-      <input name="profilePicture" id="profilePicture" type="file"/>
+      <input name="profilePicture" id="profilePicture" type="file" />
     </div>
     <button type="submit" name="submitButton" id="submitButton">Submit</button>
   </form>

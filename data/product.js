@@ -70,15 +70,15 @@ const createProduct = async (
   productOwnerId = helperMethods.checkId(productOwnerId);
 
   const newProduct = {
-    productName : productName,
-    productDescription : productDescription,
-    productCondition : productCondition,
-    serialNumber :serialNumber,
-    supportedConsoles : supportedConsoles,
-    productThumbnail : productThumbnail,
-    otherImages : otherImages,
-    listingActive : listingActive,
-    productOwnerId : productOwnerId,
+    productName: productName,
+    productDescription: productDescription,
+    productCondition: productCondition,
+    serialNumber: serialNumber,
+    supportedConsoles: supportedConsoles,
+    productThumbnail: productThumbnail,
+    otherImages: otherImages,
+    listingActive: listingActive,
+    productOwnerId: productOwnerId,
   }
 
   const productCollection = await products();
@@ -108,12 +108,12 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, searchFilters, 
 
   helperMethods.argumentProvidedValidation(getAllFlag.toString(), 'getAllFlag')
   getAllFlag = helperMethods.primitiveTypeValidation(getAllFlag, 'getAllFlag', 'Boolean')
-  
+
   let product = undefined
   let sortingFilters = undefined
   let fieldFilter = undefined
   let searchFilter = undefined
-  
+
   const productCollection = await products()
 
   try {
@@ -146,46 +146,46 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, searchFilters, 
   } catch (e) {
     searchFilter = {}
   }
-  
+
   // console.log(countPerPull, '=counterPerPull')
   // console.log(pageNumber, '=pageNumber')
-  if(!getAllFlag) {
-    
+  if (!getAllFlag) {
+
     helperMethods.argumentProvidedValidation(countPerPull, 'countPerPull')
     helperMethods.argumentProvidedValidation(pageNumber, 'pageNumber')
 
     countPerPull = helperMethods.primitiveTypeValidation(countPerPull, 'countPerPull', 'Number')
     pageNumber = helperMethods.primitiveTypeValidation(pageNumber, 'pageNumber', 'Number')
-    
-    if(countPerPull<0) {
+
+    if (countPerPull < 0) {
       countPerPull = 10
     }
-    if(pageNumber <= 0) {
-      pageNumber=1
+    if (pageNumber <= 0) {
+      pageNumber = 1
       product = await productCollection
-                        .find(searchFilter)
-                        .limit(countPerPull)
-                        .sort(sortFilters)
-                        .project(fieldFilter)
-                        .toArray()
+        .find(searchFilter)
+        .limit(countPerPull)
+        .sort(sortFilters)
+        .project(fieldFilter)
+        .toArray()
     } else {
       product = await productCollection
-                        .find(searchFilter)
-                        .skip(pageNumber*countPerPull)
-                        .limit(countPerPull)
-                        .project(fieldFilter)
-                        .toArray()
+        .find(searchFilter)
+        .skip(pageNumber * countPerPull)
+        .limit(countPerPull)
+        .project(fieldFilter)
+        .toArray()
     }
   } else {
     product = await productCollection
-                    .find(searchFilter)
-                    .sort(sortingFilters)
-                    .project(fieldFilter)
-                    .toArray()
+      .find(searchFilter)
+      .sort(sortingFilters)
+      .project(fieldFilter)
+      .toArray()
   }
 
-  
-  if(product === undefined || product.length === 0) throw 'No Product Found'
+
+  if (product === undefined || product.length === 0) throw 'No Product Found'
   return product
 }
 
@@ -199,7 +199,7 @@ const deleteProduct = async (productID) => {
     _id: new ObjectId(productID)
   })
 
-  if(!productDelete) throw `Unable to Delete Product with Product ID: ${productID}`
+  if (!productDelete) throw `Unable to Delete Product with Product ID: ${productID}`
   return {
     productID: productID,
     status: 'success',
@@ -217,7 +217,7 @@ const deleteProductWithSpecificOwnerID = async (ownerID) => {
     productOwnerId: ownerID
   })
   // console.log(productDelete)
-  if(productDelete.deletedCount<=0) throw `Unable to Delete Products with Owner ID: ${ownerID}`
+  if (productDelete.deletedCount <= 0) throw `Unable to Delete Products with Owner ID: ${ownerID}`
   return {
     ownerID: ownerID,
     status: 'success',
@@ -231,6 +231,5 @@ const methods = {
   getProducts,
   deleteProduct,
   deleteProductWithSpecificOwnerID
-  // append all other functions implemented to export them as default
 };
 export default methods;

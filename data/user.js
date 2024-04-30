@@ -69,7 +69,8 @@ const userSignUp = async (
     "Profile Picture",
     "String"
   );
-
+  //check for valid password 
+  helperMethods.checkIsValidPassword(password)
   // hashing the password
   password = await bcrypt.hash(password, 16); 
 
@@ -188,6 +189,7 @@ const updateUser = async (id, updateInfo) => {
   for (const key in updateInfo) {
     query[key] = updateInfo[key];
   }
+  
   const userCollection = await users();
   const updatedUser = await userCollection.findOneAndUpdate(
     { _id: id },
@@ -199,6 +201,11 @@ const updateUser = async (id, updateInfo) => {
 };
 
 const userLogin = async (username, password) => {
+  argumentProvidedValidation(username, "Username");
+  argumentProvidedValidation(password, "Password");
+  username = primitiveTypeValidation(username, "Username", "String");
+  password = primitiveTypeValidation(password, "Password", "String");
+  helperMethods.checkIsValidPassword(password)
   const userCollection = await users();
 
   const user = await userCollection.findOne({ username });
