@@ -16,6 +16,7 @@ const createBid = async (productId, userId, bidAmount) => {
     if (!product) {
         throw 'Cannot add bid: product does not exist.'
     }
+
     const bidToAdd = {
         userID: new ObjectId(userId),
         bidAmount: bidAmount
@@ -97,20 +98,6 @@ const getUserBidForProduct = async (productId, userId) => {
 
     return specificBid;
 }
-/* const getUserBids = async (userId) => {
-    userId = helperMethods.checkId(userId);
-
-    const bidCollection = await bids();
-    const userBids = await bidCollection.find(
-        { "Bids.userID": new ObjectId(userId) },
-        { projection: { _id: 0, productID: 1, Bids: { $elemMatch: { userID: new ObjectId(userId) } } } }
-    ).toArray();
-
-    return userBids.map(bid => ({
-        productID: bid.productID,
-        bidAmount: bid.Bids[0].bidAmount
-    }));
-} */
 const getUserBids = async (userId, getAllFlag, counter) => {
     userId = helperMethods.checkId(userId);
 

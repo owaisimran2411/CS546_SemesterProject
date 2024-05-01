@@ -188,7 +188,14 @@ const getProducts = async (getAllFlag, countPerPull, pageNumber, searchFilters, 
   if (product === undefined || product.length === 0) throw 'No Product Found'
   return product
 }
-
+const getProductSearch = async (searchFilter) => {
+  const productCollection = await products();
+  const product = await productCollection.find(searchFilter).toArray();
+  if (!product) {
+    throw 'failed to find';
+  }
+  return product;
+}
 const deleteProduct = async (productID) => {
   helperMethods.argumentProvidedValidation(productID, 'productID')
   productID = helperMethods.primitiveTypeValidation(productID, 'productID', 'String')
@@ -230,6 +237,7 @@ const methods = {
   getProductById,
   getProducts,
   deleteProduct,
-  deleteProductWithSpecificOwnerID
+  deleteProductWithSpecificOwnerID,
+  getProductSearch
 };
 export default methods;

@@ -1,6 +1,9 @@
 import { Router, json } from "express";
 import * as helperMethods from "./../helper.js";
 import methods from "../data/user.js";
+import { productData } from "../data/index.js";
+import { bidData } from "../data/index.js";
+import { userData } from "../data/index.js";
 
 helperMethods.configureDotEnv();
 
@@ -165,12 +168,34 @@ router
         req.session.username = loginResult;
         return res.json(req.session.username);
       } catch (error) {
-        return res.status(400).json({ error: error});
+        return res.status(400).json({ error: error });
       }
     } else {
       return res.status(400).json({
         error: "Incomplete Fields",
       });
+    }
+  });
+
+router
+  .route("/profile")
+  .get(async (req, res) => {
+    const username = req.session.username;
+    try {
+      const userInfo = await methods.getUserByUsername(username);
+      const userProductInfo = await productData.getProducts(true, 5, 1, { productOwnerId: "662bfe6fac8facf5b4496d06" }, {}, {});
+      const userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
+      res.render('profile',
+        {
+          doctitle: 'Profile Page',
+          user: userInfo,
+          products: userProductInfo,
+          bids: userBidInfo
+        });
+      return;
+    }
+    catch (e) {
+      return res.status(400).json({ error: e });
     }
   });
 

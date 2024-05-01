@@ -149,20 +149,13 @@ async function getAllProductsTest() {
 
 }
 // getAllProductsTest()
-async function testBid() {
+/* async function testProductGet() {
   try {
-    const userBid = await bidData.getUserBidForProduct("662ee02d80acaba6440e97a2", "662bfe6fac8facf5b4496d06");
-    console.log('User bid', userBid)
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const userBids = await bidData.getUserBids("662bfe6fac8facf5b4496d06", false, 1);
-    console.log('All user bids', userBids);
+    const userProductInfo = await productData.getProducts(true, 5, 1, { productOwnerId: "662bfe6fac8facf5b4496d06" }, {}, {});
+    console.log(userProductInfo);
   }
   catch (e) {
     console.log(e);
   }
 }
-testBid();
+testProductGet(); */

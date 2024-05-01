@@ -1,0 +1,26 @@
+<body>
+    <h1>{{user.username}}</h1>
+    <div class="profile-picture">
+        <img src="{{user.profilePicture}}" alt="Profile Picture">
+    </div>
+    <div class="profile-info">
+        <p><strong>Email:</strong> {{user.emailAddress}}</p>
+        <p><strong>Phone Number:</strong> {{user.phoneNumber}}</p>
+        <p><strong>Bio:</strong> {{user.bio}}</p>
+    </div>
+
+    <div class="user-products">
+        <h1>{{user.username}}'s current products:</h1>
+        {{#each products}}
+        <a href="/product/{{_id}}">{{productName}}</a>
+        {{/each}}
+    </div>
+
+    <div class="user-bids">
+        <h1>{{user.username}}'s current bids:</h1>
+        {{#each bids}}
+        <a href="/product/{{_id}}"></a>
+        <p>Bid Ammount: {{bidAmount}}</p>
+        {{/each}}
+    </div>
+</body>
