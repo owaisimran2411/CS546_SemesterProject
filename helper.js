@@ -5,7 +5,7 @@ import xss from 'xss';
 import multer from 'multer';
 import multerS3 from 'multer-s3'
 import {
-  S3Client, PutObjectCommand,
+  S3Client, PutObjectCommand, CopyObjectCommand, DeleteObjectCommand
 } from '@aws-sdk/client-s3'
 
 
@@ -142,17 +142,31 @@ const createS3Client = (accessKey, secretKey, region) => {
   })
 }
 
-const createMulterObject = (s3Client, bucketName, fileType, parameterID) => {
-  return multer({
-    storage: multerS3({
-      s3: s3Client,
-      bucket: bucketName,
-      acl: 'public-read',
-      key: (req, file, cb) => {
-        cb(null, `${req.params[parameterID] || generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
-      }
+const createMulterObject = (s3Client, bucketName, fileType, otherFiles) => {
+  if(!otherFiles) {
+    return multer({
+      storage: multerS3({
+        s3: s3Client,
+        bucket: bucketName,
+        acl: 'public-read',
+        key: (req, file, cb) => {
+          cb(null, `${generateObjectID()}-${fileType}.${file.originalname.split('.')[1]}`)
+        }
+      })
     })
-  })
+  } else {
+    return multer({
+      storage: multerS3({
+        s3: s3Client,
+        bucket: bucketName,
+        acl: 'public-read',
+        key: (req, file, cb) => {
+          cb(null, `tempLocation/${file.originalname.split('.')[0]}.${file.originalname.split('.')[1]}`)
+        }
+      })
+    })
+  }
+  
 }
 
 const generateObjectID = () => {
@@ -166,6 +180,34 @@ const checkBidAmount = (bid) => {
   return Math.round(parseFloat(bid) * 100) / 100;// round to 2 decimal places
 }
 
+const moveFileFromTempToDestinationLocation = async (s3Client, sourceObject, productID) => {
+  
+  const copycommand = new CopyObjectCommand({
+    CopySource: `${sourceObject.bucket}/${sourceObject.key}`,
+    Bucket: sourceObject.bucket,
+    Key: `${productID}/${sourceObject.originalname}`
+  });
+  try {
+    const response = await s3Client.send(copycommand);
+    const deletecommand = new DeleteObjectCommand({
+      Bucket: sourceObject.bucket,
+      Key: `${sourceObject.key}`,
+    });
+  
+  
+    try {
+      const response = await s3Client.send(deletecommand);
+      return `https://cs546-project-s3.s3.us-east-2.amazonaws.com/${productID}/${sourceObject.originalname}`
+    } catch (e) {
+      throw e
+    }
+  } catch (err) {
+    throw err
+  }
+
+  
+}
+
 export {
   checkId,
   checkIsValidPassword,
@@ -175,6 +217,7 @@ export {
   createS3Client,
   createMulterObject,
   generateObjectID,
-  checkBidAmount
+  checkBidAmount,
+  moveFileFromTempToDestinationLocation
   // method names go here
 };

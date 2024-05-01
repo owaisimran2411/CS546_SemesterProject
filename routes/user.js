@@ -162,8 +162,8 @@ router
           username,
           password
         );
-        req.session.username = loginResult;
-        return res.json(req.session.username);
+        req.session.user = loginResult;
+        return res.json(req.session.user);
       } catch (error) {
         return res.status(400).json({ error: error});
       }

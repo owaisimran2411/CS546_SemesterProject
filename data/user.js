@@ -215,7 +215,10 @@ const userLogin = async (username, password) => {
   if (!isPasswordValid) {
     throw ("Password is invalid.");
   }
-  return user.username;
+  return {
+    username: user.username,
+    id: user._id
+  };
 }
 const methods = {
   userSignUp,
