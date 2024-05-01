@@ -13,6 +13,20 @@ import { productData } from './data/index.js';
 
 configureDotEnv()
 
+
+// const rewriteUnsupportedBrowserMethods = (req, res, next) => {
+//   // If the user posts to the server with a property called _method, rewrite the request's method
+//   // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
+//   // rewritten in this middleware to a PUT route
+//   if (req.body && req.body._method) {
+//     req.method = req.body._method;
+//     delete req.body._method;
+//   }
+
+//   // let the next middleware run:
+//   next();
+// };
+
 const app = express();
 const staticDir = express.static('public');
 
@@ -56,113 +70,3 @@ app.listen(PORT_NUMBER, () => {
   console.log("We've now got a server!");
   console.log(`Your routes will be running on http://localhost:${PORT_NUMBER}`);
 });
-
-
-// database function check
-async function mainR() {
-  try {
-    const renamedIPhonePro = await methods.userSignUp(
-
-      "username",
-      "password",
-      "security ques 3",
-      "security ans 3",
-      "security question 4",
-      "security answer 4",
-      "email",
-      2334132132,
-      "male",
-      "My bio",
-      "profile pic"
-    );
-    console.log(renamedIPhonePro);
-  } catch (error) {
-    console.error("Error adding user:", error); // Log the error message
-  }
-}
-// mainR();
-
-async function mainP() {
-  try {
-    const renamedIPhonePro = await productData.createProduct(
-
-      "prod_name3",
-      "description3",
-      "condition3",
-      "serial no.3",
-      33,
-      ["Nintendo Wii"],
-      "thumbnail",
-      ["otherImg"],
-      true,
-      "662bfe6fac8facf5b4496d06",
-    );
-    console.log(renamedIPhonePro);
-  } catch (error) {
-    console.error("Error adding product:", error); // Log the error message
-  }
-}
-// mainP();
-async function testUpdate() {
-  try {
-    const updatedUser = await methods.updateUser("6622bcf97925edab254e523f",
-      {
-        password: 'updatedPassword',
-        bio: 'updatedBio'
-      });
-    console.log(updatedUser);
-  }
-  catch (e) {
-    console.log(e);
-  }
-}
-// testUpdate();
-async function testFind() {
-  try {
-    console.log('Find with username:');
-    const user = await methods.getUserByUsername('username2');
-    console.log(user);
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    console.log('Find with email:');
-    const user = await methods.getUserByEmail('email2');
-    console.log(user);
-  }
-  catch (e) {
-    console.log(e);
-  }
-}
-// testFind();
-
-async function getAllProductsTest() {
-  try {
-    console.log('Get All Products');
-    const products = await methods.deleteProductWithSpecificOwnerID('660a1f58411aa9ec268e4412')
-    console.log(products);
-  }
-  catch (e) {
-    console.log(e);
-  }
-
-}
-// getAllProductsTest()
-async function testBid() {
-  try {
-    const userBid = await bidData.getUserBidForProduct("662ee02d80acaba6440e97a2", "662bfe6fac8facf5b4496d06");
-    console.log('User bid', userBid)
-  }
-  catch (e) {
-    console.log(e);
-  }
-  try {
-    const userBids = await bidData.getUserBids("662bfe6fac8facf5b4496d06", false, 1);
-    console.log('All user bids', userBids);
-  }
-  catch (e) {
-    console.log(e);
-  }
-}
-testBid();

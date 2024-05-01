@@ -4,89 +4,105 @@ import { products } from "./../configuration/mongoCollections.js";
 // Data function goes here
 
 // below function is a template function, rename it!
-const createProduct = async (
+const createProduct_Phase1 = async (
   productName,
-  productDescription,
-  productCondition,
-  serialNumber,
-  price,
-  supportedConsoles,
+  productOwnerId,
   productThumbnail,
-  otherImages,
-  listingActive,
-  productOwnerId
+  productID,
+  
 ) => {
   const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
-  // validating all the arguments
-  argumentProvidedValidation(productName, "Product name");
-  argumentProvidedValidation(productDescription, "Product description");
-  argumentProvidedValidation(productCondition, "Product condition");
-  argumentProvidedValidation(serialNumber, "Product serial number");
-  argumentProvidedValidation(price, "price");
-  argumentProvidedValidation(supportedConsoles, "Supported Consoles");
-  argumentProvidedValidation(productThumbnail, "Product Thumbnail");
-  argumentProvidedValidation(otherImages, "Product other images");
-  argumentProvidedValidation(listingActive, "Product listing status");
-  argumentProvidedValidation(productOwnerId, "Owner ID");
 
-  //validating data types and overriding them after removing spaces
+  let productInfo = undefined
+  // validating all the arguments
+
+  argumentProvidedValidation(productOwnerId, "Owner ID");
+  productOwnerId = helperMethods.checkId(productOwnerId);
+  productID = helperMethods.checkId(productID)
+
+  
+  argumentProvidedValidation(productName, "Product name");   
   productName = primitiveTypeValidation(productName, "Product name", "String");
-  productDescription = primitiveTypeValidation(
-    productDescription,
-    "Product description",
-    "String"
-  );
-  productCondition = primitiveTypeValidation(
-    productCondition,
-    "Product condition",
-    "String"
-  );
-  serialNumber = primitiveTypeValidation(
-    serialNumber,
-    "Product serial number",
-    "String"
-  );
-  price = primitiveTypeValidation(price, "price", "Number");
-  supportedConsoles = primitiveTypeValidation(
-    supportedConsoles,
-    "Supported consoles",
-    "Array"
-  );
+  argumentProvidedValidation(productThumbnail, "Product Thumbnail");
   productThumbnail = primitiveTypeValidation(
     productThumbnail,
     "Product thumbnail",
     "String"
   );
-  otherImages = primitiveTypeValidation(
-    otherImages,
-    "other images",
-    "Array"
-  );
-  listingActive = primitiveTypeValidation(
-    listingActive,
-    "Product listing status",
-    "Boolean"
-  );
-  productOwnerId = helperMethods.checkId(productOwnerId);
 
-  const newProduct = {
+  productInfo = {
+    _id: productID,
     productName: productName,
-    productDescription: productDescription,
-    productCondition: productCondition,
-    serialNumber: serialNumber,
-    supportedConsoles: supportedConsoles,
     productThumbnail: productThumbnail,
-    otherImages: otherImages,
-    listingActive: listingActive,
     productOwnerId: productOwnerId,
+    listingActive: false
+
   }
 
+  
+
   const productCollection = await products();
-  const newInsertInformation = await productCollection.insertOne(newProduct);
+  
+  const newInsertInformation = await productCollection.insertOne(productInfo);
   if (!newInsertInformation.insertedId) throw "Insert failed!";
   return await getProductById(newInsertInformation.insertedId.toString());
 
+
 };
+
+const createProduct_Phase2 = async (
+  productID,
+  productOwnerId,
+  productDescription,
+  productCondition,
+  productSerialNumber,
+  productAskingPrice,
+  productSupportedConsole,
+  otherImages
+) => {  
+  // console.log('function execution start')
+
+  productID = helperMethods.checkId(productID)
+  helperMethods.argumentProvidedValidation(productOwnerId, 'productOwnerID')
+  helperMethods.argumentProvidedValidation(productDescription, 'productDescription')
+  helperMethods.argumentProvidedValidation(productCondition, 'productCondition')
+  helperMethods.argumentProvidedValidation(productSerialNumber, 'productSerialNumber')
+  helperMethods.argumentProvidedValidation(productAskingPrice, 'productAskingPrice')
+  helperMethods.argumentProvidedValidation(productSupportedConsole, 'productSupportedConsole')
+  helperMethods.argumentProvidedValidation(otherImages, 'otherImage')
+
+  productOwnerId = helperMethods.primitiveTypeValidation(productOwnerId, 'productOwnerID', 'String')
+  productDescription = helperMethods.primitiveTypeValidation(productDescription, 'productDescription', 'String')
+  productCondition = helperMethods.primitiveTypeValidation(productCondition, 'productCondition', 'String')
+  productSerialNumber = helperMethods.primitiveTypeValidation(productSerialNumber, 'productSerialNumber', 'String')
+  productAskingPrice = helperMethods.primitiveTypeValidation(productAskingPrice, 'productAskingPrice', 'Number')
+  productSupportedConsole = helperMethods.primitiveTypeValidation(productSupportedConsole, 'productSupportedConsole', 'String')
+  otherImages = helperMethods.primitiveTypeValidation(otherImages, 'otherImage', 'Array')
+
+  // console.log('Here')
+  
+  const productUpdate = {
+    productDescription: productDescription,
+    productCondition: productCondition,
+    productSerialNumber: productSerialNumber,
+    productSupportedConsole: productSupportedConsole,
+    productAskingPrice: productAskingPrice,
+    listingActive: true,
+    otherImages: otherImages
+  }
+  const productCollection = await products();
+
+  const updateInfo = await productCollection.updateOne({
+    _id: productID
+  },{
+    $set: productUpdate
+  });
+  if(updateInfo.modifiedCount>1) throw 'Unable to modify'
+  return await getProductById(productID);
+    
+  
+
+}
 
 const getProductById = async (id) => {
   helperMethods.argumentProvidedValidation(id, 'productID')
@@ -94,7 +110,7 @@ const getProductById = async (id) => {
   id = helperMethods.primitiveTypeValidation(id, 'productID', 'String')
   id = helperMethods.checkId(id)
   const productCollection = await products();
-  const product = await productCollection.findOne({ _id: new ObjectId(id) });
+  const product = await productCollection.findOne({ _id: id });
   if (!product) throw "Error: Product not found";
   return product;
 };
@@ -225,8 +241,13 @@ const deleteProductWithSpecificOwnerID = async (ownerID) => {
   }
 }
 
+const disableProductAdmin = async (productID) => {
+  helperMethods.argumentProvidedValidation(productID)
+}
+
 const methods = {
-  createProduct,
+  createProduct_Phase1,
+  createProduct_Phase2,
   getProductById,
   getProducts,
   deleteProduct,

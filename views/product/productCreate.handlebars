@@ -1,0 +1,56 @@
+{{#if uploadProcess1 }} 
+    <main>
+        <form action="/product/new" method="POST" name="productCreate_1" enctype="multipart/form-data">
+            {{!-- section for productCoverImage --}}
+            <label for="productThumbnail">Cover Image</label>
+            <input type="file" name="productThumbnail" id="productThumbnail">
+
+            {{!-- section for productName --}}
+            <label for="productName">Product Name</label>
+            <input type="text" name="productName" id="productName">
+
+            <input type="submit" value="Proceed to Phase 2">
+        </form>
+    </main>
+{{/if}}
+
+{{#if uploadProcess2}}
+<main>
+        <form action="/product/new/{{productID}}" method="POST" name="productCreate_2" enctype="multipart/form-data">
+            
+            <label for="productDescription">Product Description</label>
+            <textarea name="productDescription" id="productDescription" cols="30" rows="10"></textarea>
+            {{!-- section for product Condition --}}
+            <label for="productCondition"> Product Condition</label>
+            <select name="productCondition" id="productCondition">
+                <option value="Used">Used</option>
+                <option value="Slight Used">Slightly Used</option>
+                <option value="New">New</option>
+            </select>
+            
+            {{!-- section for product Serial Number --}}
+            <label for="productSerialNumber">Serial Number</label>
+            <input type="text" name="productSerialNumber" id="productSerialNumber">
+
+            {{!-- section for product supportedConsoles --}}
+            <label for="productSupportedConsole"></label>
+            <select name="productSupportedConsole" id="productSupportedConsole" multiple>
+                <option value="XBox">XBoxOne</option>
+                <option value="PS3">PlayStation3</option>
+                <option value="PS4">PlayStation4</option>
+                <option value="PS5">PlayStation5</option>
+                <option value="PC"></option>
+            </select>
+
+            {{!-- section for product otherImages--}}
+            <label for="productOtherImages">Other Images</label>
+            <input type="file" name="productOtherImages" id="productOtherImages" multiple>
+            
+            {{!-- section for product Asking Price --}}
+            <label for="productAskingPrice">Bid Starting Price</label>
+            <input type="number" name="productAskingPrice" id="productAskingPrice">
+
+            <input type="submit" value="Register">
+        </form>
+    </main>
+{{/if}}
