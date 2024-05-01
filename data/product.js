@@ -241,9 +241,58 @@ const deleteProductWithSpecificOwnerID = async (ownerID) => {
   }
 }
 
-const disableProductAdmin = async (productID) => {
-  helperMethods.argumentProvidedValidation(productID)
+const updateProductInformation = async (productID, updateObject) => {
+  const updateProductInfo = {}
+
+  if(updateObject.productName) {
+    helperMethods.argumentProvidedValidation(updateObject.productName, 'productName')
+    updateObject.productName = helperMethods.primitiveTypeValidation(updateObject.productName, 'productName', 'String')
+    updateProductInfo.productName =  updateObject.productName
+  }
+
+  if(updateObject.productDescription) {
+    helperMethods.argumentProvidedValidation(updateObject.productDescription, 'productDescription')
+    updateObject.productDescription = helperMethods.primitiveTypeValidation(updateObject.productDescription, 'productDescription', 'String')
+    updateProductInfo.productDescription =  updateObject.productDescription
+  }
+
+  if(updateObject['listingActive'].toString() != undefined) {
+    helperMethods.argumentProvidedValidation(updateObject.listingActive.toString(), 'listingActive')
+    updateObject.listingActive = helperMethods.primitiveTypeValidation(updateObject.listingActive, 'listingActive', 'Boolean')
+    updateProductInfo.listingActive =  updateObject.listingActive
+  }
+
+  if(updateObject.productCondition) {
+    helperMethods.argumentProvidedValidation(updateObject.productCondition, 'productCondition')
+    updateObject.productCondition = helperMethods.primitiveTypeValidation(updateObject.productCondition, 'productCondition', 'String')
+    updateProductInfo.productCondition =  updateObject.productCondition
+  }
+
+  if(updateObject.productSerialNumber) {
+    helperMethods.argumentProvidedValidation(updateObject.productSerialNumber, 'productSerialNumber')
+    updateObject.productSerialNumber = helperMethods.primitiveTypeValidation(updateObject.productSerialNumber, 'productSerialNumber', 'String')
+    updateProductInfo.productSerialNumber =  updateObject.productSerialNumber
+  }
+
+  if(updateObject.productSupportedConsole) {
+    helperMethods.argumentProvidedValidation(updateObject.productSupportedConsole, 'productSupportedConsole')
+    updateObject.productSupportedConsole = helperMethods.primitiveTypeValidation(updateObject.productSupportedConsole, 'productSupportedConsole', 'String')
+    updateProductInfo.productSupportedConsole =  updateObject.productSupportedConsole
+  }
+
+  const productCollection = await products();
+
+  const updateInfo = await productCollection.updateOne({
+    _id: productID
+  },{
+    $set: updateProductInfo
+  });
+  console.log(updateInfo)
+
+
 }
+
+
 
 const methods = {
   createProduct_Phase1,
@@ -251,6 +300,7 @@ const methods = {
   getProductById,
   getProducts,
   deleteProduct,
-  deleteProductWithSpecificOwnerID
+  deleteProductWithSpecificOwnerID,
+  updateProductInformation
 };
 export default methods;
