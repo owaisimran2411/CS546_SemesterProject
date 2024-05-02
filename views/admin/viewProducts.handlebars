@@ -1,0 +1,32 @@
+<main>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Asking Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {{#each products}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{productName}}</td>
+                    <td>{{productAskingPrice}}</td>
+                    <td>{{listingActive}}</td>
+                    <td>
+                        {{#if listingActive}}
+                            <button>
+                                <a href="/admin/product/{{_id}}/disable">Disable</a>
+                            </button>
+                        {{else}}
+                            <button>
+                                <a href="/admin/product/{{_id}}/enable">Enable</a>
+                            </button>
+                        {{/if}}
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
