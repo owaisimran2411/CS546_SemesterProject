@@ -36,7 +36,7 @@
 
 {{#if viewComplaints}}
 <main>
-    <table>
+    <table class="myTable">
         <thead>
             <th>ID</th>
             <th>Details</th>
@@ -50,11 +50,35 @@
                     <td>{{complaintText}}</td>
                     <td>{{status}}</td>
                     <td>
-                        <select id="complaintStatus">
-                            <option value="Pending-{{_id}}">Pending</option>
-                            <option value="Active-{{_id}}">Active</option>
-                            <option value="Discarded-{{_id}}">Resolved</option>
-                            <option value="Discarded-{{_id}}">Discarded</option>
+                        <select id="complaintStatus" name="{{_id}}">
+                            {{#ifCond status '===' 'Pending'}}
+                                <option value="Pending" selected="true">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Active'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active" selected="true">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Resolved'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved" selected="true">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Discarded'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded" selected="true">Discarded</option>
+                            {{/ifCond}}
+                            
                         </select>
                         <button>
                             <a href="/admin/complaint/{{_id}}/pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
