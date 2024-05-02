@@ -1,7 +1,7 @@
 import * as helperMethods from "./../helper.js";
 import { complaints } from "../configuration/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { userData } from "./index.js";
+import { complaintData, userData } from "./index.js";
 
 const createComplaint = async (userId, sellerId, complaintText) => {
 	const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
@@ -57,6 +57,51 @@ const getComplaintsByUserAndSellerId = async (userId, sellerId) => {
 	return userComplaints;
 };
 
+const getComplaints = async (searchFilters, filters) => {
+	const complaintsCollection = await complaints();
+	const complaint = {};
+	const filter = typeof filters === "object" ? filters : {};
+
+	if (searchFilters.userId) {
+		helperMethods.argumentProvidedValidation(searchFilters.userId, "userId");
+		complaint.userId = helperMethods.primitiveTypeValidation(
+			searchFilters.userId,
+			"userId",
+			"String"
+		);
+		complaint.userId = helperMethods.checkId(complaint.userId);
+	}
+
+	if (searchFilters.sellerId) {
+		helperMethods.argumentProvidedValidation(
+			searchFilters.sellerId,
+			"sellerId"
+		);
+		complaint.sellerId = helperMethods.primitiveTypeValidation(
+			searchFilters.sellerId,
+			"sellerId",
+			"String"
+		);
+		complaint.sellerId = helperMethods.checkId(complaint.sellerId);
+	}
+
+	if (searchFilters.status) {
+		helperMethods.argumentProvidedValidation(searchFilters.status, "status");
+		complaint.status = helperMethods.primitiveTypeValidation(
+			searchFilters.status,
+			"status",
+			"String"
+		);
+	}
+
+	const searchResults = await complaintsCollection
+		.find(complaint)
+		.project(filter)
+		.toArray();
+
+	return searchResults;
+};
+
 const updateComplaintStatus = async (complaintId, updateStatus) => {
 	complaintId = helperMethods.checkId(complaintId);
 	helperMethods.argumentProvidedValidation(updateStatus, "updateStatus");
@@ -87,6 +132,7 @@ const methods = {
 	createComplaint,
 	getComplaintsByUserAndSellerId,
 	updateComplaintStatus,
+	getComplaints,
 };
 
 export default methods;
