@@ -70,7 +70,7 @@ router.route('/new')
         const id = req.file.key.split("-")[0];
 
         const productCreate = await productData.createProduct_Phase1(
-          productName, '6632ac2938618897ebdc703b', coverImage, id
+          productName, '6633ed1f6320072cea647114', coverImage, id
         )
         return res.redirect(
           `/product/new/${id}`
@@ -143,7 +143,7 @@ router.route('/new/:id')
 
         const productUpdate = await productData.createProduct_Phase2(
           req.params.id, 
-          '6632ac2938618897ebdc703b', 
+          '6633ed1f6320072cea647114', 
           productDescription, 
           productCondition,
           productSerialNumber,
@@ -180,12 +180,11 @@ router
     // }
     try {
       const product = await productData.getProductById(req.params.id);
-      return res.render('product/single', {product: product});
-      console.log("text");
+      const userInfo = await userData.getUserById(product.productOwnerId)
+      return res.render('product/single', {product: product, userInfo});
     } catch (e) {
       return res.status(404).json({error: e});
     }
   });
-
 
 export default router;

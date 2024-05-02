@@ -1,6 +1,7 @@
 import { Router, json } from "express";
 import * as helperMethods from "./../helper.js";
 import methods from "../data/user.js";
+import { userData } from "../data/index.js";
 
 helperMethods.configureDotEnv();
 
@@ -174,4 +175,18 @@ router
     }
   });
 
+
+  router
+  .route('/userInfo/:id')
+  .get(async (req, res) => {
+    try {
+      // console.log(req.params.id);
+      const user = await userData.getUserById(req.params.id)
+      return res.render('user/userInfo', {user}
+      // {product: product, userInfo}
+    );
+    } catch (e) {
+      return res.status(404).json({error: e});
+    }
+  });
 export default router;
