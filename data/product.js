@@ -281,13 +281,12 @@ const updateProductInformation = async (productID, updateObject) => {
   }
 
   const productCollection = await products();
-
   const updateInfo = await productCollection.updateOne({
     _id: productID
   },{
     $set: updateProductInfo
   });
-  console.log(updateInfo)
+  // console.log(updateInfo)
 
 
 }
