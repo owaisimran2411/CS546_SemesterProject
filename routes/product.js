@@ -213,7 +213,7 @@ router.route("/:id").get(async (req, res) => {
 	try {
 		const product = await productData.getProductById(req.params.id);
 		const userInfo = await userData.getUserById(product.productOwnerId);
-		return res.render("product/single", { product: product, userInfo });
+		return res.render("product/single", { script_partial: 'bid_validate_script', product: product, userInfo });
 	} catch (e) {
 		return res.status(404).json({ error: e });
 	}

@@ -2,7 +2,6 @@ import * as helperMethods from "./../helper.js";
 import { complaints } from "../configuration/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { userData } from "./index.js";
-import { Collection } from "mongoose";
 
 const createComplaint = async (userId, sellerId, complaintText) => {
 	const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
