@@ -1,0 +1,20 @@
+<body>
+    <h1>User info</h1>
+    <div class="profile-picture">
+        <img src="{{user.profilePicture}}" width="200" height="150" alt="Profile Picture">
+    </div>
+    <div class="profile-info">
+        <p><strong>Name:</strong> {{user.username}}</p>
+        <p><strong>Email:</strong> {{user.emailAddress}}</p>
+        <p><strong>Phone Number:</strong> {{user.phoneNumber}}</p>
+        <p><strong>Gender:</strong> {{user.gender}}</p>
+        <p><strong>Bio:</strong> {{user.bio}}</p>
+    </div>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
