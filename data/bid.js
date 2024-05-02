@@ -89,136 +89,137 @@ const getAllBidsByProductId = async (productId) => {
         throw 'Could not find all bids';
     }
     return bidList;
+}
 
-    const getUserBidForProduct = async (productId, userId) => {
+const getUserBidForProduct = async (productId, userId) => {
+    productId = helperMethods.checkId(productId);
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    const userBid = await bidCollection.findOne(
+        { "productID": new ObjectId(productId) },
+        { projection: { _id: 0, Bids: 1 } }
+    );
+    if (!userBid) {
+        throw 'Failed to fetch bid for user';
+    }
+    let specificBid = userBid.Bids.find((bid) => bid.userID.toString() === userId.toString());
+    if (!specificBid) {
+        throw 'Bid not found for user';
+    }
+
+    return specificBid;
+}
+/* const getUserBids = async (userId) => {
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    const userBids = await bidCollection.find(
+        { "Bids.userID": new ObjectId(userId) },
+        { projection: { _id: 0, productID: 1, Bids: { $elemMatch: { userID: new ObjectId(userId) } } } }
+    ).toArray();
+
+    return userBids.map(bid => ({
+        productID: bid.productID,
+        bidAmount: bid.Bids[0].bidAmount
+    }));
+} */
+const getUserBids = async (userId, getAllFlag, counter) => {
+    userId = helperMethods.checkId(userId);
+
+    const bidCollection = await bids();
+    let query = { "Bids.userID": new ObjectId(userId) };
+
+    if (!getAllFlag && typeof counter === 'number') {
+        query = { "Bids.userID": new ObjectId(userId) };
+    }
+
+    const projection = {
+        _id: 0,
+        productID: 1,
+        Bids: {
+            $elemMatch: { userID: new ObjectId(userId) }
+        }
+    };
+
+    let userBids;
+
+    if (getAllFlag) {
+        userBids = await bidCollection.find(query, { projection }).toArray();
+    } else {
+        userBids = await bidCollection.find(query, { projection }).limit(counter).toArray();
+    }
+
+    return userBids.map(bid => ({
+        productID: bid.productID,
+        bidAmount: bid.Bids[0].bidAmount
+    }));
+}
+const updateBidAmmount = async (productId, userId, bidAmount) => {
+    productId = helperMethods.checkId(productId);
+    userId = helperMethods.checkId(userId);
+    argumentProvidedValidation(bidAmount, "Bid Ammount");
+    bidAmount = primitiveTypeValidation(bidAmount, "Bid Amount", "Number");
+    bidAmount = helperMethods.checkBidAmount(bidAmount);
+
+    const bidCollection = await bids();
+    const updatedBid = await bidCollection.findOneAndUpdate(
+        {
+            productID: new ObjectId(productId),
+            'Bids.userID': new ObjectId(userId)
+        },
+        { $set: { 'Bids.$.bidAmount': bidAmount } },
+        { returnDocument: 'after' }
+    );
+    if (!updatedBid) {
+        throw 'Failed to update bid amount';
+    }
+    return updatedBid;
+}
+const deleteBidDocumentById = async (productId, bidId) => { // do not use both params. if using one, the other should be undefined
+    let query = {}
+    if (productId) {
         productId = helperMethods.checkId(productId);
-        userId = helperMethods.checkId(userId);
-
-        const bidCollection = await bids();
-        const userBid = await bidCollection.findOne(
-            { "productID": new ObjectId(productId) },
-            { projection: { _id: 0, Bids: 1 } }
-        );
-        if (!userBid) {
-            throw 'Failed to fetch bid for user';
-        }
-        let specificBid = userBid.Bids.find((bid) => bid.userID.toString() === userId.toString());
-        if (!specificBid) {
-            throw 'Bid not found for user';
-        }
-
-        return specificBid;
+        query['productID'] = new ObjectId(productId);
     }
-    /* const getUserBids = async (userId) => {
-        userId = helperMethods.checkId(userId);
-    
-        const bidCollection = await bids();
-        const userBids = await bidCollection.find(
-            { "Bids.userID": new ObjectId(userId) },
-            { projection: { _id: 0, productID: 1, Bids: { $elemMatch: { userID: new ObjectId(userId) } } } }
-        ).toArray();
-    
-        return userBids.map(bid => ({
-            productID: bid.productID,
-            bidAmount: bid.Bids[0].bidAmount
-        }));
-    } */
-    const getUserBids = async (userId, getAllFlag, counter) => {
-        userId = helperMethods.checkId(userId);
-
-        const bidCollection = await bids();
-        let query = { "Bids.userID": new ObjectId(userId) };
-
-        if (!getAllFlag && typeof counter === 'number') {
-            query = { "Bids.userID": new ObjectId(userId) };
-        }
-
-        const projection = {
-            _id: 0,
-            productID: 1,
-            Bids: {
-                $elemMatch: { userID: new ObjectId(userId) }
-            }
-        };
-
-        let userBids;
-
-        if (getAllFlag) {
-            userBids = await bidCollection.find(query, { projection }).toArray();
-        } else {
-            userBids = await bidCollection.find(query, { projection }).limit(counter).toArray();
-        }
-
-        return userBids.map(bid => ({
-            productID: bid.productID,
-            bidAmount: bid.Bids[0].bidAmount
-        }));
+    else if (bidId) {
+        bidId = helperMethods.checkId(bidId);
+        query['_id'] = new ObjectId(bidId);
     }
-    const updateBidAmmount = async (productId, userId, bidAmount) => {
-        productId = helperMethods.checkId(productId);
-        userId = helperMethods.checkId(userId);
-        argumentProvidedValidation(bidAmount, "Bid Ammount");
-        bidAmount = primitiveTypeValidation(bidAmount, "Bid Amount", "Number");
-        bidAmount = helperMethods.checkBidAmount(bidAmount);
+    else {
+        throw 'Product or bid id must be supplied';
+    }
 
-        const bidCollection = await bids();
-        const updatedBid = await bidCollection.findOneAndUpdate(
-            {
-                productID: new ObjectId(productId),
-                'Bids.userID': new ObjectId(userId)
-            },
-            { $set: { 'Bids.$.bidAmount': bidAmount } },
-            { returnDocument: 'after' }
-        );
-        if (!updatedBid) {
-            throw 'Failed to update bid amount';
-        }
-        return updatedBid;
+    const bidCollection = await bids();
+    const deletedBid = await bidCollection.deleteOne(query);
+    if (!deletedBid) {
+        throw 'Failed to delete bid';
     }
-    const deleteBidDocumentById = async (productId, bidId) => { // do not use both params. if using one, the other should be undefined
-        let query = {}
-        if (productId) {
-            productId = helperMethods.checkId(productId);
-            query['productID'] = new ObjectId(productId);
-        }
-        else if (bidId) {
-            bidId = helperMethods.checkId(bidId);
-            query['_id'] = new ObjectId(bidId);
-        }
-        else {
-            throw 'Product or bid id must be supplied';
-        }
+    return deletedBid;
+}
+const deleteUserBid = async (productId, userId) => {
+    productId = helperMethods.checkId(productId);
+    userId = helperMethods.checkId(userId);
 
-        const bidCollection = await bids();
-        const deletedBid = await bidCollection.deleteOne(query);
-        if (!deletedBid) {
-            throw 'Failed to delete bid';
-        }
-        return deletedBid;
+    const bidCollection = await bids();
+    const deletedBid = await bidCollection.findOneAndUpdate(
+        { productID: new ObjectId(productId) },
+        { $pull: { Bids: { userID: new ObjectId(userId) } } },
+        { returnDocument: 'after' }
+    );
+    if (!deletedBid) {
+        throw 'Failed to remove user bid';
     }
-    const deleteUserBid = async (productId, userId) => {
-        productId = helperMethods.checkId(productId);
-        userId = helperMethods.checkId(userId);
-
-        const bidCollection = await bids();
-        const deletedBid = await bidCollection.findOneAndUpdate(
-            { productID: new ObjectId(productId) },
-            { $pull: { Bids: { userID: new ObjectId(userId) } } },
-            { returnDocument: 'after' }
-        );
-        if (!deletedBid) {
-            throw 'Failed to remove user bid';
-        }
-        return deletedBid;
-    }
-    const methods = {
-        createBid,
-        getBidById,
-        getBidByProductId,
-        updateBidAmmount,
-        deleteBidDocumentById,
-        deleteUserBid,
-        getUserBidForProduct,
-        getUserBids
-    }
-    export default methods;
+    return deletedBid;
+}
+const methods = {
+    createBid,
+    getBidById,
+    getBidByProductId,
+    updateBidAmmount,
+    deleteBidDocumentById,
+    deleteUserBid,
+    getUserBidForProduct,
+    getUserBids
+}
+export default methods;
