@@ -10,9 +10,10 @@ import {userData} from './../data/index.js';
 import * as helperMethods from './../helper.js'
 
 const constructorMethod = (app) => {
-  app.use('/', userRoutes)
+  app.use('/', userRoutes);
   app.use('/product', productRoutes);
-  app.use('/admin', adminRoutes)
+  app.use('/admin', adminRoutes);
+  app.use('/bid', bidRoute)
 };
 
 export default constructorMethod;
