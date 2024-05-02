@@ -21,7 +21,7 @@ const createComplaint = async (userId, sellerId, complaintText) => {
 		throw "error: Complaint with given user and seller already exists";
 	}
 
-	const _id = helperMethods.generateObjectID();
+  const _id = helperMethods.generateObjectID(),
 	const newComplaint = {
 		_id: _id,
 		userId: userId,
@@ -58,36 +58,29 @@ const getComplaintsByUserAndSellerId = async (userId, sellerId) => {
 	return userComplaints;
 };
 
-const updateComplaintStatus = async (complaintId, updateStatus) => {
-	complaintId = helperMethods.checkId(complaintId);
-	helperMethods.argumentProvidedValidation(updateStatus, "updateStatus");
-	updateStatus = helperMethods.primitiveTypeValidation(
-		updateStatus,
-		"updateStatus",
-		"String"
-	);
-	const complaintsCollection = await complaints();
-	const userComplaintsUpdated = await complaintsCollection.updateOne(
-		{
-			_id: complaintId,
-		},
-		{
-			$set: {
-				status: updateStatus,
-			},
-		}
-	);
+const updateComplaintStatus = async(complaintId, updateStatus) => {
+  complaintId = helperMethods.checkId(complaintId);
+  helperMethods.argumentProvidedValidation(updateStatus, 'updateStatus')
+  updateStatus = helperMethods.primitiveTypeValidation(updateStatus, 'updateStatus', 'String')
+  const complaintsCollection = await complaints()
+  const userComplaintsUpdated = await complaintsCollection.updateOne({
+    _id: complaintId
+  }, {
+    $set: {
+      status: updateStatus
+    }
+  })
 
-	if (userComplaintsUpdated.modifiedCount != 1)
-		throw "Unable to update complaint";
+  if(userComplaintsUpdated.modifiedCount!=1) throw 'Unable to update complaint'
 
-	return "success";
-};
+  return 'success'
+  
+}
 
 const methods = {
 	createComplaint,
 	getComplaintsByUserAndSellerId,
-	updateComplaintStatus,
+  updateComplaintStatus
 };
 
 export default methods;
