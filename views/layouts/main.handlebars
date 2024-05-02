@@ -10,12 +10,13 @@
 
 <body>
     {{{body}}}
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
-        </script>
-    {{#if script_partial}}
-    {{> (lookup . 'script_partial')}}
-    {{/if}}
+    <script 
+    src="https://code.jquery.com/jquery-3.7.1.js" 
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+    crossorigin="anonymous">
+    </script>
+    <script src="../../public/js/form-validation/createBid.js"></script>
+    <script src="../../public/js/admin/view.js"></script>
 </body>
 
 </html>

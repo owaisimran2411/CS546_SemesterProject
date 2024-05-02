@@ -1,0 +1,68 @@
+{{#if viewProducts}}
+<main>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Asking Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {{#each products}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{productName}}</td>
+                    <td>{{productAskingPrice}}</td>
+                    <td>{{listingActive}}</td>
+                    <td>
+                        {{#if listingActive}}
+                            <button>
+                                <a href="/admin/product/{{_id}}/disable">Disable</a>
+                            </button>
+                        {{else}}
+                            <button>
+                                <a href="/admin/product/{{_id}}/enable">Enable</a>
+                            </button>
+                        {{/if}}
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+{{/if}}
+
+
+{{#if viewComplaints}}
+<main>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Details</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {{#each complaints}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{complaintText}}</td>
+                    <td>{{status}}</td>
+                    <td>
+                        <select id="complaintStatus">
+                            <option value="Pending-{{_id}}">Pending</option>
+                            <option value="Active-{{_id}}">Active</option>
+                            <option value="Discarded-{{_id}}">Resolved</option>
+                            <option value="Discarded-{{_id}}">Discarded</option>
+                        </select>
+                        <button>
+                            <a href="/admin/complaint/{{_id}}/pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
+                        </button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+{{/if}}
