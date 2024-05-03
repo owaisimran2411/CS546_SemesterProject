@@ -208,6 +208,14 @@ const moveFileFromTempToDestinationLocation = async (s3Client, sourceObject, pro
   
 }
 
+const findAveragePrice = (prices) => {
+  let sum = 0;
+  for (price of prices) {
+    sum += price;
+  }
+  return sum / prices.length;
+}
+
 export {
   checkId,
   checkIsValidPassword,
