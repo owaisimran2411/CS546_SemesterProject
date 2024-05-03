@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as helperMethods from "./../helper.js";
 
-import { productData, complaintData } from "./../data/index.js";
+import { productData, complaintData, userData } from "./../data/index.js";
 
 helperMethods.configureDotEnv();
 
@@ -56,6 +56,14 @@ router.route("/view-all-products").get(async (req, res) => {
 	return res.render("admin/view", {
 		products: productsListed,
 		viewProducts: true,
+	});
+});
+
+router.route("/view-all-users").get(async (req, res) => {
+	const usersList = await userData.getUser();
+	console.log(usersList);
+	res.json({
+		msg: "Hello",
 	});
 });
 

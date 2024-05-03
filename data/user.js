@@ -240,24 +240,27 @@ const getUser = async (searchParam) => {
 	const search = typeof searchParam === "object" ? searchParam : {};
 
 	const allowedKeys = ["username", "emailAddress", "phoneNumber", "_id"];
-	const invalidKeys = Object.keys(updateInfo).filter(
-		(key) => !allowedKeys.includes(key)
-	);
-	if (invalidKeys.length > 0) {
-		throw "Invalid Update Keys";
+	if (search != {}) {
+		const invalidKeys = Object.keys(search).filter(
+			(key) => !allowedKeys.includes(key)
+		);
+		if (invalidKeys.length > 0) {
+			throw "Invalid Update Keys";
+		}
 	}
 
 	const userCollection = await users();
-	const data = await userCollection.findOne(searchParam).project({
-		username: 1,
-		emailAddress: 1,
-		_id: 1,
-		phoneNumber: 1,
-		userActive: 1,
-	});
-
-	if (data.length > 0) {
-	}
+	const data = await userCollection
+		.find(searchParam)
+		.project({
+			username: 1,
+			emailAddress: 1,
+			_id: 1,
+			phoneNumber: 1,
+			userActive: 1,
+		})
+		.toArray();
+	return data;
 };
 
 const methods = {
