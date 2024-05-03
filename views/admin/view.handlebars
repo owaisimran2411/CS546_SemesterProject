@@ -90,3 +90,40 @@
     </table>
 </main>
 {{/if}}
+
+{{#if viewUsers}}
+<main>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Email Address</th>
+            <th>Phone Number</th>
+            <th>username</th>
+            <th>Status</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {{#each users}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{emailAddress}}</td>
+                    <td>{{phoneNumber}}</td>
+                    <td>{{username}}</td>
+                    <td>{{userActive}}</td>
+                    <td>
+                        {{#if userActive}}
+                            <button>
+                                <a href="/admin/user/{{_id}}/disable">Disable</a>
+                            </button>
+                        {{else}}
+                            <button>
+                                <a href="/admin/user/{{_id}}/enable">Enable</a>
+                            </button>
+                        {{/if}}
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+{{/if}}

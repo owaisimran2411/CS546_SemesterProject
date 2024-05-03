@@ -402,7 +402,14 @@ const updateProductInformation = async (productID, updateObject) => {
 		);
 		updateProductInfo.productAskingPrice = updateObject.productAskingPrice;
 	}
-	console.log(updateProductInfo);
+
+	if ("listingActive" in updateObject) {
+		updateProductInfo.listingActive = helperMethods.primitiveTypeValidation(
+			updateObject.listingActive,
+			"listingActive",
+			"Boolean"
+		);
+	}
 	const productCollection = await products();
 	const updateInfo = await productCollection.updateOne(
 		{
