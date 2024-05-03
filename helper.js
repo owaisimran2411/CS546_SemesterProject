@@ -54,7 +54,9 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
 			for (const key in arg) {
 				if (Object.prototype.hasOwnProperty.call(arg, key)) {
 					sanitizedObj[key] =
-						typeof arg[key] === "string" ? xss(arg[key]) : arg[key];
+						key != "password" && typeof arg[key] === "string"
+							? xss(arg[key])
+							: arg[key];
 				}
 			}
 			return sanitizedObj;

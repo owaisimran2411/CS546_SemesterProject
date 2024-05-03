@@ -1,0 +1,33 @@
+<main>
+    <form action="/profile/update/{{_id}}" method="post">
+    
+    <div>
+      <label for="password">New Password</label>
+      <input type="password" id="password" name="password" />
+    </div>
+    
+    <div>
+      <label for="phoneNumber">Phone number</label>
+      <input type="text" name="phoneNumber" id="phoneNumber"  value="{{phoneNumber}}"/>
+    </div>
+    <div>
+      <label for="gender">Gender</label>
+      <select name="gender" id="gender">
+        {{#ifCond gender '===' 'male'}}
+        <option value="male" selected="true">male</option>
+        <option value="female">female</option>
+        {{/ifCond}}
+
+        {{#ifCond gender '===' 'female'}}
+        <option value="male">male</option>
+        <option value="female" selected="true">female</option>
+        {{/ifCond}}
+      </select>
+    </div>
+    <div>
+      <label for="bio">Bio</label>
+      <input type="text" name="bio" id="bio" value="{{bio}}"/>
+    </div>
+    <button type="submit" name="submitButton" id="submitButton">Submit</button>
+  </form>
+</main>
