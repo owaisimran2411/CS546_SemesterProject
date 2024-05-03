@@ -114,7 +114,7 @@ const updateComplaintStatus = async (complaintId, updateStatus) => {
 	const complaintsCollection = await complaints();
 	const userComplaintsUpdated = await complaintsCollection.updateOne(
 		{
-			_id: complaintId,
+			_id: new ObjectId(complaintId),
 		},
 		{
 			$set: {

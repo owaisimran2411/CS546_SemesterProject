@@ -14,25 +14,9 @@ router.route("/view-all-complaints").get(async (req, res) => {
 		{},
 		{ _id: 1, complaintText: 1, status: 1 }
 	);
-
+	// console.log(complaints);
 	res.render("admin/view", {
-		complaints: [
-			{
-				_id: 123,
-				complaintText: "asdansdsnf",
-				status: "Pending",
-			},
-			{
-				_id: 345,
-				complaintText: "asdansdsnf",
-				status: "Active",
-			},
-			{
-				_id: 678,
-				complaintText: "asdansdsnf",
-				status: "Pending",
-			},
-		],
+		complaints: complaints,
 		viewComplaints: true,
 	});
 });
