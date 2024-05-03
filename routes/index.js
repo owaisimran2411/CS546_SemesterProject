@@ -14,6 +14,7 @@ const constructorMethod = (app) => {
 	app.use("/product", productRoutes);
 	app.use("/admin", adminRoutes);
 	app.use("/bid", bidRoute);
+	app.use("/complaint", complaintRoute);
 };
 
 export default constructorMethod;

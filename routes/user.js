@@ -182,7 +182,7 @@ router
     try {
       // console.log(req.params.id);
       const user = await userData.getUserById(req.params.id)
-      return res.render('user/userInfo', {user}
+      return res.render('user/userInfo', {script_partial: 'bid_validate_script', user}
       // {product: product, userInfo}
     );
     } catch (e) {

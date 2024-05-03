@@ -10,6 +10,8 @@ const createComplaint = async (userId, sellerId, complaintText) => {
 	userId = primitiveTypeValidation(userId, "userId", "String");
 	sellerId = primitiveTypeValidation(sellerId, "sellerId", "String");
 
+	const complaintsCollection = await complaints();
+
 	let complaint = await complaintsCollection
 		.find({
 			userId: userId,
@@ -36,7 +38,6 @@ const createComplaint = async (userId, sellerId, complaintText) => {
 		throw "error: User or seller not found.";
 	}
 
-	const complaintsCollection = await complaints();
 	const insertInfo = await complaintsCollection.insertOne(newComplaint);
 
 	if (insertInfo.insertedCount === 0) {

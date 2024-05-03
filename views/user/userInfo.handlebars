@@ -1,4 +1,4 @@
-<body>
+<main>
     <h1>User info</h1>
     <div class="profile-picture">
         <img src="{{user.profilePicture}}" width="200" height="150" alt="Profile Picture">
@@ -10,11 +10,32 @@
         <p><strong>Gender:</strong> {{user.gender}}</p>
         <p><strong>Bio:</strong> {{user.bio}}</p>
     </div>
+    <div class="complaint-container">
+        <h3>Register a Complaint with this user:</h3>
+        <div id="create-complaint-errors-client"></div>
+        {{#if hasErrors}}
+        <div id="create-complaint-errors-server">{{errorMessage}}</div>
+        {{/if}}
+        <form id="complaint-form" action="/complaint/createComplaint" method="POST">
+            <label for="complaint-message">Complaint:</label>
+            <input type="text" id="complaint-message" name="complaintMessage" /><br />
+
+            <input type="submit" value="Submit Your Complaint" />
+        </form>
+    </div>
     <button onclick="goBack()">Go Back</button>
 
     <script>
+        window.onload = function() {
+            let path = window.location.href;
+            let url = new URL(path);
+            let segments = url.pathname.split('/');
+            let sellerId = segments[segments.length-1];
+            let complaintForm = document.getElementById('complaint-form');
+            complaintForm.action = '/complaint/createComplaint/' + sellerId;
+        }
         function goBack() {
             window.history.back();
         }
     </script>
-</body>
+</main>
