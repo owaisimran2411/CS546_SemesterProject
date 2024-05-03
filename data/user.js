@@ -61,7 +61,7 @@ const userSignUp = async (
 		"Email Address",
 		"String"
 	);
-	phoneNumber = primitiveTypeValidation(phoneNumber, "Phone Number", "String");
+	phoneNumber = primitiveTypeValidation(phoneNumber, "Phone Number", "Number");
 	gender = primitiveTypeValidation(gender, "Gender", "String");
 	bio = primitiveTypeValidation(bio, "Bio", "String");
 	profilePicture = primitiveTypeValidation(
@@ -150,7 +150,7 @@ const deleteUser = async (id) => {
 	return deletedUser;
 };
 const updateUser = async (id, updateInfo) => {
-	// console.log(updateInfo);
+	console.log(updateInfo);
 	id = helperMethods.checkId(id);
 	argumentProvidedValidation(updateInfo, "UpdateInfo");
 	updateInfo = primitiveTypeValidation(updateInfo, "UpdateInfo", "Object");
@@ -162,6 +162,11 @@ const updateUser = async (id, updateInfo) => {
 			"Password",
 			"String"
 		);
+		helperMethods.checkIsValidPassword(updateInfo.password);
+		console.log("password check pass");
+
+		// hashing the password
+		updateInfo.password = await bcrypt.hash(updateInfo.password, 16);
 	}
 	if (updateInfo.phoneNumber) {
 		updateInfo.phoneNumber = primitiveTypeValidation(
@@ -202,6 +207,7 @@ const updateUser = async (id, updateInfo) => {
 		throw "Invalid Update Keys";
 	}
 	let query = {};
+	console.log(query);
 	for (const key in updateInfo) {
 		query[key] = updateInfo[key];
 	}
