@@ -1,32 +1,53 @@
 <article class="product">
-	<h1>{{ product.productName }}</h1>
-	{{!-- <address>Posted by {{product.poster.name}}</address> --}}
-	<p>{{ product.productDescription }}</p>
-	<div class="userInfo">
-		<h2>Seller's Info</h2>
-		<dl>
-			<dt>Username:</dt>
-			<dd>{{userInfo.username}}</dd>
-			<dt>Email:</dt>
-			<dd>{{userInfo.emailAddress}}</dd>
-			<dt>bio:</dt>
-			<dd>{{userInfo.bio}}</dd>
-		</dl>
-		<a href="/userInfo/{{userInfo._id}}">Click here for more info</a>
+  <h1>{{product.productName}}</h1>
+  {{!-- <address>Posted by {{product.poster.name}}</address> --}}
+  <p><strong>Description:</strong>{{product.productDescription}}</p>
+  <p><strong>Condition:</strong> {{product.productCondition}}</p>
+  <p><strong>Serial Number:</strong> {{product.productSerialNumber}}</p>
+  <p><strong>Supported Console:</strong> {{product.productSupportedConsole}}</p>
+  {{!-- Add blue red color if listing is active else red --}}
+  {{#if product.listingActive}}
+    <p><strong>Status:</strong> Listing is active</p>
+  {{else}}
+    <p><strong>Status:</strong> Listing is inactive</p>
+  {{/if}}
+  <p><strong>Asking Price:</strong>${{product.productAskingPrice}}</p>
+  <img
+    src="{{product.productThumbnail}}"
+    width="200"
+    height="150"
+    alt="Product image"
+  />
+  <p><strong>More Images from seller</strong></p>
+  {{!--Other Images Not working --}}
+  {{#each product.otherImages}}
+    <img src="{{this}}" class="otherImages" alt="otherImages" />
+  {{/each}}
+  <div class="userInfo">
+    <h2>Seller's Info</h2>
+    <dl>
+      <dt>Username:</dt>
+      <dd>{{userInfo.username}}</dd>
+      <dt>Email:</dt>
+      <dd>{{userInfo.emailAddress}}</dd>
+      <dt>bio:</dt>
+      <dd>{{userInfo.bio}}</dd>
+    </dl>
+    <a href="/userInfo/{{userInfo._id}}">Click here for more info</a>
 
-		<div id="bid-list"></div>
-		
-		<div class="bid-form-container">
-			<h3>Create Bid:</h3>
-			<div id="create-bid-errors">
-			</div>
-			<form id="bid-form">
-				<label for="bid-amount">Bid Amount:</label>
-				<input type="text" id="bid-amount" name="bid-amount" /><br />
+    <div id="bid-list"></div>
 
-				<input type="submit" value="Create Bid" />
-			</form>
-		</div>
-	</div>
-	<a href="/product/">Back to All Posts</a>
+    <div class="bid-form-container">
+      <h3>Create Bid:</h3>
+      <div id="create-bid-errors">
+      </div>
+      <form id="bid-form">
+        <label for="bid-amount">Bid Amount:</label>
+        <input type="text" id="bid-amount" name="bid-amount" /><br />
+
+        <input type="submit" value="Create Bid" />
+      </form>
+    </div>
+  </div>
+  <a href="/product/">Back to All Posts</a>
 </article>
