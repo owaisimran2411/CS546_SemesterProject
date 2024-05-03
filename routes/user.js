@@ -224,14 +224,10 @@ router
   .route("/profile")
   .get(async (req, res) => {
     const username = req.session.user.username;
-    console.log('username', username);
     try {
       const userInfo = await methods.getUserByUsername(username);
-      console.log('userInfo', userInfo);
       const userProductInfo = await productData.getProducts(true, 5, 1, { productOwnerId: userInfo._id }, {}, {});
-      console.log('product info', userProductInfo);
       const userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
-      console.log('user bid info', userBidInfo);
       res.render('user/profile',
         {
           docTitle: 'Profile Page',
