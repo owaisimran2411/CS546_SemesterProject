@@ -272,7 +272,7 @@ const deleteProduct = async (productID) => {
 
 	const productCollection = await products();
 	const productDelete = await productCollection.findOneAndDelete({
-		_id: new ObjectId(productID),
+		_id: productID,
 	});
 
 	if (!productDelete)
@@ -332,18 +332,22 @@ const updateProductInformation = async (productID, updateObject) => {
 		updateProductInfo.productDescription = updateObject.productDescription;
 	}
 
-	if (updateObject["listingActive"].toString() != undefined) {
-		helperMethods.argumentProvidedValidation(
-			updateObject.listingActive.toString(),
-			"listingActive"
-		);
-		updateObject.listingActive = helperMethods.primitiveTypeValidation(
-			updateObject.listingActive,
-			"listingActive",
-			"Boolean"
-		);
-		updateProductInfo.listingActive = updateObject.listingActive;
-	}
+	// if (updateObject["listingActive"].toString() != undefined) {
+	// 	try {
+	// 		helperMethods.argumentProvidedValidation(
+	// 			updateObject.listingActive.toString(),
+	// 			"listingActive"
+	// 		);
+	// 		updateObject.listingActive = helperMethods.primitiveTypeValidation(
+	// 			updateObject.listingActive,
+	// 			"listingActive",
+	// 			"Boolean"
+	// 		);
+	// 		updateProductInfo.listingActive = updateObject.listingActive;
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 	}
+	// }
 
 	if (updateObject.productCondition) {
 		helperMethods.argumentProvidedValidation(
@@ -386,6 +390,19 @@ const updateProductInformation = async (productID, updateObject) => {
 			updateObject.productSupportedConsole;
 	}
 
+	if (updateObject.productAskingPrice) {
+		helperMethods.argumentProvidedValidation(
+			updateObject.productAskingPrice,
+			"productAskingPrice"
+		);
+		updateObject.productAskingPrice = helperMethods.primitiveTypeValidation(
+			updateObject.productAskingPrice,
+			"productAskingPrice",
+			"Number"
+		);
+		updateProductInfo.productAskingPrice = updateObject.productAskingPrice;
+	}
+	console.log(updateProductInfo);
 	const productCollection = await products();
 	const updateInfo = await productCollection.updateOne(
 		{
@@ -395,7 +412,8 @@ const updateProductInformation = async (productID, updateObject) => {
 			$set: updateProductInfo,
 		}
 	);
-	// console.log(updateInfo)
+
+	return;
 };
 
 const methods = {

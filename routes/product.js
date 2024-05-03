@@ -204,6 +204,114 @@ router
 		}
 	);
 
+router
+	.route("/user/:action/:productID")
+	.get(async (req, res) => {
+		try {
+			helperMethods.argumentProvidedValidation(req.params.action, "action");
+			req.params.action = helperMethods.primitiveTypeValidation(
+				req.params.action,
+				"action",
+				"String"
+			);
+			if (req.params.action != "update" && req.params.action != "delete") {
+				return res.redirect("/my-products");
+			} else {
+				helperMethods.argumentProvidedValidation(req.params.productID, "id");
+				req.params.id = helperMethods.primitiveTypeValidation(
+					req.params.productID,
+					"id",
+					"String"
+				);
+				req.params.productID = helperMethods.checkId(req.params.productID);
+
+				if (req.params.action.toLowerCase() === "update") {
+					const productInformation = await productData.getProductById(
+						req.params.productID
+					);
+					// console.log(productInformation);
+					return res.render("user/productUpdate", {
+						productInformation: productInformation,
+					});
+				} else {
+					const productUpdate = await productData.deleteProduct(req.params.id);
+					if (typeof productUpdate === "object") {
+						return res.redirect("/my-products");
+					} else {
+						res.json({
+							error: productUpdate,
+						});
+					}
+				}
+			}
+		} catch (e) {
+			res.json({
+				error: e,
+			});
+		}
+	})
+	.post(async (req, res) => {
+		if (
+			req.body.productName &&
+			req.body.productDescription &&
+			req.body.productSerialNumber &&
+			req.body.productAskingPrice &&
+			req.params.action == "update"
+			//&&
+			// req.session.user
+		) {
+			try {
+				helperMethods.argumentProvidedValidation(
+					req.body.productName,
+					"productName"
+				);
+				let productName = helperMethods.primitiveTypeValidation(
+					req.body.productName,
+					"productName",
+					"String"
+				);
+
+				let productDescription = helperMethods.primitiveTypeValidation(
+					req.body.productDescription,
+					"productDescription",
+					"String"
+				);
+
+				let productSerialNumber = helperMethods.primitiveTypeValidation(
+					req.body.productSerialNumber,
+					"productSerialNumber",
+					"String"
+				);
+
+				let productAskingPrice = helperMethods.primitiveTypeValidation(
+					Number(req.body.productAskingPrice),
+					"productAskingPrice",
+					"Number"
+				);
+
+				console.log(req.body);
+
+				const productUpdate = await productData.updateProductInformation(
+					req.params.productID,
+					{
+						productName: productName,
+						productAskingPrice: productAskingPrice,
+						productSerialNumber: productSerialNumber,
+						productDescription: productDescription,
+					}
+				);
+				// console.log(productUpdate);
+				console.log();
+				return res.redirect(`/product/${req.params.productID}`);
+			} catch (e) {
+				return res.status(400).json({
+					error: e,
+				});
+			}
+		} else {
+			return res.redirect("/my-products");
+		}
+	});
 router.route("/:id").get(async (req, res) => {
 	// try {
 	//   req.params.id = validation.checkId(req.params.id, 'Id URL Param');
@@ -213,7 +321,11 @@ router.route("/:id").get(async (req, res) => {
 	try {
 		const product = await productData.getProductById(req.params.id);
 		const userInfo = await userData.getUserById(product.productOwnerId);
-		return res.render("product/single", { script_partial: 'bid_validate_script', product: product, userInfo });
+		return res.render("product/single", {
+			script_partial: "bid_validate_script",
+			product: product,
+			userInfo,
+		});
 	} catch (e) {
 		return res.status(404).json({ error: e });
 	}
