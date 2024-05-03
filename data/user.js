@@ -150,6 +150,7 @@ const deleteUser = async (id) => {
 	return deletedUser;
 };
 const updateUser = async (id, updateInfo) => {
+	// console.log(updateInfo);
 	id = helperMethods.checkId(id);
 	argumentProvidedValidation(updateInfo, "UpdateInfo");
 	updateInfo = primitiveTypeValidation(updateInfo, "UpdateInfo", "Object");
@@ -180,7 +181,7 @@ const updateUser = async (id, updateInfo) => {
 		updateInfo.bio = primitiveTypeValidation(updateInfo.bio, "Bio", "String");
 	}
 
-	if (updateInfo.userActive.toString()) {
+	if (updateInfo.userActive) {
 		updateInfo.userActive = primitiveTypeValidation(
 			updateInfo.userActive,
 			"userActive",
@@ -204,7 +205,7 @@ const updateUser = async (id, updateInfo) => {
 	for (const key in updateInfo) {
 		query[key] = updateInfo[key];
 	}
-
+	// console.log(query);
 	const userCollection = await users();
 	const updatedUser = await userCollection.findOneAndUpdate(
 		{ _id: id },
