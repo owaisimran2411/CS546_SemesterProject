@@ -1,9 +1,9 @@
 import * as helperMethods from "./../helper.js";
 import { complaints } from "../configuration/mongoCollections.js";
 import { ObjectId } from "mongodb";
-import { complaintData, userData } from "./index.js";
+import { complaintData, productData, userData } from "./index.js";
 
-const createComplaint = async (userId, sellerId, complaintText) => {
+const createComplaintSeller = async (userId, sellerId, complaintText) => {
 	const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 	argumentProvidedValidation(userId, "userId");
 	argumentProvidedValidation(sellerId, "sellerId");
@@ -29,6 +29,7 @@ const createComplaint = async (userId, sellerId, complaintText) => {
 		sellerId: sellerId,
 		complaintText: complaintText,
 		status: "Pending",
+		complaintType: "Seller",
 	};
 
 	const user = await userData.getUserById(userId);
@@ -47,12 +48,70 @@ const createComplaint = async (userId, sellerId, complaintText) => {
 	return _id;
 };
 
+const createComplaintProduct = async (userId, productId, complaintText) => {
+	const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
+	argumentProvidedValidation(userId, "userId");
+	argumentProvidedValidation(productId, "productId");
+	userId = primitiveTypeValidation(userId, "userId", "String");
+	productId = primitiveTypeValidation(productId, "productId", "String");
+
+	const complaintsCollection = await complaints();
+
+	let complaint = await complaintsCollection
+		.find({
+			userId: userId,
+			productId: productId,
+		})
+		.toArray();
+	if (complaint.length !== 0) {
+		throw "error: Complaint with given user and seller already exists";
+	}
+
+	const _id = helperMethods.generateObjectID();
+	const newComplaint = {
+		_id: _id,
+		userId: userId,
+		productId: productId,
+		complaintText: complaintText,
+		status: "Pending",
+		complaintType: "Product",
+	};
+
+	const user = await userData.getUserById(userId);
+	const product = await productData.getProductById(productId);
+
+	if (!user || !product) {
+		throw "error: User or product not found.";
+	}
+
+	const insertInfo = await complaintsCollection.insertOne(newComplaint);
+
+	if (insertInfo.insertedCount === 0) {
+		throw "Error: Could not add complaint.";
+	}
+
+	return _id;
+};
+
 const getComplaintsByUserAndSellerId = async (userId, sellerId) => {
 	const complaintsCollection = await complaints();
 	const userComplaints = await complaintsCollection
 		.find({
 			userId: userId,
 			sellerId: sellerId,
+			complaintType: "Seller",
+		})
+		.toArray();
+	return userComplaints;
+};
+
+const getComplaintsByUserAndProductId = async (userId, productId) => {
+	const complaintsCollection = await complaints();
+	const userComplaints = await complaintsCollection
+		.find({
+			userId: userId,
+			productId: productId,
+			complaintType: "Product",
 		})
 		.toArray();
 	return userComplaints;
@@ -63,6 +122,18 @@ const getComplaints = async (searchFilters, filters) => {
 	const complaint = {};
 	const filter = typeof filters === "object" ? filters : {};
 
+	if (searchFilters.complaintType) {
+		helperMethods.argumentProvidedValidation(
+			searchFilters.complaintType,
+			"complaintType"
+		);
+		complaint.complaintType = helperMethods.primitiveTypeValidation(
+			searchFilters.complaintType,
+			"complaintType",
+			"String"
+		);
+	}
+
 	if (searchFilters.userId) {
 		helperMethods.argumentProvidedValidation(searchFilters.userId, "userId");
 		complaint.userId = helperMethods.primitiveTypeValidation(
@@ -70,7 +141,7 @@ const getComplaints = async (searchFilters, filters) => {
 			"userId",
 			"String"
 		);
-		complaint.userId = helperMethods.checkId(complaint.userId);
+		// complaint.userId = helperMethods.checkId(complaint.userId);
 	}
 
 	if (searchFilters.sellerId) {
@@ -83,7 +154,20 @@ const getComplaints = async (searchFilters, filters) => {
 			"sellerId",
 			"String"
 		);
-		complaint.sellerId = helperMethods.checkId(complaint.sellerId);
+		// complaint.sellerId = helperMethods.checkId(complaint.sellerId);
+	}
+
+	if (searchFilters.productId) {
+		helperMethods.argumentProvidedValidation(
+			searchFilters.productId,
+			"productId"
+		);
+		complaint.productId = helperMethods.primitiveTypeValidation(
+			searchFilters.productId,
+			"productId",
+			"String"
+		);
+		// complaint.sellerId = helperMethods.checkId(complaint.sellerId);
 	}
 
 	if (searchFilters.status) {
@@ -130,8 +214,10 @@ const updateComplaintStatus = async (complaintId, updateStatus) => {
 };
 
 const methods = {
-	createComplaint,
+	createComplaintSeller,
+	createComplaintProduct,
 	getComplaintsByUserAndSellerId,
+	getComplaintsByUserAndProductId,
 	updateComplaintStatus,
 	getComplaints,
 };
