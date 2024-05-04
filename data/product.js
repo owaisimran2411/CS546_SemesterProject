@@ -144,11 +144,12 @@ const getProductById = async (id) => {
 	helperMethods.argumentProvidedValidation(id, "productID");
 
 	id = helperMethods.primitiveTypeValidation(id, "productID", "String");
-	id = helperMethods.checkId(id);
+	// id = helperMethods.checkId(id);
 	const productCollection = await products();
-	const product = await productCollection.findOne({ _id: id });
-	if (!product) throw "Error: Product not found";
-	return product;
+	const product = await productCollection.find({ _id: id }).toArray();
+
+	if (product.length <= 0) throw "Error: Product not found";
+	return product[0];
 };
 
 const getProducts = async (
