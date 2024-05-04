@@ -7,21 +7,16 @@
   <p><strong>Supported Console:</strong> {{product.productSupportedConsole}}</p>
   {{!-- Add blue red color if listing is active else red --}}
   {{#if product.listingActive}}
-    <p><strong>Status:</strong> Listing is active</p>
+  <p><strong>Status:</strong> Listing is active</p>
   {{else}}
-    <p><strong>Status:</strong> Listing is inactive</p>
+  <p><strong>Status:</strong> Listing is inactive</p>
   {{/if}}
   <p><strong>Asking Price:</strong>${{product.productAskingPrice}}</p>
-  <img
-    src="{{product.productThumbnail}}"
-    width="200"
-    height="150"
-    alt="Product image"
-  />
+  <img src="{{product.productThumbnail}}" width="200" height="150" alt="Product image" />
   <p><strong>More Images from seller</strong></p>
   {{!--Other Images Not working --}}
   {{#each product.otherImages}}
-    <img src="{{this}}" class="otherImages" alt="otherImages" />
+  <img src="{{this}}" class="otherImages" alt="otherImages" />
   {{/each}}
   <div class="userInfo">
     <h2>Seller's Info</h2>
@@ -48,6 +43,28 @@
         <input type="submit" value="Create Bid" />
       </form>
     </div>
+
+    <div class="product-complaint-form-container">
+      <h3>Submit a Complaint About this Product Listing:</h3>
+      <div id="create-product-complaint-errors">{{errorMessage}}</div>
+      <form id="product-complaint-form" action="" method="POST">
+        <label for="product-complaint">Complaint Message:</label>
+        <input type="text" id="complaintMessage" name="complaintMessage"><br />
+
+        <input type="submit" value="Submit Complaint">
+      </form>
+
+    </div>
   </div>
   <a href="/product/">Back to All Posts</a>
 </article>
+<script>
+  window.onload = function () {
+    let path = window.location.href;
+    let url = new URL(path);
+    let segments = url.pathname.split('/');
+    let productId = segments[segments.length - 1];
+    let productComplaintForm = document.getElementById('product-complaint-form');
+    productComplaintForm.action = '/complaint/createComplaintProduct/' + productId;
+  }
+</script>

@@ -58,4 +58,6 @@ $(document).ready(function () {
         $.ajax(bidRequest)
 
     });
+
+    
 });

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as helperMethods from "./../helper.js";
-import { complaintData, userData } from "../data/index.js";
+import { complaintData, productData, userData } from "../data/index.js";
 const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 
 const router = Router();
@@ -8,7 +8,6 @@ const router = Router();
 router.route("/createComplaintSeller/:id").post(async (req, res) => {
 	// console.log(req.body);
 	const requestInfo = req.body;
-	console.log("req body", requestInfo);
 	let sellerId = req.params.id;
 	let complaintMessage = requestInfo.complaintMessage;
 	let userId = req.session.user.id;
@@ -43,7 +42,6 @@ router.route("/createComplaintSeller/:id").post(async (req, res) => {
 			sellerId,
 			complaintMessage
 		);
-		alert('Complaint has been made sucessfully!');
 		return res.redirect(`/userInfo/${sellerId}`);
 	} catch (e) {
 		console.log("error", e);
@@ -57,4 +55,62 @@ router.route("/createComplaintSeller/:id").post(async (req, res) => {
 	}
 });
 
+router
+	.route('/createComplaintProduct/:id')
+	.post(async(req, res)=>{
+		const requestInfo = req.body;
+		let productId = req.params.id;
+		let complaintMessage = requestInfo.complaintMessage;
+		let userId = req.session.user.id;
+		let userInfo;
+		let product;
+		try{
+			product = await productData.getProductById(productId);
+			userInfo = await userData.getUserById(product.productOwnerId);
+		}
+		catch(e){
+			return res.render("product/single", {
+				script_partial: "bid_validate_script",
+				product: product,
+				userInfo,
+				hasErrors: true,
+				errorMessage: e
+			});
+		}
+		try{
+			userId = helperMethods.checkId(userId);
+			argumentProvidedValidation(complaintMessage, "Complaint Message");
+			complaintMessage = primitiveTypeValidation(
+				complaintMessage,
+				"Complaint Message",
+				"String"
+			);
+		}
+		catch(e){
+			return res.render("product/single", {
+				script_partial: "bid_validate_script",
+				product: product,
+				userInfo,
+				hasErrors: true,
+				errorMessage: e
+			});
+		}
+		try{
+			await complaintData.createComplaintProduct(
+				userId, 
+				productId,
+				complaintMessage
+			);
+			return res.redirect(`/product/${productId}`);
+		}
+		catch(e){
+			return res.render("product/single", {
+				script_partial: "bid_validate_script",
+				product: product,
+				userInfo,
+				hasErrors: true,
+				errorMessage: e
+			});
+		}
+	});
 export default router;
