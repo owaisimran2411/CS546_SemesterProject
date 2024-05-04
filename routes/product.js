@@ -11,7 +11,7 @@ router
 	.get(async (req, res) => {
 		try {
 			const productList = await productData.getProducts(true, 8, 1, 1, 1, 1);
-			return res.render("product/index", { products: productList });
+			return res.render("product/index", { products: productList, docTitle: 'Available Products' });
 		} catch (e) {
 			res.status(500).json({ error: e });
 		}
@@ -45,6 +45,7 @@ router
 		try {
 			return res.render("product/productCreate", {
 				uploadProcess1: true,
+				docTitle: 'Create New Product'
 			});
 		} catch (e) {
 			return res.status(404).json({
@@ -112,6 +113,7 @@ router
 		res.render("product/productCreate", {
 			uploadProcess2: true,
 			productID: req.params.id,
+			docTitle: 'Create New Product'
 		});
 	})
 	.post(
@@ -232,6 +234,7 @@ router
 					// console.log(productInformation);
 					return res.render("user/productUpdate", {
 						productInformation: productInformation,
+						docTitle: 'Update Product'
 					});
 				} else {
 					const productUpdate = await productData.deleteProduct(req.params.id);
@@ -325,6 +328,7 @@ router.route("/:id").get(async (req, res) => {
 			script_partial: "bid_validate_script",
 			product: product,
 			userInfo,
+			docTitle: 'Product Info'
 		});
 	} catch (e) {
 		return res.status(404).json({ error: e });
