@@ -24,6 +24,7 @@ router.route("/my-products").get(async (req, res) => {
 			}
 		);
 		return res.render("user/viewListedProductUser", {
+			docTitle: 'My Listed Products',
 			product: products,
 		});
 	} catch (e) {
@@ -41,6 +42,7 @@ router
 			// console.log(profileInformation);
 			res.render("user/profileUpdate", {
 				...profileInformation,
+				docTitle: 'Profile'
 			});
 		} catch (e) {
 			res.json({
@@ -285,7 +287,7 @@ router.route("/userInfo/:id").get(async (req, res) => {
 		const user = await userData.getUserById(req.params.id);
 		return res.render(
 			"user/userInfo",
-			{ script_partial: "bid_validate_script", user }
+			{ script_partial: "bid_validate_script", user, docTitle: 'Seller Profile' }
 			// {product: product, userInfo}
 		);
 	} catch (e) {

@@ -69,7 +69,7 @@ router
 			userInfo = await userData.getUserById(product.productOwnerId);
 		}
 		catch(e){
-			return res.render("product/single", {
+			return res.status(500).render("product/single", {
 				script_partial: "bid_validate_script",
 				product: product,
 				userInfo,
@@ -87,7 +87,7 @@ router
 			);
 		}
 		catch(e){
-			return res.render("product/single", {
+			return res.status(400).render("product/single", {
 				script_partial: "bid_validate_script",
 				product: product,
 				userInfo,
@@ -104,7 +104,7 @@ router
 			return res.redirect(`/product/${productId}`);
 		}
 		catch(e){
-			return res.render("product/single", {
+			return res.status(500).render("product/single", {
 				script_partial: "bid_validate_script",
 				product: product,
 				userInfo,
