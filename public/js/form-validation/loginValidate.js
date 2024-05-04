@@ -36,6 +36,10 @@ $(document).ready(function () {
             errorDiv.append('<p>Password should be at least 8 characters long.</p>');
             return;
         }
+        let isUppercase = false;
+        let isLowercase = false;
+        let isNumber = false;
+        let isSpecialCharacter = false;
         for (let char of password) {
             if (char >= "A" && char <= "Z") {
                 isUppercase = true;
@@ -50,25 +54,26 @@ $(document).ready(function () {
                 isSpecialCharacter = true;
             }
         }
-    
+
         if (!isUppercase) {
             errorDiv.append('<p>Password should contain at least one uppercase character.</p>');
             return;
         }
-    
+
         if (!isLowercase) {
             errorDiv.append('<p>Password should contain at least one lowercase character.</p>');
             return;
         }
-    
+
         if (!isNumber) {
             errorDiv.append('<p>Password should contain at least one number.</p>');
             return;
         }
-    
+
         if (!isSpecialCharacter) {
             errorDiv.append('<p>Password should contain at least one special character.</p>');
             return;
         }
+        this.submit();
     });
 });
