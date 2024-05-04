@@ -11,7 +11,7 @@ router.route("/").get(async (req, res) => {});
 
 router.route("/view-all-complaints").get(async (req, res) => {
 	const complaints = await complaintData.getComplaints(
-		{},
+		{ complaintType: "Seller" },
 		{ _id: 1, complaintText: 1, status: 1 }
 	);
 	// console.log(complaints);
