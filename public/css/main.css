@@ -1,7 +1,7 @@
 body {
-  background: #fefefe;
+  background: #7ab291;
   font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
-  font-size: 15pt;
+  font-size: 16pt;
 }
 
 main {
@@ -19,7 +19,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #333;
+  color: #000000;
   margin-bottom: 5px;
 }
 
