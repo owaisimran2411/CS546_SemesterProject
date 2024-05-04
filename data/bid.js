@@ -6,13 +6,16 @@ import { productData } from "./index.js";
 const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 // below function is a template function, rename it!
 const createBid = async (productId, userId, bidAmount) => {
-	productId = helperMethods.checkId(productId);
-	userId = helperMethods.checkId(userId);
+	// productId = helperMethods.checkId(productId);
+	// userId = helperMethods.checkId(userId);
 	argumentProvidedValidation(bidAmount, "Bid Ammount");
 	bidAmount = primitiveTypeValidation(bidAmount, "Bid Amount", "Number");
 	bidAmount = helperMethods.checkBidAmount(bidAmount);
 
+	console.log(productId);
+	console.log("I am in data/bids.js line 16");
 	const product = await productData.getProductById(productId);
+	console.log(product);
 	if (!product) {
 		throw "Cannot add bid: product does not exist.";
 	}
