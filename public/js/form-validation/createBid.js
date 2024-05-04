@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let bidForm = $('#bid-form');
+    let productComplaintForm = $('#product-complaint-form');
     // console.log('test');
     bidForm.submit(function (event) {
         event.preventDefault();
@@ -12,8 +13,8 @@ $(document).ready(function () {
         let url = new URL(currentPath);
         let segments = url.pathname.split('/');
         let productId = segments[segments.length - 1];
-        console.log('Bid amount', bidAmount);
-        console.log('productId', productId);
+        // console.log('Bid amount', bidAmount);
+        // console.log('productId', productId);
         
         if (!bidAmount) {
             errorDiv.append('<p>You must provide a bid value</p>');
@@ -59,5 +60,21 @@ $(document).ready(function () {
 
     });
 
-    
+    productComplaintForm.submit(function (event) {
+        event.preventDefault();
+        let errorDiv = $('#create-product-complaint-errors');
+        errorDiv.empty();
+
+        let complaintMessage = $('#complaintMessage').val();
+        
+        if(!complaintMessage){
+            errorDiv.append('<p>You must provide a complaint message.</p>');
+            return; 
+        }
+        complaintMessage = complaintMessage.trim();
+        if(complaintMessage.length === 0){
+            errorDiv.append('<p>You must provide a complaint message.</p>');
+            return; 
+        }
+    });
 });

@@ -110,7 +110,7 @@ router
 	.route("/register")
 	.get(async (req, res) => {
 		try {
-			return res.render("register", { docTitle: "Register" });
+			return res.render("register", { docTitle: "Register", script_partial: 'register_validate_script' });
 		} catch (error) {
 			return res.status(404).json({ error: error.message });
 		}
@@ -247,7 +247,7 @@ router
 	.route("/login")
 	.get(async (req, res) => {
 		try {
-			return res.render("login", { docTitle: "Login" });
+			return res.render("login", { docTitle: "Login", script_partial: 'login_validate_script' });
 		} catch (error) {
 			return res.status(404).json({ error: error });
 		}
@@ -268,7 +268,7 @@ router
 				helperMethods.checkIsValidPassword(password);
 				const loginResult = await methods.userLogin(username, password);
 				req.session.user = loginResult;
-				return res.json(req.session.user);
+				return res.redirect('/product');
 			} catch (error) {
 				return res.status(400).json({ error: error });
 			}
