@@ -8,6 +8,7 @@ import { configureDotEnv } from "./helper.js";
 import { ObjectId } from "mongodb";
 import { bidData } from "./data/index.js";
 import { productData } from "./data/index.js";
+import { loginRequiredRoutes, isAuthenticated } from "./routes/middleware/authMiddleware.js";
 
 configureDotEnv();
 
@@ -66,6 +67,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
+
+app.use(loginRequiredRoutes, isAuthenticated);
 
 configRoutes(app);
 
