@@ -2,17 +2,34 @@
   <h1>{{ product.productName }}</h1>
   {{!-- <address>Posted by {{product.poster.name}}</address> --}}
   <p>{{ product.productDescription }}</p>
-  <div class="userInfo">
-  <h2>Seller's Info</h2>
-  <dl>
-          <dt>Username:</dt>
-          <dd>{{userInfo.username}}</dd>
-          <dt>Email:</dt>
-          <dd>{{userInfo.emailAddress}}</dd>
-          <dt>bio:</dt>
-          <dd>{{userInfo.bio}}</dd>
-        </dl>
-        <a href="/userInfo/{{userInfo._id}}">Click here for more info</a>
-  </div>
+
+  <h2>PLACE A BID</h2>
+  <article class="new-post">
+    <h1>Make a Post</h1>
+    <form action="/posts" method="POST" class="new-bid-form">
+      <label>
+        Bid $
+        <input type="text" name="bid" placeholder="Bid Amount" value="{{bid.amo}}" class="full-width-input">
+      </label>
+      <br>
+      <button type="submit">Place Bid</button>
+      <button type="reset">Clear</button>
+    </form>
+    {{#if hasErrors}}
+    <ul class="error-list">
+      {{#each errors}}
+      <li>
+        {{this}}
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+  </article>
+
+  <h3>CURRENT BIDS:</h3>
+
+
+
   <a href="/product/">Back to All Posts</a>
 </article>
