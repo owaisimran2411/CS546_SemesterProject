@@ -16,7 +16,7 @@
         {{#if hasErrors}}
         <div id="create-complaint-errors-server">{{errorMessage}}</div>
         {{/if}}
-        <form id="complaint-form" action="/complaint/createComplaint" method="POST">
+        <form id="complaint-form" action="/complaint/createComplaintSeller" method="POST">
             <label for="complaint-message">Complaint:</label>
             <input type="text" id="complaint-message" name="complaintMessage" /><br />
 
@@ -32,7 +32,7 @@
             let segments = url.pathname.split('/');
             let sellerId = segments[segments.length-1];
             let complaintForm = document.getElementById('complaint-form');
-            complaintForm.action = '/complaint/createComplaint/' + sellerId;
+            complaintForm.action = '/complaint/createComplaintSeller/' + sellerId;
         }
         function goBack() {
             window.history.back();

@@ -43,10 +43,8 @@ router.route("/createComplaintSeller/:id").post(async (req, res) => {
 			sellerId,
 			complaintMessage
 		);
-		return res.render("user/userInfo", {
-			script_partial: "bid_validate_script",
-			user,
-		});
+		alert('Complaint has been made sucessfully!');
+		return res.redirect(`/userInfo/${sellerId}`);
 	} catch (e) {
 		console.log("error", e);
 
