@@ -33,6 +33,12 @@ $(document).ready(function () {
             }
             return;
         }
+        let ageCheck = $('#ageConfirmation');
+        if (!ageCheck.prop('checked')) {
+            errorDiv.append(`<p>You must be 13 years or older to have an account.</p>`);
+            return
+        }
+        console.log(ageCheck);
         this.submit();
     });
 });
