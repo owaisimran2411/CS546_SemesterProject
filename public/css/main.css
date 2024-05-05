@@ -209,3 +209,16 @@ td {
 tr:nth-child(even) {
   background-color: lightgray;
 }
+
+/* Coloring error messages red */
+#registerErrors,
+#loginErrors,
+#searchErrors,
+#create-bid-errors,
+#create-product-complaint-errors,
+#user-product-errors,
+#create-complaint-errors-client,
+#create-complaint-errors-server,
+#user-product-errors {
+  color: red;
+}
