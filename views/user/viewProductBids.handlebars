@@ -1,0 +1,41 @@
+<main>
+    <section class="product-single">
+
+        <h1>{{product.productName}}</h1>
+        {{!-- <address>Posted by {{product.poster.name}}</address> --}}
+        <p><strong>Description:</strong>{{product.productDescription}}</p>
+        <p><strong>Condition:</strong> {{product.productCondition}}</p>
+        <p><strong>Serial Number:</strong> {{product.productSerialNumber}}</p>
+        <p><strong>Supported Console:</strong> {{product.productSupportedConsole}}</p>
+        {{!-- Add blue red color if listing is active else red --}}
+        {{#if product.listingActive}}
+        <p><strong>Status:</strong> Listing is active</p>
+        {{else}}
+        <p><strong>Status:</strong> Listing is inactive</p>
+        {{/if}}
+        <p><strong>Asking Price:</strong>${{product.productAskingPrice}}</p>
+        <img src="{{product.productThumbnail}}" width="200" height="150" alt="Product image" />
+        <p><strong>More Images from seller</strong></p>
+        {{!--Other Images Not working --}}
+        {{#each product.otherImages}}
+        <img src="{{this}}" class="otherImages" alt="otherImages" />
+        {{/each}}
+    </section>
+    <br>
+
+    <h1>Bids</h1>
+    <br>
+    <table>
+        <thead>
+            <th>Bid Amount</th>
+        </thead>
+        <tbody>
+            {{#each bids}}
+                <tr>
+                    <td>${{bidAmount}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <a href="/my-products">Back to My Products</a>
+</main>
