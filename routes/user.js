@@ -29,10 +29,10 @@ router.route("/my-products").get(async (req, res) => {
 			product: products,
 		});
 	} catch (e) {
-		res.status(404).render('user/viewListedProductUser', {
-			docTitle: 'My Listed Products',
+		return res.status(404).render("user/viewListedProductUser", {
+			docTitle: "My Listed Products",
 			product: products,
-			errorMessage: e
+			errorMessage: e,
 		});
 	}
 });
@@ -43,13 +43,15 @@ router
 		try {
 			const profileInformation = await userData.getUserById(req.params.id);
 			// console.log(profileInformation);
-			res.render("user/profileUpdate", {
+			return res.render("user/profileUpdate", {
 				...profileInformation,
 				docTitle: "Profile",
 			});
 		} catch (e) {
-			res.json({
-				error: e,
+			return res.status(500).render("errorPage", {
+				errorMessage: e,
+				BackLink_URL: `/userInfo/${req.params.id}`,
+				BackList_Text: "Back to your profile",
 			});
 		}
 	})
@@ -98,7 +100,7 @@ router
 				console.log(reqObj);
 				const updateUser = await userData.updateUser(req.params.id, reqObj);
 			} else {
-				res.json({
+				return res.status(400).json({
 					error: "field not provided",
 				});
 			}
@@ -106,8 +108,10 @@ router
 			// console.log(updateUser);
 			return res.redirect("/login");
 		} catch (e) {
-			res.json({
-				error: e,
+			return res.status(500).render("errorPage", {
+				errorMessage: e,
+				BackLink_URL: `/userInfo/${req.params.id}`,
+				BackList_Text: "Back to View Profile",
 			});
 		}
 	});
@@ -120,7 +124,11 @@ router
 				script_partial: "register_validate_script",
 			});
 		} catch (error) {
-			return res.status(404).json({ error: error.message });
+			return res.status(500).render("errorPage", {
+				errorMessage: "Unable to register",
+				BackLink_URL: `/register`,
+				BackList_Text: "Retry to register",
+			});
 		}
 	})
 	.post(
@@ -293,11 +301,10 @@ router
 	});
 
 router.route("/userInfo/:id").get(async (req, res) => {
-	console.log('param', req.params.id);
-	console.log('user', req.session.user.id);
+	console.log("param", req.params.id);
+	console.log("user", req.session.user.id);
 	if (req.params.id === req.session.user.id) {
-		console.log('balls');
-		return res.redirect('/profile');
+		return res.redirect("/profile");
 	}
 	try {
 		// console.log(req.params.id);
@@ -346,14 +353,12 @@ router.route("/profile").get(async (req, res) => {
 			user: userInfo,
 			products: userProductInfo,
 			bids: userBidInfo,
-			errorMessage: e
+			errorMessage: e,
 		});
 	}
 });
-router
-	.route('/logout')
-	.get(async (req, res) => {
-		req.session.destroy();
-		res.redirect('/login');
-	});
+router.route("/logout").get(async (req, res) => {
+	req.session.destroy();
+	res.redirect("/login");
+});
 export default router;

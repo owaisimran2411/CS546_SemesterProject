@@ -75,6 +75,21 @@ app.set("view engine", "handlebars");
 app.use(loginRequiredRoutes, isAuthenticated);
 app.use(adminAuthenticatedRoutes, isAdminAuthenticated);
 
+app.use("/login", (req, res, next) => {
+	if (req.session && req.session.user && req.session.user.id) {
+		return res.redirect("/");
+	}
+	next();
+});
+
+app.use("/register", (req, res, next) => {
+	if (!req.session.user) {
+		next();
+	} else {
+		res.redirect("/login");
+	}
+});
+
 configRoutes(app);
 
 const { PORT_NUMBER } = process.env;
