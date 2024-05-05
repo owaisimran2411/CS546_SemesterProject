@@ -62,7 +62,6 @@ app.use(
 		secret: "This is a secret.. shhh don't tell anyone",
 		saveUninitialized: false,
 		resave: false,
-		cookie: { maxAge: 60000 },
 	})
 );
 

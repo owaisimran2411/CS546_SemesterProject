@@ -8,13 +8,14 @@ helperMethods.configureDotEnv();
 const router = Router();
 
 router.route("/my-products").get(async (req, res) => {
+	let products;
 	try {
-		const products = await productData.getProducts(
+		products = await productData.getProducts(
 			true,
 			1,
 			1,
 			{
-				productOwnerId: "6632ac2938618897ebdc703b",
+				productOwnerId: req.session.user.id,
 			},
 			{},
 			{
@@ -28,8 +29,10 @@ router.route("/my-products").get(async (req, res) => {
 			product: products,
 		});
 	} catch (e) {
-		res.json({
-			error: e,
+		res.status(404).render('user/viewListedProductUser', {
+			docTitle: 'My Listed Products',
+			product: products,
+			errorMessage: e
 		});
 	}
 });
@@ -290,6 +293,12 @@ router
 	});
 
 router.route("/userInfo/:id").get(async (req, res) => {
+	console.log('param', req.params.id);
+	console.log('user', req.session.user.id);
+	if (req.params.id === req.session.user.id) {
+		console.log('balls');
+		return res.redirect('/profile');
+	}
 	try {
 		// console.log(req.params.id);
 		const user = await userData.getUserById(req.params.id);
@@ -338,4 +347,10 @@ router.route("/profile").get(async (req, res) => {
 		});
 	}
 });
+router
+	.route('/logout')
+	.get(async (req, res) => {
+		req.session.destroy();
+		res.redirect('/login');
+	});
 export default router;

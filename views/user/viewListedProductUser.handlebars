@@ -1,4 +1,7 @@
 <main>
+    <div id="user-product-errors">
+        <p>{{errorMessage}}</p>
+    </div>
     <table>
         <thead>
             <th>ID</th>
@@ -8,17 +11,17 @@
         </thead>
         <tbody>
             {{#each product}}
-                <tr>
-                    
-                    <td>{{_id}}</td>
-                    <td>{{_productName}}</td>
-                    <td>{{productAskingPrice}}</td>
-                    <td>
-                        <button><a href="/product/user/update/{{_id}}">Update</a></button>
-                        <button><a href="/product/user/delete/{{_id}}">Delete</a></button>
-                    </td>
-                    
-                </tr>
+            <tr>
+
+                <td>{{_id}}</td>
+                <td>{{productName}}</td>
+                <td>${{productAskingPrice}}</td>
+                <td>
+                    <button><a href="/product/user/update/{{_id}}">Update</a></button>
+                    <button><a href="/product/user/delete/{{_id}}">Delete</a></button>
+                </td>
+
+            </tr>
             {{/each}}
         </tbody>
     </table>
