@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as helperMethods from "./../helper.js";
-import { productData, userData } from "../data/index.js";
+import { productData, userData, reviewsData } from "../data/index.js";
 
 helperMethods.configureDotEnv();
 
@@ -42,21 +42,25 @@ router
 		}
 	);
 
-router
-	.route('/search')
-	.post(async (req, res) =>{
-		const searchTerm = req.body.search;
-		try{
-			const productList = await productData.getProducts(true, 1, 1, {productName: searchTerm}, 1, 1);
-			return res.render('product/index', {
-				products: productList,
-				docTitle: 'Search Results'
-			});
-		}
-		catch(e){
-			return res.status(500).json({error: e});
-		}
-	});
+router.route("/search").post(async (req, res) => {
+	const searchTerm = req.body.search;
+	try {
+		const productList = await productData.getProducts(
+			true,
+			1,
+			1,
+			{ productName: searchTerm },
+			1,
+			1
+		);
+		return res.render("product/index", {
+			products: productList,
+			docTitle: "Search Results",
+		});
+	} catch (e) {
+		return res.status(500).json({ error: e });
+	}
+});
 
 router
 	.route("/new")
@@ -334,24 +338,37 @@ router
 			return res.redirect("/my-products");
 		}
 	});
-router.route("/:id").get(async (req, res) => {
-	// try {
-	//   req.params.id = validation.checkId(req.params.id, 'Id URL Param');
-	// } catch (e) {
-	//   return res.status(400).json({error: e});
-	// }
-	try {
-		const product = await productData.getProductById(req.params.id);
-		const userInfo = await userData.getUserById(product.productOwnerId);
-		return res.render("product/single", {
-			script_partial: "bid_validate_script",
-			product: product,
-			userInfo,
-			docTitle: "Product Info",
-		});
-	} catch (e) {
-		return res.status(404).json({ error: e });
-	}
-});
+router
+	.route("/:id")
+	.get(async (req, res) => {
+		// try {
+		//   req.params.id = validation.checkId(req.params.id, 'Id URL Param');
+		// } catch (e) {
+		//   return res.status(400).json({error: e});
+		// }
+		try {
+			const product = await productData.getProductById(req.params.id);
+			const userInfo = await userData.getUserById(product.productOwnerId);
+			const reviews = await reviewsData.getReviewByProduct(req.params.id);
+			console.log(reviews);
+			return res.render("product/single", {
+				script_partial: "bid_validate_script",
+				product: product,
+				reviews: reviews,
+				userInfo,
+				docTitle: "Product Info",
+			});
+		} catch (e) {
+			return res.status(404).json({ error: e });
+		}
+	})
+	.post(async (req, res) => {
+		try {
+		} catch (e) {
+			res.status(404).json({
+				error: e,
+			});
+		}
+	});
 
 export default router;
