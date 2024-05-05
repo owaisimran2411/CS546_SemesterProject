@@ -4,6 +4,7 @@ import metricRoutes from "./metric.js";
 import productRoutes from "./product.js";
 import userRoutes from "./user.js";
 import adminRoutes from "./admin.js";
+import reviewRoutes from "./reviews.js";
 
 const constructorMethod = (app) => {
 	app.use("/", userRoutes);
@@ -11,8 +12,9 @@ const constructorMethod = (app) => {
 	app.use("/admin", adminRoutes);
 	app.use("/bid", bidRoute);
 	app.use("/complaint", complaintRoute);
-	app.use('*', (req, res) => {
-		res.redirect('/product');
+	app.use("/review", reviewRoutes);
+	app.use("*", (req, res) => {
+		res.redirect("/product");
 	});
 };
 
