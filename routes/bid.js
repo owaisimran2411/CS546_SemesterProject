@@ -18,15 +18,23 @@ router.route("/createBid").post(async (req, res) => {
 		bidAmount = primitiveTypeValidation(bidAmount, "Bid Amount", "Number");
 		bidAmount = helperMethods.checkBidAmount(bidAmount);
 	} catch (e) {
-		return res.status(400).json({ error: e });
+		return res.status(500).render("errorPage.handlebars", {
+			errorMessage: e,
+			BackLink_URL: `/product/${productId}`,
+			BackList_Text: "Back to View All products",
+		});
 	}
 	try {
 		// console.log(productId);
 		await bidData.createBid(productId, req.session.user.id, bidAmount);
 	} catch (e) {
-		return res.status(500).json({ error: e });
+		return res.status(500).render("errorPage.handlebars", {
+			errorMessage: e,
+			BackLink_URL: `/product/${productId}`,
+			BackList_Text: "Back to View All products",
+		});
 	}
-	return res.json({ bidAmount: bidAmount });
+	return res.status(200).json({ bidAmount: bidAmount });
 });
 
 export default router;
