@@ -329,7 +329,13 @@ router.route("/profile").get(async (req, res) => {
 		return;
 	} catch (e) {
 		console.log("error", e);
-		return res.status(400).json({ error: e });
+		return res.status(400).render("user/profile", {
+			docTitle: "Profile Page",
+			user: userInfo,
+			products: userProductInfo,
+			bids: userBidInfo,
+			errorMessage: e
+		});
 	}
 });
 export default router;
