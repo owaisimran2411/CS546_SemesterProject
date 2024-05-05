@@ -318,9 +318,12 @@ router.route("/userInfo/:id").get(async (req, res) => {
 
 router.route("/profile").get(async (req, res) => {
 	const username = req.session.user.username;
+	let userInfo;
+	let userProductInfo;
+	let userBidInfo;
 	try {
-		const userInfo = await methods.getUserByUsername(username);
-		const userProductInfo = await productData.getProducts(
+		userInfo = await methods.getUserByUsername(username);
+		userProductInfo = await productData.getProducts(
 			true,
 			5,
 			1,
@@ -328,7 +331,7 @@ router.route("/profile").get(async (req, res) => {
 			{},
 			{}
 		);
-		const userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
+		userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
 		res.render("user/profile", {
 			docTitle: "Profile Page",
 			user: userInfo,

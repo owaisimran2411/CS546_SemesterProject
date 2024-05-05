@@ -4,6 +4,7 @@
     <input type="text" id="search-input" name="search" placeholder="Search products...">
     <button type="submit">Search</button>
   </form>
+  <div id="search-errors">{{errorMessage}}</div>
   {{#each products}}
   <article class="product">
     <img src="{{productThumbnail}}" width="200" height="150" alt="Product image">

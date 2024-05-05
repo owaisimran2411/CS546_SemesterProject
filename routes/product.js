@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as helperMethods from "./../helper.js";
 import { productData, userData } from "../data/index.js";
-
+const { argumentProvidedValidation, primitiveTypeValidation } = helperMethods;
 helperMethods.configureDotEnv();
 
 const router = Router();
@@ -9,14 +9,21 @@ const router = Router();
 router
 	.route("/")
 	.get(async (req, res) => {
+		let productList;
 		try {
-			const productList = await productData.getProducts(true, 8, 1, 1, 1, 1);
+			productList = await productData.getProducts(true, 8, 1, 1, 1, 1);
 			return res.render("product/index", {
 				products: productList,
 				docTitle: "Available Products",
+				script_partial: 'search_validate_script'
 			});
 		} catch (e) {
-			res.status(500).json({ error: e });
+			return res.status(500).render('product/index', {
+				products: productList,
+				docTitle: 'Available Products',
+				script_partial: 'search_validate_script',
+				errorMessage: e
+			});
 		}
 	})
 	.post(
@@ -45,16 +52,36 @@ router
 router
 	.route('/search')
 	.post(async (req, res) =>{
-		const searchTerm = req.body.search;
+		let searchTerm = req.body.search;
+		let productList;
 		try{
-			const productList = await productData.getProducts(true, 1, 1, {productName: searchTerm}, 1, 1);
+			argumentProvidedValidation(searchTerm, 'Search Term');
+			searchTerm = primitiveTypeValidation(searchTerm, 'Search Term', 'String');
+		}
+		catch(e){
+			return res.status(400).render('product/index', {
+				products: productList,
+				docTitle: 'Available Products',
+				errorMessage: e,
+				script_partial: 'search_validate_script'
+			});
+		}
+
+		try{
+			productList = await productData.getProducts(true, 1, 1, {productName: searchTerm}, 1, 1);
 			return res.render('product/index', {
 				products: productList,
-				docTitle: 'Search Results'
+				docTitle: 'Search Results',
+				script_partial: 'search_validate_script'
 			});
 		}
 		catch(e){
-			return res.status(500).json({error: e});
+			return res.status(500).render('product/index', {
+				products: productList,
+				docTitle: 'Available Products',
+				errorMessage: e,
+				script_partial: 'search_validate_script'
+			});
 		}
 	});
 
