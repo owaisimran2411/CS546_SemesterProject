@@ -3,11 +3,47 @@ import * as helperMethods from "./../helper.js";
 
 import { productData, complaintData, userData } from "./../data/index.js";
 
+import bcrypt from "bcryptjs";
+
 helperMethods.configureDotEnv();
 
 const router = Router();
 
-router.route("/").get(async (req, res) => {});
+router.route("/").get(async (req, res) => {
+	res.render("admin/homePage", { adminAuthenticated: true });
+});
+
+router
+	.route("/login")
+	.get(async (req, res) => {
+		if (req.session && req.session.user && req.session.user.adminAuthenicated) {
+			return res.redirect("/");
+		} else {
+			return res.render("admin/userLogin", {
+				adminAuthenticated: false,
+			});
+		}
+	})
+	.post(async (req, res) => {
+		if (
+			req.body.username &&
+			req.body.username.trim().length > 0 &&
+			req.body.username.toLowerCase().trim() === process.env.ADMIN_USERNAME &&
+			req.body.password &&
+			req.body.password.trim().length > 0 &&
+			req.body.password.trim() === process.env.ADMIN_PASSWORD
+		) {
+			req.session.admin = {
+				user: req.body.username.trim().toLowerCase(),
+				adminAuthenicated: "authenticated",
+			};
+			res.redirect("/admin");
+		} else {
+			res.render("admin/userLogin", {
+				errorMessage: "Incorrect Username (OR) Password",
+			});
+		}
+	});
 
 router.route("/view-all-complaints").get(async (req, res) => {
 	const complaints = await complaintData.getComplaints(
@@ -18,6 +54,7 @@ router.route("/view-all-complaints").get(async (req, res) => {
 	res.render("admin/view", {
 		complaints: complaints,
 		viewComplaints: true,
+		adminAuthenticated: true,
 	});
 });
 
@@ -30,6 +67,7 @@ router.route("/view-all-complaints-product").get(async (req, res) => {
 	res.render("admin/view", {
 		complaints: complaints,
 		viewProductComplaints: true,
+		adminAuthenticated: true,
 	});
 });
 
@@ -52,6 +90,7 @@ router.route("/view-all-products").get(async (req, res) => {
 	return res.render("admin/view", {
 		products: productsListed,
 		viewProducts: true,
+		adminAuthenticated: true,
 	});
 });
 
@@ -61,6 +100,7 @@ router.route("/view-all-users").get(async (req, res) => {
 	res.render("admin/view", {
 		users: usersList,
 		viewUsers: true,
+		adminAuthenticated: true,
 	});
 });
 

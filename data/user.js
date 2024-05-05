@@ -235,6 +235,7 @@ const userLogin = async (username, password) => {
 	argumentProvidedValidation(username, "Username");
 	argumentProvidedValidation(password, "Password");
 	username = primitiveTypeValidation(username, "Username", "String");
+	username = username.toLowerCase();
 	password = primitiveTypeValidation(password, "Password", "String");
 	helperMethods.checkIsValidPassword(password);
 	const userCollection = await users();

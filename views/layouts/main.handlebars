@@ -11,6 +11,7 @@
 
 <body>
 
+    {{!-- {{#ifCond adminAuthenticated}} --}}
     <nav id="navbar" class="navbar">
         <ul>
             <li><a href="/product">Home</a></li>
@@ -20,8 +21,16 @@
             <li><a href="/login">Login</a></li>
             <li><a href="/register">Register</a></li>
             <li><a href="/logout">Logout</a></li>
+
+            {{#ifCond adminAuthenticated '===' true}}
+            <li><a href="/admin/view-all-complaints">View All Seller Complaints</a></li>
+            <li><a href="/admin/view-all-complaints-product">View All Product Complaints</a></li>
+            <li><a href="/admin/view-all-products">View All Products</a></li>
+            <li><a href="/admin/view-all-users">View All Users</a></li>
+            {{/ifCond}}
         </ul>
     </nav>
+    {{!-- {{/ifCond}} --}}
 
     {{{body}}}
     <script src="https://code.jquery.com/jquery-3.7.1.js"
