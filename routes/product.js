@@ -43,6 +43,22 @@ router
 	);
 
 router
+	.route('/search')
+	.post(async (req, res) =>{
+		const searchTerm = req.body.search;
+		try{
+			const productList = await productData.getProducts(true, 1, 1, {productName: searchTerm}, 1, 1);
+			return res.render('product/index', {
+				products: productList,
+				docTitle: 'Search Results'
+			});
+		}
+		catch(e){
+			return res.status(500).json({error: e});
+		}
+	});
+
+router
 	.route("/new")
 	.get(async (req, res) => {
 		try {
