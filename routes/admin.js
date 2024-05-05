@@ -10,7 +10,7 @@ helperMethods.configureDotEnv();
 const router = Router();
 
 router.route("/").get(async (req, res) => {
-	res.render("admin/homePage", {
+	return res.render("admin/homePage", {
 		adminAuthenticated: true,
 		docTitle: "Admin Home",
 	});
@@ -56,7 +56,7 @@ router.route("/view-all-complaints").get(async (req, res) => {
 		{ _id: 1, complaintText: 1, status: 1 }
 	);
 	// console.log(complaints);
-	res.render("admin/view", {
+	return res.render("admin/view", {
 		complaints: complaints,
 		viewComplaints: true,
 		adminAuthenticated: true,
@@ -70,7 +70,7 @@ router.route("/view-all-complaints-product").get(async (req, res) => {
 		{ _id: 1, complaintText: 1, status: 1 }
 	);
 	// console.log(complaints);
-	res.render("admin/view", {
+	return res.render("admin/view", {
 		complaints: complaints,
 		viewProductComplaints: true,
 		adminAuthenticated: true,
@@ -105,7 +105,7 @@ router.route("/view-all-products").get(async (req, res) => {
 router.route("/view-all-users").get(async (req, res) => {
 	const usersList = await userData.getUser();
 	// console.log(usersList);
-	res.render("admin/view", {
+	return res.render("admin/view", {
 		users: usersList,
 		viewUsers: true,
 		adminAuthenticated: true,
@@ -137,8 +137,10 @@ router.route("/user/:userID/:action").get(async (req, res) => {
 		}
 		return res.redirect("/admin/view-all-users");
 	} catch (e) {
-		return res.json({
-			error: e,
+		return res.status(500).render("errorPage.handlebars", {
+			errorMessage: e,
+			BackLink_URL: "/admin/view-all-users",
+			BackList_Text: "Back to View All Users",
 		});
 	}
 });
@@ -161,8 +163,10 @@ router.route("/complaint/:complaintID/:statusUpdate").get(async (req, res) => {
 		console.log("Admin", complaintUpdate);
 		return res.redirect(complaintUpdate);
 	} catch (e) {
-		return res.json({
-			error: e,
+		return res.status(500).render("errorPage.handlebars", {
+			errorMessage: e,
+			BackLink_URL: "/admin/",
+			BackList_Text: "Back to Home Page",
 		});
 	}
 });
