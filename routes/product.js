@@ -53,8 +53,12 @@ router.route("/search").post(async (req, res) => {
 	let searchTerm = req.body.search;
 	let productList;
 	try {
-		argumentProvidedValidation(searchTerm, "Search Term");
-		searchTerm = primitiveTypeValidation(searchTerm, "Search Term", "String");
+		helperMethods.argumentProvidedValidation(searchTerm, "Search Term");
+		searchTerm = helperMethods.primitiveTypeValidation(
+			searchTerm,
+			"Search Term",
+			"String"
+		);
 	} catch (e) {
 		return res.status(400).render("product/index", {
 			products: productList,
@@ -69,7 +73,7 @@ router.route("/search").post(async (req, res) => {
 			true,
 			1,
 			1,
-			{ productName: searchTerm },
+			{ productName: new RegExp(searchTerm, "i") },
 			1,
 			1
 		);

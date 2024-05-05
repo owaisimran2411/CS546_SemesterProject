@@ -10,7 +10,10 @@ helperMethods.configureDotEnv();
 const router = Router();
 
 router.route("/").get(async (req, res) => {
-	res.render("admin/homePage", { adminAuthenticated: true });
+	res.render("admin/homePage", {
+		adminAuthenticated: true,
+		docTitle: "Admin Home",
+	});
 });
 
 router
@@ -21,6 +24,7 @@ router
 		} else {
 			return res.render("admin/userLogin", {
 				adminAuthenticated: false,
+				docTitle: "Admin Login",
 			});
 		}
 	})
@@ -37,10 +41,11 @@ router
 				user: req.body.username.trim().toLowerCase(),
 				adminAuthenicated: "authenticated",
 			};
-			res.redirect("/admin");
+			return res.redirect("/admin");
 		} else {
-			res.render("admin/userLogin", {
+			return res.render("admin/userLogin", {
 				errorMessage: "Incorrect Username (OR) Password",
+				docTitle: "Admin Login",
 			});
 		}
 	});
@@ -55,6 +60,7 @@ router.route("/view-all-complaints").get(async (req, res) => {
 		complaints: complaints,
 		viewComplaints: true,
 		adminAuthenticated: true,
+		docTitle: "Admin - View All Complaints (Seller)",
 	});
 });
 
@@ -68,6 +74,7 @@ router.route("/view-all-complaints-product").get(async (req, res) => {
 		complaints: complaints,
 		viewProductComplaints: true,
 		adminAuthenticated: true,
+		docTitle: "Admin View All Complaints (Products)",
 	});
 });
 
@@ -91,6 +98,7 @@ router.route("/view-all-products").get(async (req, res) => {
 		products: productsListed,
 		viewProducts: true,
 		adminAuthenticated: true,
+		docTitle: "Admin View All Products",
 	});
 });
 
@@ -101,6 +109,7 @@ router.route("/view-all-users").get(async (req, res) => {
 		users: usersList,
 		viewUsers: true,
 		adminAuthenticated: true,
+		docTitle: "Admin View All Users",
 	});
 });
 

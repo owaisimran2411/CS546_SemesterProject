@@ -34,6 +34,7 @@ const createProduct_Phase1 = async (
 		productThumbnail: productThumbnail,
 		productOwnerId: productOwnerId,
 		listingActive: false,
+		// productNameSearchOptimized: productName.toLowerCase(),
 	};
 
 	const productCollection = await products();

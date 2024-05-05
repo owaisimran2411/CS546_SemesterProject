@@ -126,8 +126,6 @@ input {
   text-decoration: underline;
 }
 
-<<<<<<< HEAD
-=======
 /* Home/main product page css */
 .main-products-container {
   display: flex;
@@ -224,7 +222,6 @@ tr:nth-child(even) {
 #user-product-errors {
   color: red;
 }
->>>>>>> jonathan-final-fixes
 .card-reviews {
   display: inline;
   max-width: 7rem;
