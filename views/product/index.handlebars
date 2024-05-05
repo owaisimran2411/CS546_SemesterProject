@@ -1,16 +1,20 @@
 <section>
   <h1>Products</h1>
-  <form id="product-search-form" action="/product/search" method="POST">
-    <input type="text" id="search-input" name="search" placeholder="Search products...">
-    <button type="submit">Search</button>
-  </form>
+  <div class="search-form-container">
+    <form id="product-search-form" action="/product/search" method="POST">
+      <input type="text" id="search-input" name="search" placeholder="Search products...">
+      <button type="submit">Search</button>
+    </form>
+  </div>
   <div id="search-errors">{{errorMessage}}</div>
-  {{#each products}}
-  <article class="product">
-    <img src="{{productThumbnail}}" width="200" height="150" alt="Product image">
-    <h2><a href="/product/{{_id}}">{{productName}}</a></h2>
-    <p><strong>Description:</strong>{{productDescription}}</p>
-    <p><strong>Asking Price:</strong>${{productAskingPrice}}</p>
-  </article>
-  {{/each}}
+  <div class="main-products-container">
+    {{#each products}}
+    <article class="product">
+      <img src="{{productThumbnail}}" width="200" height="150" alt="Product image" class="thumbnail-image">
+      <h2><a href="/product/{{_id}}">{{productName}}</a></h2>
+      <p><strong>Description:</strong>{{productDescription}}</p>
+      <p><strong>Asking Price:</strong>${{productAskingPrice}}</p>
+    </article>
+    {{/each}}
+  </div>
 </section>

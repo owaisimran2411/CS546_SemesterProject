@@ -8,7 +8,7 @@
     "start": "node app.js",
     "seed": "node seed.js"
   },
-  "author": "Jasmine Cairns (CWID: 10458274)\nMuhammad Owais Imran (CWID: 20025554)",
+  "author": "Jasmine Cairns (CWID: 10458274)\nMuhammad Owais Imran (CWID: 20025554) \nJonathan Memoli (CWID: 20006357)",
   "license": "ISC",
   "keywords": [],
   "dependencies": {
