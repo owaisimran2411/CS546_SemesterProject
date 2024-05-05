@@ -21,6 +21,18 @@ router.route("/view-all-complaints").get(async (req, res) => {
 	});
 });
 
+router.route("/view-all-complaints-product").get(async (req, res) => {
+	const complaints = await complaintData.getComplaints(
+		{ complaintType: "Product" },
+		{ _id: 1, complaintText: 1, status: 1 }
+	);
+	// console.log(complaints);
+	res.render("admin/view", {
+		complaints: complaints,
+		viewProductComplaints: true,
+	});
+});
+
 router.route("/view-all-products").get(async (req, res) => {
 	const productsListed = await productData.getProducts(
 		true,
@@ -92,10 +104,17 @@ router.route("/product/:productID/:action").get(async (req, res) => {
 });
 
 router.route("/complaint/:complaintID/:statusUpdate").get(async (req, res) => {
-	const complaintUpdate = await complaintData.updateComplaintStatus(
-		req.params.complaintID,
-		req.params.statusUpdate
-	);
-	return res.redirect("/admin/view-all-complaints");
+	try {
+		const complaintUpdate = await complaintData.updateComplaintStatus(
+			req.params.complaintID,
+			req.params.statusUpdate
+		);
+		console.log("Admin", complaintUpdate);
+		return res.redirect(complaintUpdate);
+	} catch (e) {
+		return res.json({
+			error: e,
+		});
+	}
 });
 export default router;

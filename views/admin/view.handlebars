@@ -81,7 +81,7 @@
                             
                         </select>
                         <button>
-                            <a href="/admin/complaint/{{_id}}/pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
+                            <a href="/admin/complaint/{{_id}}/{{status}}" id="actionButtonComplaint-{{_id}}">Update Status</a>
                         </button>
                     </td>
                 </tr>
@@ -120,6 +120,63 @@
                                 <a href="/admin/user/{{_id}}/enable">Enable</a>
                             </button>
                         {{/if}}
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+{{/if}}
+
+{{#if viewProductComplaints}}
+<main>
+    <table class="myTable">
+        <thead>
+            <th>ID</th>
+            <th>Details</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {{#each complaints}}
+                <tr>
+                    <td>{{_id}}</td>
+                    <td>{{complaintText}}</td>
+                    <td>{{status}}</td>
+                    <td>
+                        <select id="complaintStatus" name="{{_id}}">
+                            {{#ifCond status '===' 'Pending'}}
+                                <option value="Pending" selected="true">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Active'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active" selected="true">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Resolved'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved" selected="true">Resolved</option>
+                                <option value="Discarded">Discarded</option>
+                            {{/ifCond}}
+
+                            {{#ifCond status '===' 'Discarded'}}
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Discarded" selected="true">Discarded</option>
+                            {{/ifCond}}
+                            
+                        </select>
+                        <button>
+                            <a href="/admin/complaint/{{_id}}/Pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
+                        </button>
                     </td>
                 </tr>
             {{/each}}

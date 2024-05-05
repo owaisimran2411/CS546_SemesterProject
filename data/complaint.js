@@ -134,6 +134,13 @@ const getComplaints = async (searchFilters, filters) => {
 		);
 	}
 
+	if (searchFilters._id) {
+		helperMethods.argumentProvidedValidation(searchFilters._id, "_id");
+		complaint._id = new ObjectId(
+			helperMethods.primitiveTypeValidation(searchFilters._id, "_id", "String")
+		);
+	}
+
 	if (searchFilters.userId) {
 		helperMethods.argumentProvidedValidation(searchFilters.userId, "userId");
 		complaint.userId = helperMethods.primitiveTypeValidation(
@@ -178,11 +185,15 @@ const getComplaints = async (searchFilters, filters) => {
 			"String"
 		);
 	}
-
-	const searchResults = await complaintsCollection
-		.find(complaint)
-		.project(filter)
-		.toArray();
+	let searchResults = {};
+	if (filter != {}) {
+		searchResults = await complaintsCollection
+			.find(complaint)
+			.project(filter)
+			.toArray();
+	} else {
+		searchResults = await complaintsCollection.find(complaint).toArray();
+	}
 
 	return searchResults;
 };
@@ -207,10 +218,13 @@ const updateComplaintStatus = async (complaintId, updateStatus) => {
 		}
 	);
 
-	if (userComplaintsUpdated.modifiedCount != 1)
+	if (userComplaintsUpdated.matchedCount != 1)
 		throw "Unable to update complaint";
 
-	return "success";
+	const data = await getComplaints({ _id: complaintId });
+	return data[0].complaintType === "Seller"
+		? "/admin/view-all-complaints"
+		: "/admin/view-all-complaints-product";
 };
 
 const methods = {

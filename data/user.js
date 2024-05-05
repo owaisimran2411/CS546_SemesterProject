@@ -74,6 +74,12 @@ const userSignUp = async (
 	// hashing the password
 	password = await bcrypt.hash(password, 16);
 
+	username = username.toLowerCase();
+	emailAddress = emailAddress.toLowerCase();
+	securityAnswerOne = securityAnswerOne.toLowerCase();
+	securityAnswerTwo = securityAnswerTwo.toLowerCase();
+	securityQuestionOne = securityQuestionOne.toLowerCase();
+	securityQuestionTwo = securityQuestionTwo.toLowerCase();
 	const newUser = {
 		_id: id,
 		username: username,
@@ -123,7 +129,7 @@ const getUserByEmail = async (emailAddress) => {
 		"Email Address",
 		"String"
 	);
-
+	emailAddress = emailAddress.toLowerCase();
 	const userCollection = await users();
 	const user = await userCollection.findOne({ emailAddress: emailAddress });
 	if (!user) throw "Error: User not found";
@@ -133,6 +139,8 @@ const getUserByEmail = async (emailAddress) => {
 const getUserByUsername = async (username) => {
 	argumentProvidedValidation(username, "Username");
 	username = primitiveTypeValidation(username, "Username", "String");
+
+	username = username.toLowerCase();
 
 	const userCollection = await users();
 	const user = await userCollection.findOne({ username: username });
@@ -181,6 +189,7 @@ const updateUser = async (id, updateInfo) => {
 			"Gender",
 			"String"
 		);
+		updateInfo.gender = updateInfo.gender.toLowerCase();
 	}
 	if (updateInfo.bio) {
 		updateInfo.bio = primitiveTypeValidation(updateInfo.bio, "Bio", "String");

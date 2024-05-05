@@ -24,7 +24,7 @@ router.route("/my-products").get(async (req, res) => {
 			}
 		);
 		return res.render("user/viewListedProductUser", {
-			docTitle: 'My Listed Products',
+			docTitle: "My Listed Products",
 			product: products,
 		});
 	} catch (e) {
@@ -42,7 +42,7 @@ router
 			// console.log(profileInformation);
 			res.render("user/profileUpdate", {
 				...profileInformation,
-				docTitle: 'Profile'
+				docTitle: "Profile",
 			});
 		} catch (e) {
 			res.json({
@@ -112,7 +112,10 @@ router
 	.route("/register")
 	.get(async (req, res) => {
 		try {
-			return res.render("register", { docTitle: "Register", script_partial: 'register_validate_script' });
+			return res.render("register", {
+				docTitle: "Register",
+				script_partial: "register_validate_script",
+			});
 		} catch (error) {
 			return res.status(404).json({ error: error.message });
 		}
@@ -161,6 +164,7 @@ router
 						"username",
 						"String"
 					);
+					username = username.toLowerCase();
 					password = helperMethods.primitiveTypeValidation(
 						req.body.password,
 						"password",
@@ -220,7 +224,7 @@ router
 						securityAnswerOne.toLowerCase(),
 						securityQuestionTwo.toLowerCase(),
 						securityAnswerTwo.toLowerCase(),
-						emailAddress,
+						emailAddress.toLowerCase(),
 						phoneNumber,
 						gender.toLowerCase(),
 						bio,
@@ -249,7 +253,10 @@ router
 	.route("/login")
 	.get(async (req, res) => {
 		try {
-			return res.render("login", { docTitle: "Login", script_partial: 'login_validate_script' });
+			return res.render("login", {
+				docTitle: "Login",
+				script_partial: "login_validate_script",
+			});
 		} catch (error) {
 			return res.status(404).json({ error: error });
 		}
@@ -262,6 +269,7 @@ router
 					"Username",
 					"String"
 				);
+				username = username.toLowerCase();
 				let password = helperMethods.primitiveTypeValidation(
 					req.body.password,
 					"Password",
@@ -270,7 +278,7 @@ router
 				helperMethods.checkIsValidPassword(password);
 				const loginResult = await methods.userLogin(username, password);
 				req.session.user = loginResult;
-				return res.redirect('/product');
+				return res.redirect("/product");
 			} catch (error) {
 				return res.status(400).json({ error: error });
 			}
@@ -287,7 +295,11 @@ router.route("/userInfo/:id").get(async (req, res) => {
 		const user = await userData.getUserById(req.params.id);
 		return res.render(
 			"user/userInfo",
-			{ script_partial: "bid_validate_script", user, docTitle: 'Seller Profile' }
+			{
+				script_partial: "bid_validate_script",
+				user,
+				docTitle: "Seller Profile",
+			}
 			// {product: product, userInfo}
 		);
 	} catch (e) {
