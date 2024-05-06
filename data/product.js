@@ -34,7 +34,7 @@ const createProduct_Phase1 = async (
 		productThumbnail: productThumbnail,
 		productOwnerId: productOwnerId,
 		listingActive: false,
-		// productNameSearchOptimized: productName.toLowerCase(),
+		comments: [],
 	};
 
 	const productCollection = await products();
@@ -411,6 +411,21 @@ const updateProductInformation = async (productID, updateObject) => {
 			"listingActive",
 			"Boolean"
 		);
+	}
+
+	if ("comments" in updateObject) {
+		updateProductInfo.comments = helperMethods.primitiveTypeValidation(
+			updateObject.comments,
+			"comments",
+			"Array"
+		);
+		for (let i = 0; i < updateProductInfo.comments.length; i++) {
+			updateProductInfo.comments[i] = helperMethods.primitiveTypeValidation(
+				updateProductInfo.comments[i],
+				"comment",
+				"String"
+			);
+		}
 	}
 	const productCollection = await products();
 	const updateInfo = await productCollection.updateOne(
