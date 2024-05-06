@@ -221,7 +221,10 @@ tr:nth-child(even) {
 #create-complaint-errors-server,
 #user-product-errors {
   color: red;
+  background-color: white;
+  font-weight: bold;
 }
+
 .card-reviews {
   display: inline;
   max-width: 7rem;
@@ -237,23 +240,23 @@ tr:nth-child(even) {
   font-size: 3vh;
   cursor: pointer;
 }
- 
+
 .one {
   color: rgb(255, 0, 0);
 }
- 
+
 .two {
   color: rgb(255, 106, 0);
 }
- 
+
 .three {
   color: rgb(251, 255, 120);
 }
- 
+
 .four {
   color: rgb(255, 255, 0);
 }
- 
+
 .five {
   color: rgb(24, 159, 14);
 }
