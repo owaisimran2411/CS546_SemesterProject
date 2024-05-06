@@ -19,6 +19,22 @@
   <img src="{{this}}" class="otherImages" alt="otherImages" />
   {{/each}}
 
+  <h1>Comments</h1>
+  <br>
+  <form action="/product/user-comment/{{product._id}}" method="POST">
+    <label for="comment">Message</label>
+    <input type="text" name="comment" id="comment" required>
+
+    <button type="submit">Create Comment</button>
+  </form>
+  <br>
+  <br>
+  {{#each product.comments}}
+    <b>Comment: </b><q>{{this}}</q>
+    <br>
+  {{/each}}
+
+
   <h1>Reviews</h1>
   {{#each reviews}}
   

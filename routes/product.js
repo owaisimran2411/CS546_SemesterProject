@@ -82,7 +82,7 @@ router.route("/search").post(async (req, res) => {
 			true,
 			1,
 			1,
-			{ productName: new RegExp(searchTerm, "i") },
+			{ productName: new RegExp(searchTerm, "i"), listingActive: true },
 			1,
 			1
 		);
@@ -265,6 +265,31 @@ router
 		}
 	);
 
+router.route("/user-comment/:productID").post(async (req, res) => {
+	// console.log(req.body);
+
+	let productID = helperMethods.primitiveTypeValidation(
+		req.params.productID,
+		"productID",
+		"String"
+	);
+	if (req.body.comment) {
+		let comment = helperMethods.primitiveTypeValidation(
+			req.body.comment,
+			"comments",
+			"String"
+		);
+		const productInformation = await productData.getProductById(productID);
+		console.log(productInformation);
+		let newCommentList = productInformation.comments;
+		newCommentList.push(comment);
+		console.log(newCommentList);
+		const prouctUpdate = await productData.updateProductInformation(productID, {
+			comments: newCommentList,
+		});
+		return res.redirect(`/product/${productID}`);
+	}
+});
 router
 	.route("/user/:action/:productID")
 	.get(async (req, res) => {

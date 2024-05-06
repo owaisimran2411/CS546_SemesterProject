@@ -338,6 +338,7 @@ router.route("/userInfo/:id").get(async (req, res) => {
 
 router.route("/profile").get(async (req, res) => {
 	const username = req.session.user.username;
+	// console.log(username);
 	let userInfo;
 	let userProductInfo;
 	let userBidInfo;
@@ -352,13 +353,12 @@ router.route("/profile").get(async (req, res) => {
 			{}
 		);
 		userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
-		res.render("user/profile", {
+		return res.render("user/profile", {
 			docTitle: "Profile Page",
 			user: userInfo,
 			products: userProductInfo,
 			bids: userBidInfo,
 		});
-		return;
 	} catch (e) {
 		console.log("error", e);
 		return res.status(400).render("user/profile", {
