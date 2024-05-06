@@ -30,7 +30,7 @@ $(document).ready(function () {
 		productDescription = productDescription.trim();
 		productCondition = productCondition.trim();
 		productSerialNumber = productSerialNumber.trim();
-		productSupportedConsole = productSupportedConsole.trim();
+		// productSupportedConsole = productSupportedConsole.trim();
 
 		if (productCondition.length === 0) {
 			phase2ErrorDiv.append("<p>You must provide product condition");
@@ -44,10 +44,10 @@ $(document).ready(function () {
 			phase2ErrorDiv.append("<p>You must provide product serial number");
 			return;
 		}
-		if (productSupportedConsole.length === 0) {
-			phase2ErrorDiv.append("<p>You must provide product supported console");
-			return;
-		}
+		// if (productSupportedConsole.length === 0) {
+		// 	phase2ErrorDiv.append("<p>You must provide product supported console");
+		// 	return;
+		// }
 		if (productAskingPrice <= 0) {
 			phase2ErrorDiv.append("<p>Product Asking Price can not be less than 0");
 			return;
