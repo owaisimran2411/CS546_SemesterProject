@@ -2,7 +2,6 @@
 <main>
     <table>
         <thead>
-            <th>ID</th>
             <th>Name</th>
             <th>Asking Price</th>
             <th>Status</th>
@@ -10,23 +9,22 @@
         </thead>
         <tbody>
             {{#each products}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{productName}}</td>
-                    <td>{{productAskingPrice}}</td>
-                    <td>{{listingActive}}</td>
-                    <td>
-                        {{#if listingActive}}
-                            <button>
-                                <a href="/admin/product/{{_id}}/disable">Disable</a>
-                            </button>
-                        {{else}}
-                            <button>
-                                <a href="/admin/product/{{_id}}/enable">Enable</a>
-                            </button>
-                        {{/if}}
-                    </td>
-                </tr>
+            <tr>
+                <td>{{productName}}</td>
+                <td>{{productAskingPrice}}</td>
+                <td>{{listingActive}}</td>
+                <td>
+                    {{#if listingActive}}
+                    <button>
+                        <a href="/admin/product/{{_id}}/disable">Disable</a>
+                    </button>
+                    {{else}}
+                    <button>
+                        <a href="/admin/product/{{_id}}/enable">Enable</a>
+                    </button>
+                    {{/if}}
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
@@ -38,53 +36,52 @@
 <main>
     <table class="myTable">
         <thead>
-            <th>ID</th>
             <th>Details</th>
             <th>Status</th>
             <th>Actions</th>
         </thead>
         <tbody>
             {{#each complaints}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{complaintText}}</td>
-                    <td>{{status}}</td>
-                    <td>
-                        <select id="complaintStatus" name="{{_id}}">
-                            {{#ifCond status '===' 'Pending'}}
-                                <option value="Pending" selected="true">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+            <tr>
+                <td>{{complaintText}}</td>
+                <td>{{status}}</td>
+                <td>
+                    <select id="complaintStatus" name="{{_id}}">
+                        {{#ifCond status '===' 'Pending'}}
+                        <option value="Pending" selected="true">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Active'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active" selected="true">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+                        {{#ifCond status '===' 'Active'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active" selected="true">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Resolved'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved" selected="true">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+                        {{#ifCond status '===' 'Resolved'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved" selected="true">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Discarded'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded" selected="true">Discarded</option>
-                            {{/ifCond}}
-                            
-                        </select>
-                        <button>
-                            <a href="/admin/complaint/{{_id}}/{{status}}" id="actionButtonComplaint-{{_id}}">Update Status</a>
-                        </button>
-                    </td>
-                </tr>
+                        {{#ifCond status '===' 'Discarded'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded" selected="true">Discarded</option>
+                        {{/ifCond}}
+
+                    </select>
+                    <button>
+                        <a href="/admin/complaint/{{_id}}/{{status}}" id="actionButtonComplaint-{{_id}}">Update
+                            Status</a>
+                    </button>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
@@ -95,7 +92,6 @@
 <main>
     <table>
         <thead>
-            <th>ID</th>
             <th>Email Address</th>
             <th>Phone Number</th>
             <th>username</th>
@@ -104,24 +100,23 @@
         </thead>
         <tbody>
             {{#each users}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{emailAddress}}</td>
-                    <td>{{phoneNumber}}</td>
-                    <td>{{username}}</td>
-                    <td>{{userActive}}</td>
-                    <td>
-                        {{#if userActive}}
-                            <button>
-                                <a href="/admin/user/{{_id}}/disable">Disable</a>
-                            </button>
-                        {{else}}
-                            <button>
-                                <a href="/admin/user/{{_id}}/enable">Enable</a>
-                            </button>
-                        {{/if}}
-                    </td>
-                </tr>
+            <tr>
+                <td>{{emailAddress}}</td>
+                <td>{{phoneNumber}}</td>
+                <td>{{username}}</td>
+                <td>{{userActive}}</td>
+                <td>
+                    {{#if userActive}}
+                    <button>
+                        <a href="/admin/user/{{_id}}/disable">Disable</a>
+                    </button>
+                    {{else}}
+                    <button>
+                        <a href="/admin/user/{{_id}}/enable">Enable</a>
+                    </button>
+                    {{/if}}
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
@@ -132,53 +127,51 @@
 <main>
     <table class="myTable">
         <thead>
-            <th>ID</th>
             <th>Details</th>
             <th>Status</th>
             <th>Actions</th>
         </thead>
         <tbody>
             {{#each complaints}}
-                <tr>
-                    <td>{{_id}}</td>
-                    <td>{{complaintText}}</td>
-                    <td>{{status}}</td>
-                    <td>
-                        <select id="complaintStatus" name="{{_id}}">
-                            {{#ifCond status '===' 'Pending'}}
-                                <option value="Pending" selected="true">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+            <tr>
+                <td>{{complaintText}}</td>
+                <td>{{status}}</td>
+                <td>
+                    <select id="complaintStatus" name="{{_id}}">
+                        {{#ifCond status '===' 'Pending'}}
+                        <option value="Pending" selected="true">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Active'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active" selected="true">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+                        {{#ifCond status '===' 'Active'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active" selected="true">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Resolved'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved" selected="true">Resolved</option>
-                                <option value="Discarded">Discarded</option>
-                            {{/ifCond}}
+                        {{#ifCond status '===' 'Resolved'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved" selected="true">Resolved</option>
+                        <option value="Discarded">Discarded</option>
+                        {{/ifCond}}
 
-                            {{#ifCond status '===' 'Discarded'}}
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Discarded" selected="true">Discarded</option>
-                            {{/ifCond}}
-                            
-                        </select>
-                        <button>
-                            <a href="/admin/complaint/{{_id}}/Pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
-                        </button>
-                    </td>
-                </tr>
+                        {{#ifCond status '===' 'Discarded'}}
+                        <option value="Pending">Pending</option>
+                        <option value="Active">Active</option>
+                        <option value="Resolved">Resolved</option>
+                        <option value="Discarded" selected="true">Discarded</option>
+                        {{/ifCond}}
+
+                    </select>
+                    <button>
+                        <a href="/admin/complaint/{{_id}}/Pending" id="actionButtonComplaint-{{_id}}">Update Status</a>
+                    </button>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
