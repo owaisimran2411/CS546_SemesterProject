@@ -260,3 +260,8 @@ tr:nth-child(even) {
 .five {
   color: rgb(24, 159, 14);
 }
+.profile-picture img{
+  max-width: 400px;
+  max-height: 400px;
+  padding-top: 10px;
+}
