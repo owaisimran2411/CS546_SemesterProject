@@ -164,6 +164,7 @@ router
 	.route("/new/:id")
 	.get(async (req, res) => {
 		res.render("product/productCreate", {
+			script_partial: "create_product_validate_script",
 			uploadProcess2: true,
 			productID: req.params.id,
 			docTitle: "Create New Product",
