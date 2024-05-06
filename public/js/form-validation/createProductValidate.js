@@ -19,7 +19,7 @@ $(document).ready(function () {
 
 	phase2.submit((event) => {
 		let allowSubmit = true;
-		event.preventDefault();
+		// event.preventDefault();
 		let phase2ErrorDiv = $("#phase2-error-div");
 
 		let productDescription = $("#productDescription").val();

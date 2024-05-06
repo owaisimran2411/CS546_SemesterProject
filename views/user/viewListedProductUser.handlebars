@@ -14,7 +14,12 @@
                 <td>{{productName}}</td>
                 <td>${{productAskingPrice}}</td>
                 <td>
+                    {{#ifCond listingActive '===' true}} 
                     <button><a href="/product/user/update/{{_id}}">Update</a></button>
+                    {{/ifCond}}
+                    {{#ifCond listingActive '===' false}} 
+                    <button><a href="/product/new/{{_id}}">Continue Registration</a></button>
+                    {{/ifCond}}
                     <button><a href="/product/user/delete/{{_id}}">Delete</a></button>
                     <button><a href="/bid/{{_id}}">View Bids</a></button>
                 </td>

@@ -22,6 +22,7 @@ router.route("/my-products").get(async (req, res) => {
 				productName: 1,
 				_id: 1,
 				productAskingPrice: 1,
+				listingActive: 1,
 			}
 		);
 		return res.render("user/viewListedProductUser", {
@@ -253,14 +254,14 @@ router
 					return res.status(400).render("register", {
 						docTitle: "Register",
 						script_partial: "register_validate_script",
-						errorMessage: error
+						errorMessage: error,
 					});
 				}
 			} else {
 				return res.status(500).render("register", {
 					docTitle: "Register",
 					script_partial: "register_validate_script",
-					errorMessage: 'Internal Error: Failed to register new user'
+					errorMessage: "Internal Error: Failed to register new user",
 				});
 			}
 		}
@@ -300,14 +301,14 @@ router
 				return res.status(400).render("login", {
 					docTitle: "Login",
 					script_partial: "login_validate_script",
-					errorMessage: 'Missing or incorrect login information.'
+					errorMessage: "Missing or incorrect login information.",
 				});
 			}
 		} else {
 			return res.status(400).render("login", {
 				docTitle: "Login",
 				script_partial: "login_validate_script",
-				errorMessage: 'Missing or incorrect login information.'
+				errorMessage: "Missing or incorrect login information.",
 			});
 		}
 	});
