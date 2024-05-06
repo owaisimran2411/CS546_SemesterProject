@@ -297,11 +297,17 @@ router
 				req.session.user = loginResult;
 				return res.redirect("/product");
 			} catch (error) {
-				return res.status(400).json({ error: error });
+				return res.status(400).render("login", {
+					docTitle: "Login",
+					script_partial: "login_validate_script",
+					errorMessage: 'Missing or incorrect login information.'
+				});
 			}
 		} else {
-			return res.status(400).json({
-				error: "Incomplete Fields",
+			return res.status(400).render("login", {
+				docTitle: "Login",
+				script_partial: "login_validate_script",
+				errorMessage: 'Missing or incorrect login information.'
 			});
 		}
 	});

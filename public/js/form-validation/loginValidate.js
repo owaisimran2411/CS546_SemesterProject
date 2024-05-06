@@ -28,12 +28,12 @@ $(document).ready(function () {
             return;
         }
         if (/\s/.test(password)) {
-            errorDiv.append('<p>Password should not contain spaces.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
         const specialCharacters = "!@#$%^&*()-_+=<>?/\\";
         if (password.length < 8) {
-            errorDiv.append('<p>Password should be at least 8 characters long.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
         let isUppercase = false;
@@ -56,22 +56,22 @@ $(document).ready(function () {
         }
 
         if (!isUppercase) {
-            errorDiv.append('<p>Password should contain at least one uppercase character.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
 
         if (!isLowercase) {
-            errorDiv.append('<p>Password should contain at least one lowercase character.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
 
         if (!isNumber) {
-            errorDiv.append('<p>Password should contain at least one number.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
 
         if (!isSpecialCharacter) {
-            errorDiv.append('<p>Password should contain at least one special character.</p>');
+            errorDiv.append('<p>Missing or incorrect login information.</p>');
             return;
         }
         this.submit();
