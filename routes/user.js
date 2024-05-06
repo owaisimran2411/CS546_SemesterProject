@@ -370,6 +370,44 @@ router.route("/profile").get(async (req, res) => {
 		});
 	}
 });
+router.route("/profile/:username").get(async (req, res) => {
+	if (req.session && req.session.admin) {
+		const username = req.params.username;
+		// console.log(username);
+		let userInfo;
+		let userProductInfo;
+		let userBidInfo;
+		try {
+			userInfo = await methods.getUserById(username);
+			userProductInfo = await productData.getProducts(
+				true,
+				5,
+				1,
+				{ productOwnerId: userInfo._id },
+				{},
+				{}
+			);
+			userBidInfo = await bidData.getUserBids(userInfo._id, false, 5);
+			return res.render("user/profile", {
+				docTitle: "Profile Page",
+				user: userInfo,
+				products: userProductInfo,
+				bids: userBidInfo,
+			});
+		} catch (e) {
+			console.log("error", e);
+			return res.status(400).render("user/profile", {
+				docTitle: "Profile Page",
+				user: userInfo,
+				products: userProductInfo,
+				bids: userBidInfo,
+				errorMessage: e,
+			});
+		}
+	} else {
+		res.redirect("/");
+	}
+});
 router.route("/logout").get(async (req, res) => {
 	req.session.destroy();
 	res.redirect("/login");

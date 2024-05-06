@@ -73,7 +73,7 @@ app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 
 app.use(loginRequiredRoutes, isAuthenticated);
-app.use(adminAuthenticatedRoutes, isAdminAuthenticated);
+// app.use(adminAuthenticatedRoutes, isAdminAuthenticated);
 
 app.use("/login", (req, res, next) => {
 	if (req.session && req.session.user && req.session.user.id) {

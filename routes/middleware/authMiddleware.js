@@ -10,8 +10,9 @@ const loginRequiredRoutes = [
 	"/complaint/createComplaintProduct/:id",
 	"/bid/createBid",
 ];
+
 const isAuthenticated = (req, res, next) => {
-	if (req.session.user) {
+	if (req.session.user || req.session.admin) {
 		return next();
 	} else {
 		return res.redirect("/login");

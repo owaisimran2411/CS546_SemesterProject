@@ -66,9 +66,8 @@ router.route("/view-all-complaints").get(async (req, res) => {
 			email: userInfo.emailAddress,
 			status: complaint.status,
 			complaintText: complaint.complaintText,
-			sellerId: userInfo._id
-
-		}
+			sellerId: userInfo._id,
+		};
 		fullComplaintInfo.push(objectToAdd);
 	}
 
@@ -86,19 +85,28 @@ router.route("/view-all-complaints-product").get(async (req, res) => {
 
 	const complaints = await complaintData.getComplaints(
 		{ complaintType: "Product" },
-		{ _id: 1, complaintText: 1, status: 1 }
+		{ _id: 1, complaintText: 1, status: 1, productId: 1 }
 	);
+	console.log(complaints);
 	for (let i = 0; i < complaints.length; i++) {
 		let complaint = complaints[i];
 		const productId = complaint.productId;
-		const productInfo = await productData.getProducts(true, 1, 1, { _id: productId }, {}, {});
+		const productInfo = await productData.getProducts(
+			true,
+			1,
+			1,
+			{ _id: productId },
+			{},
+			{}
+		);
+		console.log(productInfo);
 		const objectToAdd = {
 			_id: complaint._id,
 			productName: productInfo[0].productName,
 			status: complaint.status,
 			complaintText: complaint.complaintText,
-			productId: productInfo[0]._id
-		}
+			productId: productInfo[0]._id,
+		};
 		fullProductInfo.push(objectToAdd);
 	}
 	// console.log(complaints);
