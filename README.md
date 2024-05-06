@@ -19,9 +19,10 @@ Unzip the folder and make sure to be in the correct directory:
 ```bash
 cd CS546_SemesterProject
 ```
-Install dependencies
+Install dependencies and then run the program:
 ```bash
 npm install
+npm start
 ```
 Finally, make sure that the .env file is correct and in the root directory. 
 And that's it! Our database is hosted on the cloud so there is no need for seeding. <br />
