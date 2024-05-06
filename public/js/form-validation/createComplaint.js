@@ -8,7 +8,7 @@ $(document).ready(function () {
 	complaintForm.action = "/complaint/createComplaintSeller/" + sellerId;
 
 	complaintForm.submit(function (event) {
-		event.preventDefault();
+		let allowSubmit = true;
 
 		let errorDiv = $("#create-complaint-errors-client");
 		errorDiv.empty();
@@ -17,16 +17,17 @@ $(document).ready(function () {
 
 		if (!complaintMessage) {
 			errorDiv.append("<p>You must provide a complaint message</p>");
-			return;
+			allowSubmit = false;
 		}
 		complaintMessage = complaintMessage.trim();
 		if (complaintMessage.length === 0) {
 			errorDiv.append("<p>You must provide a complaint message</p>");
-			return;
+			allowSubmit = false;
 		}
 
-		complaintForm.append(sellerIdInput);
-
-		complaintForm.get(0).submit();
+		if (!allowSubmit) {
+			event.preventDefault();
+			allowSubmit = true;
+		}
 	});
 });
