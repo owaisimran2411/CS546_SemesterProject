@@ -250,11 +250,17 @@ router
 					//req.session.username = req.body.username;
 					//return res.json(postResult);
 				} catch (error) {
-					return res.status(400).json({ error: error });
+					return res.status(400).render("register", {
+						docTitle: "Register",
+						script_partial: "register_validate_script",
+						errorMessage: error
+					});
 				}
 			} else {
-				return res.status(400).json({
-					error: "Unable to Continue Signup",
+				return res.status(500).render("register", {
+					docTitle: "Register",
+					script_partial: "register_validate_script",
+					errorMessage: 'Internal Error: Failed to register new user'
 				});
 			}
 		}

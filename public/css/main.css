@@ -211,9 +211,9 @@ tr:nth-child(even) {
 }
 
 /* Coloring error messages red */
-#registerErrors,
-#loginErrors,
-#searchErrors,
+#register-errors,
+#login-errors,
+#search-errors,
 #create-bid-errors,
 #create-product-complaint-errors,
 #user-product-errors,
