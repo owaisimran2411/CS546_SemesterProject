@@ -11,7 +11,6 @@ const router = Router()
 router.
     route('/getMetrics/:console')
     .get(async (req, res) => {
-        console.log(req.params.console);
         let sum = 0;
         let average;
         try {
