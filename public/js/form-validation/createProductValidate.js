@@ -59,4 +59,22 @@ $(document).ready(function () {
 			allowSubmit = true;
 		}
 	});
+	$("#productSupportedConsole").change(function() {
+
+		let selectedConsole = $(this).val();
+
+
+		$.ajax({
+			method: 'GET',
+			url: `/metric/getMetrics/${selectedConsole}`,
+			success: function(res){
+				let averagePrice = res.averagePrice.toFixed(2);
+				$('#average-price-text').append(averagePrice)
+			},
+			error: function(xhr){
+				const errorJSON = JSON.parse(xhr.responseText);
+				$('#average-price-text').append(errorJSON.error);
+			}
+		})
+	});
 });

@@ -13,6 +13,7 @@ const constructorMethod = (app) => {
 	app.use("/bid", bidRoute);
 	app.use("/complaint", complaintRoute);
 	app.use("/review", reviewRoutes);
+	app.use('/metric', metricRoutes)
 	app.use("*", (req, res) => {
 		res.redirect("/product");
 	});

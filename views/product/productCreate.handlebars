@@ -37,7 +37,7 @@
 
         {{!-- section for product supportedConsoles --}}
         <label for="productSupportedConsole">Supported Console</label>
-        <select name="productSupportedConsole" id="productSupportedConsole" multiple required>
+        <select name="productSupportedConsole" id="productSupportedConsole" required>
             <option value="NES">NES</option>
             <option value="SNES">SNES</option>
             <option value="Gamecube">Gamecube</option>
@@ -60,7 +60,12 @@
         <label for="productAskingPrice">Bid Starting Price</label>
         <input type="number" name="productAskingPrice" id="productAskingPrice" required min="1" max="999">
 
+
         <input type="submit" value="Register">
     </form>
+    <div id="average-price-container">
+        <h3>Average Price of Products Listed for this Console</h3>
+        <p id="average-price-text">$</p>
+    </div>
 </main>
 {{/if}}
