@@ -251,7 +251,7 @@ router
 						otherImages
 					);
 
-					return res.json(productUpdate);
+					return res.redirect("/my-products");
 				} else {
 					res.json({
 						error: "fields missing",
