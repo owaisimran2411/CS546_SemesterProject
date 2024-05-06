@@ -51,13 +51,30 @@ router
 	});
 
 router.route("/view-all-complaints").get(async (req, res) => {
+	let fullComplaintInfo = [];
 	const complaints = await complaintData.getComplaints(
 		{ complaintType: "Seller" },
-		{ _id: 1, complaintText: 1, status: 1 }
+		{ _id: 1, complaintText: 1, status: 1, sellerId: 1 }
 	);
+	for (let i = 0; i < complaints.length; i++) {
+		let complaint = complaints[i];
+		const userId = complaint.sellerId;
+		const userInfo = await userData.getUserById(userId);
+		const objectToAdd = {
+			_id: complaint._id,
+			username: userInfo.username,
+			email: userInfo.emailAddress,
+			status: complaint.status,
+			complaintText: complaint.complaintText,
+			sellerId: userInfo._id
+
+		}
+		fullComplaintInfo.push(objectToAdd);
+	}
+
 	// console.log(complaints);
 	return res.render("admin/view", {
-		complaints: complaints,
+		complaints: fullComplaintInfo,
 		viewComplaints: true,
 		adminAuthenticated: true,
 		docTitle: "Admin - View All Complaints (Seller)",
@@ -65,13 +82,28 @@ router.route("/view-all-complaints").get(async (req, res) => {
 });
 
 router.route("/view-all-complaints-product").get(async (req, res) => {
+	let fullProductInfo = [];
+
 	const complaints = await complaintData.getComplaints(
 		{ complaintType: "Product" },
 		{ _id: 1, complaintText: 1, status: 1 }
 	);
+	for (let i = 0; i < complaints.length; i++) {
+		let complaint = complaints[i];
+		const productId = complaint.productId;
+		const productInfo = await productData.getProducts(true, 1, 1, { _id: productId }, {}, {});
+		const objectToAdd = {
+			_id: complaint._id,
+			productName: productInfo[0].productName,
+			status: complaint.status,
+			complaintText: complaint.complaintText,
+			productId: productInfo[0]._id
+		}
+		fullProductInfo.push(objectToAdd);
+	}
 	// console.log(complaints);
 	return res.render("admin/view", {
-		complaints: complaints,
+		complaints: fullProductInfo,
 		viewProductComplaints: true,
 		adminAuthenticated: true,
 		docTitle: "Admin View All Complaints (Products)",

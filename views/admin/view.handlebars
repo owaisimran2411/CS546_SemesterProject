@@ -36,6 +36,8 @@
 <main>
     <table class="myTable">
         <thead>
+            <th>Seller Username</th>
+            <th>Seller Email</th>
             <th>Details</th>
             <th>Status</th>
             <th>Actions</th>
@@ -43,6 +45,8 @@
         <tbody>
             {{#each complaints}}
             <tr>
+                <td>{{username}}</td>
+                <td>{{email}}</td>
                 <td>{{complaintText}}</td>
                 <td>{{status}}</td>
                 <td>
