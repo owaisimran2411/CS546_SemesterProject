@@ -18,6 +18,7 @@ $(document).ready(function () {
 	let phase2 = $("#productCreate_2");
 
 	phase2.submit((event) => {
+		let allowSubmit = true;
 		event.preventDefault();
 		let phase2ErrorDiv = $("#phase2-error-div");
 
@@ -34,15 +35,15 @@ $(document).ready(function () {
 
 		if (productCondition.length === 0) {
 			phase2ErrorDiv.append("<p>You must provide product condition");
-			return;
+			allowSubmit = false;
 		}
 		if (productDescription.length === 0) {
 			phase2ErrorDiv.append("<p>You must provide product description");
-			return;
+			allowSubmit = false;
 		}
 		if (productSerialNumber.length === 0) {
 			phase2ErrorDiv.append("<p>You must provide product serial number");
-			return;
+			allowSubmit = false;
 		}
 		// if (productSupportedConsole.length === 0) {
 		// 	phase2ErrorDiv.append("<p>You must provide product supported console");
@@ -50,7 +51,12 @@ $(document).ready(function () {
 		// }
 		if (productAskingPrice <= 0) {
 			phase2ErrorDiv.append("<p>Product Asking Price can not be less than 0");
-			return;
+			allowSubmit = false;
+		}
+
+		if (!allowSubmit) {
+			event.preventDefault();
+			allowSubmit = true;
 		}
 	});
 });

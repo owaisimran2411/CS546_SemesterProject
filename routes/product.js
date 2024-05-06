@@ -11,7 +11,16 @@ router
 	.get(async (req, res) => {
 		let productList;
 		try {
-			productList = await productData.getProducts(true, 8, 1, 1, 1, 1);
+			productList = await productData.getProducts(
+				true,
+				8,
+				1,
+				{
+					listingActive: true,
+				},
+				1,
+				{}
+			);
 			return res.render("product/index", {
 				products: productList,
 				docTitle: "Available Products",
@@ -119,11 +128,7 @@ router
 			)
 			.single("productThumbnail"),
 		async (req, res) => {
-			if (
-				req.file &&
-				req.body.productName //&&
-				// req.session.user
-			) {
+			if (req.file && req.body.productName && req.session.user) {
 				try {
 					let productName = undefined;
 
