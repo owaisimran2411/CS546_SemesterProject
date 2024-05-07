@@ -73,5 +73,7 @@ $(document).ready(function () {
 			errorDiv.append("<p>You must provide a complaint message.</p>");
 			return;
 		}
+		this.submit();
 	});
+
 });
