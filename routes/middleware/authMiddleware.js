@@ -37,7 +37,6 @@ const isAdminAuthenticated = (req, res, next) => {
 	}
 };
 const adminForbiddenRoutes = [
-	'/profile',
 	"/product/new",
 	"/product/new/:id",
 	"/my-products",
