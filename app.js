@@ -13,6 +13,8 @@ import {
 	isAuthenticated,
 	adminAuthenticatedRoutes,
 	isAdminAuthenticated,
+	adminForbiddenRoutes,
+	restrictAdmin,
 } from "./routes/middleware/authMiddleware.js";
 
 configureDotEnv();
@@ -74,7 +76,7 @@ app.set("view engine", "handlebars");
 
 app.use(loginRequiredRoutes, isAuthenticated);
 app.use(adminAuthenticatedRoutes, isAdminAuthenticated);
-
+app.use(adminForbiddenRoutes, restrictAdmin);
 app.use("/login", (req, res, next) => {
 	if (req.session && req.session.user && req.session.user.id) {
 		return res.redirect("/");

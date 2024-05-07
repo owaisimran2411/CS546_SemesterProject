@@ -36,9 +36,27 @@ const isAdminAuthenticated = (req, res, next) => {
 		return res.redirect("/admin/login");
 	}
 };
+const adminForbiddenRoutes = [
+	'/profile',
+	"/product/new",
+	"/product/new/:id",
+	"/my-products",
+	'/login',
+	'/register'
+];
+const restrictAdmin = (req, res, next) =>{
+	if(req.session && req.session.admin && req.session.admin.adminAuthenicated){
+		return res.redirect('/admin')
+	}
+	else{
+		return next();
+	}
+}
 export {
 	isAuthenticated,
 	loginRequiredRoutes,
 	adminAuthenticatedRoutes,
 	isAdminAuthenticated,
+	adminForbiddenRoutes,
+	restrictAdmin
 };
